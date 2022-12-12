@@ -1,0 +1,23 @@
+.maindivStyle {
+    text-align: center;
+}
+  
+.divheader {
+    background-color: rgba(89, 153, 236, 0.685);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.border{
+    border-bottom: 1px solid rgb(128, 121, 121);
+}
+
+.button{
+  display: block;
+  margin: auto;
+}
