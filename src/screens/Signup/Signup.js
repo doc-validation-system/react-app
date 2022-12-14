@@ -5,57 +5,36 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import styles from "./Signup.module.css";
 import TextField from "@mui/material/TextField";
+import Button from '@mui/material/Button'
+
 
 const SignupCard = () => {
   return (
-    <Card sx={{ width: '40%' }}>
+    <Card sx={{ width: '40%' }} className={styles.parentCard}>
       <CardContent>
-        <Typography
-          sx={{ fontSize: 20 }}
-          color="#286ADE"
-          gutterBottom
-          className={styles.head}
-        >
+        <Typography sx={{ fontSize: 20 }} color="#286ADE" gutterBottom className={styles.head}>
           Signup
         </Typography>
         <div className={styles.border} />
         <div className={styles.subCardDiv}>
-        <CardActions>
-          <TextField
-            className={styles.box}
-            label="Username"
-            variant="outlined"
-          />
-        </CardActions>
-        <CardActions>
-          <TextField className={styles.box} label="Email" variant="outlined" />
-        </CardActions>
-        <CardActions>
-          <TextField
-            className={styles.box}
-            label="Organization Name"
-            variant="outlined"
-          />
-        </CardActions>
-        <CardActions>
-          <TextField
-            name="Password"
-            type="password"
-            placeholder="Password"
-            label="Password"
-          />
-        </CardActions>
-        <CardActions>
-          <TextField
-            name="Confirm Password"
-            type="password"
-            placeholder="Password"
-            label=" Confirm Password"
-          />
-        </CardActions>
+          <CardActions>
+            <TextField className={styles.box} label="Username" variant="outlined" />
+          </CardActions>
+          <CardActions>
+            <TextField className={styles.box} label="Email" variant="outlined" />
+          </CardActions>
+          <CardActions>
+            <TextField className={styles.box} label="Organization Name" variant="outlined" />
+          </CardActions>
+          <CardActions>
+            <TextField className={styles.box} name="Password" type="password" placeholder="Password" label="Password" />
+          </CardActions>
+          <CardActions>
+            <TextField className={styles.box} name="Confirm Password" type="password" placeholder="Password" label=" Confirm Password" />
+          </CardActions>
         </div>
-        <CardActions>
-      
+        <CardActions style={{ justifyContent: 'center' }}>
+          <Button className={styles.flatButtons} variant="contained">Signup</Button>
         </CardActions>
       </CardContent>
     </Card>
