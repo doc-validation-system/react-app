@@ -2,24 +2,18 @@ import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
 import styles from "./Signup.module.css";
 import TextField from "@mui/material/TextField";
 import Button from "../../button/button";
 
 const SignupCard = () => {
   return (
-    <Card sx={{ width: "40%" }} className={styles.parentCard}>
+    <Card sx={{ width: "400px" }} className={styles.parentCard}>
       <CardContent>
-        <Typography
-          sx={{ fontSize: 20 }}
-          color="#286ADE"
-          gutterBottom
-          className={styles.head}
-        >
-          Signup
-        </Typography>
-        <div className={styles.border} />
+        <div className={styles.heading}> Sign up</div>
+
+        <div className={styles.seperator} />
+
         <div className={styles.subCardDiv}>
           <CardActions>
             <TextField
@@ -61,10 +55,23 @@ const SignupCard = () => {
             />
           </CardActions>
         </div>
-        {/* <CardActions style={{ justifyContent: 'center' }}>
-          <Button className={styles.Buttons1} variant="contained">Signup</Button>
-        </CardActions>  */}
+
         <Button />
+
+        <div className={styles.disclaimer}>
+          By clicking Sign Up, you agree to our{" "}
+          <span className={styles.highlight}>Terms</span> and have read <br />{" "}
+          and acknowledge our{" "}
+          <span className={styles.highlight}>Global Privacy Statement</span>.
+        </div>
+
+        <div className={styles.signUpFooter}>
+          <div>
+            Invisible reCAPTCHA by Google{" "}
+            <span className={styles.highlight}>Privacy Policy</span> and{" "}
+            <span className={styles.highlight}>Terms of Use</span>.
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

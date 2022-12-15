@@ -1,11 +1,21 @@
-.but {
-  position: absolute;
-  width: 330px;
+.button {
   height: 44px;
-  left: 35px;
-  top: 596px;
-
-  background: #286ade;
+  width: 330px;
+  border: none;
+  background-color: rgb(40, 106, 222);
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 3px;
+  font-size: 18px;
+  color: white;
+  transition: 0.1s ease-in;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: rgba(40, 106, 222, 0.85);
+}
+
+.button:active {
+  background-color: rgb(40, 106, 222);
+  transform: scale(0.98);
 }
