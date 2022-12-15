@@ -34,7 +34,7 @@ const SignupCard = () => {
           </CardActions>
         </div>
         <CardActions style={{ justifyContent: 'center' }}>
-          <Button className={styles.flatButtons} variant="contained">Signup</Button>
+          <Button className={styles.Buttons1} variant="contained">Signup</Button>
         </CardActions>
       </CardContent>
     </Card>
