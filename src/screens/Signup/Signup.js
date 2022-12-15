@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import styles from "./Signup.module.css";
 import TextField from "@mui/material/TextField";
-import signUpButton from "../../button/button";
+import Button from "../../button/button";
 
 const SignupCard = () => {
   return (
@@ -64,7 +64,7 @@ const SignupCard = () => {
         {/* <CardActions style={{ justifyContent: 'center' }}>
           <Button className={styles.Buttons1} variant="contained">Signup</Button>
         </CardActions>  */}
-        <signUpButton />
+        <Button />
       </CardContent>
     </Card>
   );

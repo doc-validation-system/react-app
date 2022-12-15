@@ -1,13 +1,9 @@
-import * as React from "react";
-//import style from "./button.css";
-//import  Button  from "@material-ui/core";
+import React from 'react'
 
-function signUpButton(){
-    return(
-        <div>
-            <button type="submit">Signup</button>
-        </div>
-    )
+export default function Button() {
+  return (
+    <div>
+        <button type="submit">Sign Up</button>
+    </div>
+  )
 }
-
-export default signUpButton;
