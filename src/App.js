@@ -1,8 +1,8 @@
-import SignupScreen from './screens/Signup/Signup'
+import AuthScreen from './screens/Authenticate/Authenticate.js'
 
 function App() {
   return (
-    <SignupScreen />
+    <AuthScreen />
   );
 }
 
