@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Authenticate.module.css";
-import Login from "../Login/Login";
+//import Login from "../Login/Login";
+import Signup from "../Signup/Signup";
 
 function Authentication() {
   return (
@@ -16,7 +17,7 @@ function Authentication() {
 
       {/* Signup section */}
       {/* Routing will be done here */}
-      <Login />
+      <Signup />
 
       {/* Footer with Project team info*/}
       <footer className={`${styles.flex} ${styles.footer}`}>

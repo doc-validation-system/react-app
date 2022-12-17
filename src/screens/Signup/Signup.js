@@ -64,7 +64,9 @@ const Signup = () => {
           </div>
 
           {/* Submit button */}
-          <FlatButton buttonData={{ buttonName: 'Signup' }} />
+          <FlatButton
+            buttonData={{ buttonName: "Signup", handleSignup: handleSignup }}
+          />
         </form>
 
         <div className={styles.loginRedirect}>
@@ -81,6 +83,10 @@ const Signup = () => {
       </div>
     </section>
   );
+};
+//Signup button functionality
+const handleSignup = () => {
+  alert("I am signup");
 };
 
 export default Signup;
