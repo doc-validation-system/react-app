@@ -1,29 +1,16 @@
 import React from "react";
 import styles from "./Signup.module.css";
-import Button from "../../button/button";
+import Button from "../../service/button/button";
 
 const Signup = () => {
   return (
     <section className={styles.signupSection}>
-      
       <div className={styles.signupBox}>
         {/* Header */}
         <div className={styles.signupHeader}>Sign up</div>
 
         {/* Input form */}
         <form action="" className={styles.signupForm}>
-          {/* Username */}
-          <div id="usernameDiv">
-            <div className={styles.signupInputName}>Username</div>
-            <input type="text"
-              name="username"
-              id="username"
-              autoComplete="off"
-              className={styles.signupInputField}
-            />
-            <div className={styles.signupInputErrorMsg}></div>
-          </div>
-
           {/* Email */}
           <div id="emailDiv">
             <div className={styles.signupInputName}>Email</div>
@@ -32,6 +19,7 @@ const Signup = () => {
               name="email"
               id="email"
               autoComplete="off"
+              placeholder="Enter your Email"
               className={styles.signupInputField}
             />
             <div className={styles.signupInputErrorMsg}></div>
@@ -45,6 +33,7 @@ const Signup = () => {
               name="orgName"
               id="orgName"
               autoComplete="off"
+              placeholder="Enter your organization name"
               className={styles.signupInputField}
             />
             <div className={styles.signupInputErrorMsg}></div>
@@ -57,6 +46,7 @@ const Signup = () => {
               type="password"
               name="password"
               id="password"
+              placeholder="Enter new password"
               className={styles.signupInputField}
             />
             <div className={styles.signupInputErrorMsg}></div>
@@ -68,6 +58,7 @@ const Signup = () => {
               type="password"
               name="conPass"
               id="conPass"
+              placeholder="Confirm your password"
               className={styles.signupInputField}
             />
           </div>
