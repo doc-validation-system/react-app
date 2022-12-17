@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Login.module.css";
-import Button from "../../service/button/button";
+import FlatButton from "../../service/FlatButton/FlatButton";
 
 const Login = () => {
   return (
@@ -38,14 +38,14 @@ const Login = () => {
             />
             <div className={styles.signupInputErrorMsg}></div>
           </div>
-          
+
 
           {/* Submit button */}
-          <Button />
+          <FlatButton buttonData={{ buttonName: 'Login' }} />
         </form>
 
         <div className={styles.loginRedirect}>
-          Are you new? Sign Up
+          Don't Have Account ? Signup
         </div>
 
         {/* Disclaimer */}

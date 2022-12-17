@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Signup.module.css";
-import Button from "../../service/button/button";
+import FlatButton from "../../service/FlatButton/FlatButton";
 
 const Signup = () => {
   return (
@@ -64,7 +64,7 @@ const Signup = () => {
           </div>
 
           {/* Submit button */}
-          <Button />
+          <FlatButton buttonData={{ buttonName: 'Signup' }} />
         </form>
 
         <div className={styles.loginRedirect}>

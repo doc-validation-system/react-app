@@ -1,8 +1,6 @@
 import React from "react";
 import styles from "./Authenticate.module.css";
-//import Signup from "../Signup/Signup";
 import Login from "../Login/Login";
-//import Signup from "../Signup/Signup";
 
 function Authentication() {
   return (
