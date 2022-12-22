@@ -4,7 +4,7 @@ import styles from "./FlatButton.module.css";
 class FlatButton extends React.Component {
   buttonData = {};
   constructor(props) {
-    super();
+    super(props);
     this.buttonData = props.buttonData;
   }
   render() {
