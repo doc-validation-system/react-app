@@ -10,8 +10,17 @@ class SignupSection extends React.Component {
   handleEmailInput = (element) => {
     this.email = element.target.value;
   }
+  handleOrganisationInput = (element)=>{
+    this.organisationName=element.target.value;
+  }
+  handlePasswordInput = (element)=>{
+    this.password=element.target.value;
+  }
+  handleConrfirmPassword = (element)=>{
+    this.conrfirmPassword=element.target.value;
+  }
   handleSignup = () => {
-    alert(this.email.valueOf());
+    alert(this.email+" "+this.organisationName+" "+this.password+" "+this.conrfirmPassword);
   };
   render() {
     return (
@@ -47,6 +56,7 @@ class SignupSection extends React.Component {
                 autoComplete="off"
                 placeholder="Enter your organization name"
                 className={styles.signupInputField}
+                onChange={this.handleOrganisationInput}
               />
               <div className={styles.signupInputErrorMsg}></div>
             </div>
@@ -60,6 +70,7 @@ class SignupSection extends React.Component {
                 id="password"
                 placeholder="Enter new password"
                 className={styles.signupInputField}
+                onChange={this.handlePasswordInput}
               />
               <div className={styles.signupInputErrorMsg}></div>
             </div>
@@ -72,6 +83,7 @@ class SignupSection extends React.Component {
                 id="conPass"
                 placeholder="Confirm your password"
                 className={styles.signupInputField}
+                onChange={this.handleConrfirmPassword}
               />
             </div>
 
