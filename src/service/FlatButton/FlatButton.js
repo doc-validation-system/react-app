@@ -3,9 +3,9 @@ import styles from "./FlatButton.module.css";
 
 class FlatButton extends React.Component {
   buttonData = {};
-  constructor(buttonData) {
+  constructor(props) {
     super();
-    this.buttonData = buttonData;
+    this.buttonData = props.buttonData;
   }
   render() {
     return (
@@ -13,9 +13,9 @@ class FlatButton extends React.Component {
         <button
           type="submit"
           className={styles.button}
-          onClick={buttonData.handleButton}
+          onClick={this.buttonData.handleButton}
         >
-          {buttonData.buttonName}
+          {this.buttonData.buttonName}
         </button>
       </div>
     );

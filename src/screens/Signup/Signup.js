@@ -7,20 +7,24 @@ class SignupSection extends React.Component {
   organisationName = "";
   password = "";
   conrfirmPassword = "";
+  buttonData = {
+    buttonName: "Signup",
+    handleButton: this.handleSignup
+  }
   handleEmailInput = (element) => {
     this.email = element.target.value;
   }
-  handleOrganisationInput = (element)=>{
-    this.organisationName=element.target.value;
+  handleOrganisationInput = (element) => {
+    this.organisationName = element.target.value;
   }
-  handlePasswordInput = (element)=>{
-    this.password=element.target.value;
+  handlePasswordInput = (element) => {
+    this.password = element.target.value;
   }
-  handleConrfirmPassword = (element)=>{
-    this.conrfirmPassword=element.target.value;
+  handleConrfirmPassword = (element) => {
+    this.conrfirmPassword = element.target.value;
   }
   handleSignup = () => {
-    alert(this.email+" "+this.organisationName+" "+this.password+" "+this.conrfirmPassword);
+    alert(this.email + " " + this.organisationName + " " + this.password + " " + this.conrfirmPassword);
   };
   render() {
     return (
