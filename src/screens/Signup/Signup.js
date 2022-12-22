@@ -1,8 +1,20 @@
-import React from "react";
+import React,{useState} from "react";
 import styles from "./Signup.module.css";
 import FlatButton from "../../service/FlatButton/FlatButton";
 
-const Signup = () => {
+class Signupsection extends React.Component{
+email="";
+organisationName="";
+password="";
+conrfirmPassword="";
+setEmail = (element)=>{
+  this.email=element;
+
+}
+handleSignup = () => {
+  alert(this.email);
+};
+render(){
   return (
     <section className={styles.signupSection}>
       <div className={styles.signupBox}>
@@ -21,6 +33,7 @@ const Signup = () => {
               autoComplete="off"
               placeholder="Enter your Email"
               className={styles.signupInputField}
+              ref={this.setEmail}
             />
             <div className={styles.signupInputErrorMsg}></div>
           </div>
@@ -65,7 +78,7 @@ const Signup = () => {
 
           {/* Submit button */}
           <FlatButton
-            buttonData={{ buttonName: "Signup", handleSignup: handleSignup }}
+            buttonData={{ buttonName: "Signup",handleButton:{handleSignup} }}
           />
         </form>
 
@@ -83,10 +96,10 @@ const Signup = () => {
       </div>
     </section>
   );
-};
-//Signup button functionality
-const handleSignup = () => {
-  alert("I am signup");
-};
+}
+}
+
+
+
 
 export default Signup;
