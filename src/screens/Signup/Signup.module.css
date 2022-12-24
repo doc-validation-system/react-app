@@ -75,3 +75,7 @@
 .highlight {
   color: #286ade;
 }
+
+.error_alert{
+  border-color: red;
+}

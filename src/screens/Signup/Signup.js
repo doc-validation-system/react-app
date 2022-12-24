@@ -7,24 +7,45 @@ class SignupSection extends React.Component {
   organisationName = "";
   password = "";
   conrfirmPassword = "";
-  buttonData = {
-    buttonName: "Signup",
-    handleButton: this.handleSignup
-  }
+  //emailRef=useRef(null);
+  flagEmail = false;
+  flagPassword = false;
+  flagOrganization = false;
+  flagConfirmPassword = false;
   handleEmailInput = (element) => {
     this.email = element.target.value;
-  }
+    //this.emailRef = document.getElementById("email");
+    //this.emailRef.classList.add("error_alert");
+    // let matchEmail =
+    //   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // if (this.email.match(matchEmail)) {
+    //   this.flagEmail = true;
+    //   //this.emailRef.current.classList.remove("error_alert");
+    // } else {
+    //   this.flagEmail = false;
+    //   console.log("error");
+    //   //this.emailRef.current.classList.add("error_alert");
+    // }
+  };
   handleOrganisationInput = (element) => {
     this.organisationName = element.target.value;
-  }
+  };
   handlePasswordInput = (element) => {
     this.password = element.target.value;
-  }
+  };
   handleConrfirmPassword = (element) => {
     this.conrfirmPassword = element.target.value;
-  }
+  };
   handleSignup = () => {
-    alert(this.email + " " + this.organisationName + " " + this.password + " " + this.conrfirmPassword);
+    alert(
+      this.email +
+        " " +
+        this.organisationName +
+        " " +
+        this.password +
+        " " +
+        this.conrfirmPassword
+    );
   };
   render() {
     return (
@@ -45,7 +66,7 @@ class SignupSection extends React.Component {
                 autoComplete="off"
                 placeholder="Enter your Email"
                 className={styles.signupInputField}
-                onChange={this.handleEmailInput}
+                onBlur={this.handleEmailInput}
               />
               <div className={styles.signupInputErrorMsg}></div>
             </div>
@@ -93,7 +114,10 @@ class SignupSection extends React.Component {
 
             {/* Submit button */}
             <FlatButton
-              buttonData={{ buttonName: "Signup", handleButton: this.handleSignup }}
+              buttonData={{
+                buttonName: "Signup",
+                handleButton: this.handleSignup,
+              }}
             />
           </form>
 
@@ -113,8 +137,5 @@ class SignupSection extends React.Component {
     );
   }
 }
-
-
-
 
 export default SignupSection;
