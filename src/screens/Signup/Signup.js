@@ -41,6 +41,7 @@ class SignupSection extends React.Component {
   };
   handlePasswordInput = (element) => {
     this.password = element.target.value;
+    //let matchPassword = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{8,}$/;
   };
   handleConrfirmPassword = (element) => {
     this.conrfirmPassword = element.target.value;
