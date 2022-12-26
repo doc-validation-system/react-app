@@ -11,7 +11,8 @@ class SignupSection extends React.Component {
     this.state = {
       showSpinner: false,
       showAlert: false,
-      alertMessage: ""
+      alertMessage: "",
+      alertType: ""
     }
   }
   email = "";
@@ -33,12 +34,12 @@ class SignupSection extends React.Component {
     if (this.email.match(matchEmail)) {
       this.flagEmail = true;
       // this.emailRef.current.classList.remove("error_alert");
-      this.setState({ showAlert: false, alertMessage: "" })
+      this.setState({ showAlert: false })
     } else {
       this.flagEmail = false;
       //this.emailRef.current.classList.add("error_alert");
       // Need to write validation
-      this.setState({ showAlert: true, alertMessage: "Enter a Valid Email" })
+      this.setState({ showAlert: true, alertMessage: "Enter a Valid Email", alertType: "error" })
     }
   };
   handleOrganisationInput = (element) => {
@@ -46,10 +47,10 @@ class SignupSection extends React.Component {
     if (this.organisationName.length < 2) {
       this.flagOrganization = false;
       // Need to write validation
-      this.setState({ showAlert: true, alertMessage: "Enter a Valid Organization Name" })
+      this.setState({ showAlert: true, alertMessage: "Enter a Valid Organization Name", alertType: "error" })
     } else {
       this.flagOrganization = true;
-      this.setState({ showAlert: false, alertMessage: "" })
+      this.setState({ showAlert: false })
     }
   };
   handlePasswordInput = (element) => {
@@ -60,11 +61,11 @@ class SignupSection extends React.Component {
       this.flagPassword = true;
       // Need to write validation
 
-      this.setState({ showAlert: false, alertMessage: "" })
+      this.setState({ showAlert: false })
     } else {
       this.flagPassword = false;
       // Need to write validation
-      this.setState({ showAlert: true, alertMessage: "Enter a Valid Password" })
+      this.setState({ showAlert: true, alertMessage: "Enter a Valid Password", alertType: "error" })
     }
   };
   handleConrfirmPassword = (element) => {
@@ -73,11 +74,11 @@ class SignupSection extends React.Component {
     if (this.conrfirmPassword.match(this.password)) {
       this.flagConfirmPassword = true;
       // Need to write validation
-      this.setState({ showAlert: false, alertMessage: "" })
+      this.setState({ showAlert: false })
     } else {
       this.flagConfirmPassword = false;
       // Need to write validation
-      this.setState({ showAlert: true, alertMessage: "Password & Confirm Password did'nt Match" })
+      this.setState({ showAlert: true, alertMessage: "Password & Confirm Password did'nt Match", alertType: "error" })
     }
   };
   handleSignup = async () => {
@@ -109,12 +110,11 @@ class SignupSection extends React.Component {
 
     this.setState({ showSpinner: false });
     var decodedData = JSON.parse(await response.text());
-    alert(decodedData.title + " " + decodedData.message);
-    // if (response.status === 201) {
-    //   alert(decodedData.title + " " + decodedData.message);
-    // }else{
-
-    // }
+    if (response.status === 201) {
+      this.setState({ showAlert: true, alertMessage: `${decodedData.title} ` + `${decodedData.message}`, alertType: "success" })
+    } else {
+      this.setState({ showAlert: true, alertMessage: `${decodedData.title} ` + `${decodedData.message}`, alertType: "error" })
+    }
   };
   render() {
     return (
@@ -135,7 +135,7 @@ class SignupSection extends React.Component {
               {/* Header */}
               <div className={styles.signupHeader}>Sign up</div>
               {
-                this.state.showAlert ? <Alert severity="error">{this.state.alertMessage}</Alert> : <div></div>
+                this.state.showAlert ? <Alert severity={this.state.alertType}>{this.state.alertMessage}</Alert> : <div></div>
               }
 
               {/* Input form */}
