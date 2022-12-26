@@ -8,7 +8,7 @@ class SignupSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showSpinner: false
+      showSpinner: false,
     }
   }
   email = "";
@@ -23,28 +23,39 @@ class SignupSection extends React.Component {
   //showSpinner = false;
   handleEmailInput = (element) => {
     this.email = element.target.value;
-    //this.emailRef = document.getElementById("email");
+    this.emailRef = document.getElementById("email");
     //this.emailRef.classList.add("error_alert");
-    // let matchEmail =
-    //   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // if (this.email.match(matchEmail)) {
-    //   this.flagEmail = true;
-    //   //this.emailRef.current.classList.remove("error_alert");
-    // } else {
-    //   this.flagEmail = false;
-    //   console.log("error");
-    //   //this.emailRef.current.classList.add("error_alert");
-    // }
+     let matchEmail =
+       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+     if (this.email.match(matchEmail)) {
+       this.flagEmail = true;
+      // this.emailRef.current.classList.remove("error_alert");
+    } else {
+      this.flagEmail = false;
+      //this.emailRef.current.classList.add("error_alert");
+     }
   };
   handleOrganisationInput = (element) => {
     this.organisationName = element.target.value;
   };
   handlePasswordInput = (element) => {
     this.password = element.target.value;
-    //let matchPassword = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{8,}$/;
+    this.passwordRef= document.getElementById("password")
+    let matchPassword = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{8,}$/;
+    if(this.password.match(matchPassword)){
+      this.flagPassword=true;
+    }else{
+      this.flagPassword=false;
+    }
   };
   handleConrfirmPassword = (element) => {
     this.conrfirmPassword = element.target.value;
+    this.conrfirmPasswordRef=document.getElementById("conPass")
+    if(this.conrfirmPassword.match(this.password)){
+      this.flagConfirmPassword=true;
+    }else{
+      this.flagConfirmPassword=false;
+    }
   };
   handleSignup = async () => {
     this.setState({ showSpinner: true });
@@ -126,6 +137,7 @@ class SignupSection extends React.Component {
                     name="orgName"
                     id="orgName"
                     autoComplete="off"
+                    minLength={3}
                     placeholder="Enter your organization name"
                     className={styles.signupInputField}
                     onChange={this.handleOrganisationInput}
@@ -142,7 +154,7 @@ class SignupSection extends React.Component {
                     id="password"
                     placeholder="Enter new password"
                     className={styles.signupInputField}
-                    onChange={this.handlePasswordInput}
+                    onBlur={this.handlePasswordInput}
                   />
                   <div className={styles.signupInputErrorMsg}></div>
                 </div>
@@ -155,7 +167,7 @@ class SignupSection extends React.Component {
                     id="conPass"
                     placeholder="Confirm your password"
                     className={styles.signupInputField}
-                    onChange={this.handleConrfirmPassword}
+                    onBlur={this.handleConrfirmPassword}
                   />
                 </div>
 
