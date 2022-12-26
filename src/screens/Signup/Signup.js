@@ -29,14 +29,21 @@ class SignupSection extends React.Component {
        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
      if (this.email.match(matchEmail)) {
        this.flagEmail = true;
+       this.emailRef="";
       // this.emailRef.current.classList.remove("error_alert");
     } else {
       this.flagEmail = false;
       //this.emailRef.current.classList.add("error_alert");
+      this.emailRef=this.emailRef.innerHTML='<div class="alert alert-danger" role="alert">'+
+      +'A simple danger alert—check it out!'+
+    '</div>';
      }
   };
   handleOrganisationInput = (element) => {
     this.organisationName = element.target.value;
+    if(this.organisationName.length<2){
+      //this.flagOr
+    }
   };
   handlePasswordInput = (element) => {
     this.password = element.target.value;
