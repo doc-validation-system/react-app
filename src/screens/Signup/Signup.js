@@ -3,12 +3,15 @@ import FlatButton from "../../service/FlatButton/FlatButton";
 import React from "react";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
 
 class SignupSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showSpinner: false,
+      showAlert: false,
+      alertMessage: ""
     }
   }
   email = "";
@@ -20,48 +23,61 @@ class SignupSection extends React.Component {
   flagPassword = false;
   flagOrganization = false;
   flagConfirmPassword = false;
+
   //showSpinner = false;
   handleEmailInput = (element) => {
     this.email = element.target.value;
-    this.emailRef = document.getElementById("email");
     //this.emailRef.classList.add("error_alert");
-     let matchEmail =
-       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-     if (this.email.match(matchEmail)) {
-       this.flagEmail = true;
-       this.emailRef="";
+    let matchEmail =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (this.email.match(matchEmail)) {
+      this.flagEmail = true;
       // this.emailRef.current.classList.remove("error_alert");
+      this.setState({ showAlert: false, alertMessage: "" })
     } else {
       this.flagEmail = false;
       //this.emailRef.current.classList.add("error_alert");
-      this.emailRef=this.emailRef.innerHTML='<div class="alert alert-danger" role="alert">'+
-      +'A simple danger alert—check it out!'+
-    '</div>';
-     }
+      // Need to write validation
+      this.setState({ showAlert: true, alertMessage: "Enter a Valid Email" })
+    }
   };
   handleOrganisationInput = (element) => {
     this.organisationName = element.target.value;
-    if(this.organisationName.length<2){
-      //this.flagOr
+    if (this.organisationName.length < 2) {
+      this.flagOrganization = false;
+      // Need to write validation
+      this.setState({ showAlert: true, alertMessage: "Enter a Valid Organization Name" })
+    } else {
+      this.flagOrganization = true;
+      this.setState({ showAlert: false, alertMessage: "" })
     }
   };
   handlePasswordInput = (element) => {
     this.password = element.target.value;
-    this.passwordRef= document.getElementById("password")
+    this.passwordRef = document.getElementById("password")
     let matchPassword = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{8,}$/;
-    if(this.password.match(matchPassword)){
-      this.flagPassword=true;
-    }else{
-      this.flagPassword=false;
+    if (this.password.match(matchPassword)) {
+      this.flagPassword = true;
+      // Need to write validation
+
+      this.setState({ showAlert: false, alertMessage: "" })
+    } else {
+      this.flagPassword = false;
+      // Need to write validation
+      this.setState({ showAlert: true, alertMessage: "Enter a Valid Password" })
     }
   };
   handleConrfirmPassword = (element) => {
     this.conrfirmPassword = element.target.value;
-    this.conrfirmPasswordRef=document.getElementById("conPass")
-    if(this.conrfirmPassword.match(this.password)){
-      this.flagConfirmPassword=true;
-    }else{
-      this.flagConfirmPassword=false;
+    this.conrfirmPasswordRef = document.getElementById("conPass")
+    if (this.conrfirmPassword.match(this.password)) {
+      this.flagConfirmPassword = true;
+      // Need to write validation
+      this.setState({ showAlert: false, alertMessage: "" })
+    } else {
+      this.flagConfirmPassword = false;
+      // Need to write validation
+      this.setState({ showAlert: true, alertMessage: "Password & Confirm Password did'nt Match" })
     }
   };
   handleSignup = async () => {
@@ -118,6 +134,9 @@ class SignupSection extends React.Component {
             <div className={styles.signupBox}>
               {/* Header */}
               <div className={styles.signupHeader}>Sign up</div>
+              {
+                this.state.showAlert ? <Alert severity="error">{this.state.alertMessage}</Alert> : <div></div>
+              }
 
               {/* Input form */}
               <form action="" className={styles.signupForm}>
@@ -161,7 +180,7 @@ class SignupSection extends React.Component {
                     id="password"
                     placeholder="Enter new password"
                     className={styles.signupInputField}
-                    onBlur={this.handlePasswordInput}
+                    onChange={this.handlePasswordInput}
                   />
                   <div className={styles.signupInputErrorMsg}></div>
                 </div>
@@ -174,7 +193,7 @@ class SignupSection extends React.Component {
                     id="conPass"
                     placeholder="Confirm your password"
                     className={styles.signupInputField}
-                    onBlur={this.handleConrfirmPassword}
+                    onChange={this.handleConrfirmPassword}
                   />
                 </div>
 
