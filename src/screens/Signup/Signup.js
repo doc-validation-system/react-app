@@ -19,25 +19,19 @@ class SignupSection extends React.Component {
   organisationName = "";
   password = "";
   conrfirmPassword = "";
-  //emailRef=useRef(null);
   flagEmail = false;
   flagPassword = false;
   flagOrganization = false;
   flagConfirmPassword = false;
-
-  //showSpinner = false;
   handleEmailInput = (element) => {
     this.email = element.target.value;
-    //this.emailRef.classList.add("error_alert");
     let matchEmail =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (this.email.match(matchEmail)) {
       this.flagEmail = true;
-      // this.emailRef.current.classList.remove("error_alert");
       this.setState({ showAlert: false })
     } else {
       this.flagEmail = false;
-      //this.emailRef.current.classList.add("error_alert");
       // Need to write validation
       this.setState({ showAlert: true, alertMessage: "Enter a Valid Email", alertType: "error" })
     }
@@ -60,7 +54,6 @@ class SignupSection extends React.Component {
     if (this.password.match(matchPassword)) {
       this.flagPassword = true;
       // Need to write validation
-
       this.setState({ showAlert: false })
     } else {
       this.flagPassword = false;
@@ -82,39 +75,55 @@ class SignupSection extends React.Component {
     }
   };
   handleSignup = async () => {
-    this.setState({ showSpinner: true });
-    // alert(
-    //   this.email +
-    //   " " +
-    //   this.organisationName +
-    //   " " +
-    //   this.password +
-    //   " " +
-    //   this.conrfirmPassword
-    // );
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-    var bodyData = new URLSearchParams();
-    bodyData.append("emailId", this.email);
-    bodyData.append("organizationName", this.organisationName);
-    bodyData.append("password", this.password);
-    console.log(bodyData, null, 3);
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: bodyData,
-      redirect: 'follow'
-    };
-    var response = await fetch("https://api-docvalidation.onrender.com/user/signup", requestOptions);
-
-    this.setState({ showSpinner: false });
-    var decodedData = JSON.parse(await response.text());
-    if (response.status === 201) {
-      this.setState({ showAlert: true, alertMessage: `${decodedData.title} ` + `${decodedData.message}`, alertType: "success" })
-    } else {
-      this.setState({ showAlert: true, alertMessage: `${decodedData.title} ` + `${decodedData.message}`, alertType: "error" })
+    if(!this.flagEmail||!this.flagOrganization||!this.flagPassword||!this.flagConfirmPassword){
+      if(this.flagEmail===false){
+        this.setState({ showAlert: true, alertMessage: "Please enter your mail", alertType: "error" })
+      }
+      if(this.flagOrganization===false){
+        this.setState({ showAlert: true, alertMessage: "Please enter your organization name ", alertType: "error" })
+      }
+      if(this.flagPassword===false){
+        this.setState({ showAlert: true, alertMessage: "Please enter password", alertType: "error" })
+      }
+      if(this.flagConfirmPassword===false){
+        this.setState({ showAlert: true, alertMessage: "Password did not match,enter correct password", alertType: "error" })
+      }
     }
+    else{
+      this.setState({ showSpinner: true });
+      // alert(
+      //   this.email +
+      //   " " +
+      //   this.organisationName +
+      //   " " +
+      //   this.password +
+      //   " " +
+      //   this.conrfirmPassword
+      // );
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+      var bodyData = new URLSearchParams();
+      bodyData.append("emailId", this.email);
+      bodyData.append("organizationName", this.organisationName);
+      bodyData.append("password", this.password);
+      console.log(bodyData, null, 3);
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: bodyData,
+        redirect: 'follow'
+      };
+      var response = await fetch("https://api-docvalidation.onrender.com/user/signup", requestOptions);
+
+      this.setState({ showSpinner: false });
+      var decodedData = JSON.parse(await response.text());
+      if (response.status === 201) {
+        this.setState({ showAlert: true, alertMessage: `${decodedData.title} ` + `${decodedData.message}`, alertType: "success" })
+      } else {
+        this.setState({ showAlert: true, alertMessage: `${decodedData.title} ` + `${decodedData.message}`, alertType: "error" })
+      }
+   }
   };
   render() {
     return (
