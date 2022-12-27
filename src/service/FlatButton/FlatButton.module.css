@@ -11,6 +11,7 @@
   cursor: pointer;
   margin-top: 18px;
   text-align: center;
+  line-height: 40px;
 }
 
 .button:hover {
