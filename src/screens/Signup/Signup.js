@@ -75,21 +75,7 @@ class SignupSection extends React.Component {
     }
   };
   handleSignup = async () => {
-    if(!this.flagEmail||!this.flagOrganization||!this.flagPassword||!this.flagConfirmPassword){
-      if(this.flagEmail===false){
-        this.setState({ showAlert: true, alertMessage: "Please enter your mail", alertType: "error" })
-      }
-      if(this.flagOrganization===false){
-        this.setState({ showAlert: true, alertMessage: "Please enter your organization name ", alertType: "error" })
-      }
-      if(this.flagPassword===false){
-        this.setState({ showAlert: true, alertMessage: "Please enter password", alertType: "error" })
-      }
-      if(this.flagConfirmPassword===false){
-        this.setState({ showAlert: true, alertMessage: "Password did not match,enter correct password", alertType: "error" })
-      }
-    }
-    else{
+    if (this.flagEmail && this.flagOrganization && this.flagPassword && this.flagConfirmPassword) {
       this.setState({ showSpinner: true });
       // alert(
       //   this.email +
@@ -123,7 +109,21 @@ class SignupSection extends React.Component {
       } else {
         this.setState({ showAlert: true, alertMessage: `${decodedData.title} ` + `${decodedData.message}`, alertType: "error" })
       }
-   }
+    }
+    else {
+      if (this.flagEmail === false) {
+        this.setState({ showAlert: true, alertMessage: "Please enter your mail", alertType: "error" })
+      }
+      else if (this.flagOrganization === false) {
+        this.setState({ showAlert: true, alertMessage: "Please enter your organization name ", alertType: "error" })
+      }
+      else if (this.flagPassword === false) {
+        this.setState({ showAlert: true, alertMessage: "Please enter password", alertType: "error" })
+      }
+      else if (this.flagConfirmPassword === false) {
+        this.setState({ showAlert: true, alertMessage: "Password did not match,enter correct password", alertType: "error" })
+      }
+    }
   };
   render() {
     return (

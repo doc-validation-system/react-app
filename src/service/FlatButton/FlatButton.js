@@ -10,13 +10,12 @@ class FlatButton extends React.Component {
   render() {
     return (
       <div>
-        <button
-          type="submit"
+        <div
           className={styles.button}
           onClick={this.buttonData.handleButton}
         >
           {this.buttonData.buttonName}
-        </button>
+        </div>
       </div>
     );
   }
