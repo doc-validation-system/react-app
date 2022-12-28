@@ -1,6 +1,69 @@
-.homepage{
-    color: #286ade, #2254c4, #1c3eaa, #132990, #081477;
+
+.homePageContainer {
+    background-image: linear-gradient(to right top, #286ade, #2254c4, #1c3eaa, #132990, #081477);
+    height: 100vh;
 }
+
+.header {
+    margin: 0 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.headerImage {
+    height: 28px;
+    padding: 16px 0;
+}
+
+.headerOptions {
+    display: flex;
+    align-items: center;
+}
+
+.headerOption {
+    color: #fff;
+    font-size: 18px;
+    text-decoration: none;
+    margin: 0 16px;
+    padding-bottom: 2px;
+}
+
+.headerOption:hover {
+    border-bottom: 3px solid #fff;
+}
+
+.homeImageSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 36px 0 8px;
+    width: 100vw;
+}
+
+.homeImage {
+    width: 340px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200&display=swap');
+
+.homeHeaderText {
+    text-align: center;
+    color: #ECEEF1;
+    font-size: 48px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 200;
+}
+
+.homeMainText {
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 400;
+    margin: 16px 272px 0;
+}
+
 .navbar{
     position: fixed;
     width: 100%;
