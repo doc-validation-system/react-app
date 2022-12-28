@@ -1,110 +1,174 @@
-
 .homePageContainer {
-    background-image: linear-gradient(to right top, #286ade, #2254c4, #1c3eaa, #132990, #081477);
-    height: 100vh;
+  background-image: linear-gradient(
+    to right top,
+    #286ade,
+    #2254c4,
+    #1c3eaa,
+    #132990,
+    #081477
+  );
+  height: 100vh;
 }
 
 .header {
-    margin: 0 80px 0 160px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  margin: 0 80px 0 160px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  animation: headerFooter-fade-in 2s ease-out;
+}
+
+@keyframes headerFooter-fade-in {
+  0% {
+    opacity: 0%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
 }
 
 .headerImage {
-    height: 28px;
-    padding: 16px 0;
+  height: 28px;
+  padding: 16px 0;
 }
 
 .headerOptions {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .headerOption {
-    color: #fff;
-    font-size: 18px;
-    text-decoration: none;
-    margin: 0 16px;
-    padding-bottom: 2px;
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  margin: 0 16px;
+  padding-bottom: 2px;
+  transition: 0.15s ease-in;
 }
 
 .headerOption:hover {
-    border-bottom: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  transform: scale(1.05);
 }
 
 .homeImageSection {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 36px 0 8px;
-    width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 36px 0 8px;
+  width: 100vw;
+  animation: homeImage-fade-in 2s ease-out;
+}
+
+@keyframes homeImage-fade-in {
+  0% {
+    opacity: 0%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
 }
 
 .homeImage {
-    width: 340px;
+  width: 340px;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@200&display=swap");
 
 .homeHeaderText {
-    text-align: center;
-    color: #ECEEF1;
-    font-size: 40px;
-    font-family: 'Outfit', sans-serif;
-    font-weight: 200;
+  text-align: center;
+  color: #eceef1;
+  font-size: 40px;
+  font-family: "Outfit", sans-serif;
+  font-weight: 200;
+  animation: headerText-fade-in 1s ease-out;
+}
+
+@keyframes headerText-fade-in {
+  0% {
+    transform: translateY(200%);
+    opacity: 0%;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 100%;
+  }
 }
 
 .homeMainText {
-    text-align: center;
-    color: #fff;
-    font-size: 20px;
-    font-weight: 400;
-    margin: 16px 272px 0;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 16px 272px 0;
+  animation: mainText-fade-in 1.8s ease-out;
 }
 
-.navbar{
-    position: fixed;
-    width: 100%;
-    z-index: 999;
-    padding: 30px 0;
-    font-family: 'Ubuntu', sans-serif;
-    transition: all 0.3s ease;
-}
-.navbar.sticky{
-    padding: 15px 0;
-    background: crimson;
-}
-.navbar .max-width{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+@keyframes mainText-fade-in {
+  0% {
+    transform: translateY(200%);
+    opacity: 0%;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 100%;
+  }
 }
 
-.homeCoa{
-    display: flex;
-    justify-content: center;
-    margin: 24px 0 132px;
-}
-.button{
-    background-color: #fff;
-    height: 44px;
-    width: 260px;
-    border: none;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-    border-radius: 3px;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #286ADE;
-    font-weight: 400;
-    cursor: pointer;
+.homeCta {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 132px;
+  animation: button-fade-in 4s ease-out;
 }
 
-.homeFooter{
-    font-size: 12px;
-    color: #fff;
-    text-align: center;
+@keyframes button-fade-in {
+  0% {
+    opacity: 0%;
+  }
+
+  50% {
+    opacity: 0%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
+}
+
+.homeCtaButton {
+  background-color: #fff;
+  height: 44px;
+  width: 260px;
+  border: none;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #286ade;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.1s ease-in;
+}
+
+.homeCtaButton:hover {
+  transform: scale(1.02);
+}
+
+.homeCtaButton:active {
+  transform: scale(0.98);
+}
+
+.homeFooter {
+  font-size: 12px;
+  color: #cdcdcd;
+  text-align: center;
+  animation: headerFooter-fade-in 2s ease-out;
 }

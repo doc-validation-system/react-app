@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./Authenticate.module.css";
-//import Login from "../Login/Login";
 //import Signup from "../Signup/Signup";
 //import Homepage from "../Home/Home";
 import SignupSection from "../Signup/Signup";
+// import LoginSection from "../Login/Login";
 //import Signup from "../Signup/Signup";
 // const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -22,6 +22,7 @@ function Authentication() {
       {/* Signup section */}
       {/* Routing will be done here */}
       <SignupSection />
+      {/* <LoginSection/> */}
 
       {/* Footer with Project team info*/}
       <footer className={`${styles.flex} ${styles.footer}`}>

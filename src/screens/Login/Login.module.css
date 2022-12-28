@@ -1,25 +1,17 @@
-:root {
-  --primary-blue: #286ade;
-}
-
 .signupSection {
   width: 360px;
   height: auto;
-
   padding: 18px 36px;
   margin: 64px auto 24px;
-
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
-
   background-color: white;
-
   display: flex;
   justify-content: center;
 }
 
 .signupHeader {
-  color: var(--primary-blue);
+  color: #286ade;
   font-size: 24px;
   font-weight: 500;
   text-align: center;

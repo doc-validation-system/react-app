@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Home.module.css";
 
 class HomeScreen extends React.Component {
-  render(){
+  render() {
     return (
       <div className={styles.homePageContainer}>
         {/* Navbar */}
@@ -26,7 +26,7 @@ class HomeScreen extends React.Component {
               Contact Us
             </a>
             <a href={"/"} className={styles.headerOption}>
-              Login
+              Signup
             </a>
           </div>
         </header>
@@ -46,20 +46,25 @@ class HomeScreen extends React.Component {
         </div>
 
         {/* Home Page Main Text */}
-        <div className={styles.homeMainText}>An all-in-one solution for automating the document validation process is the DocValidationAPI. An OCR algorithm and a facial detection algorithms are used. Data extraction, validation and document quality checking are the key features.</div>
-        
+        <div className={styles.homeMainText}>
+          An all-in-one solution for automating the document validation process
+          is the DocValidationAPI. An OCR algorithm and a facial detection
+          algorithms are used. Data extraction, validation and document quality
+          checking are the key features.
+        </div>
+
         {/* Learn More Button */}
-        <div className={styles.homeCoa}>
-          <div className={styles.button}>Learn More</div>
+        <div className={styles.homeCta}>
+          <div className={styles.homeCtaButton}>Learn More</div>
         </div>
 
         {/* Footer */}
         <footer className={styles.homeFooter}>
-          © 2022 DocValidateAPI. All rights reserved.<br/>
-          A project by Aditi Chatterjee, Charchika Biswas, Kaustav Halder, Sourashis Paul and Swapnodeep Biswas
+          © 2022 DocValidateAPI. All rights reserved.
+          <br />A project by Aditi Chatterjee, Charchika Biswas, Kaustav Halder,
+          Sourashis Paul and Swapnodeep Biswas
         </footer>
       </div>
-       
     );
   }
 }
