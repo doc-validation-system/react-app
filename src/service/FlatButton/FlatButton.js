@@ -1,10 +1,24 @@
 import React from "react";
 import styles from "./FlatButton.module.css";
 
-export default function FlatButton({ buttonData }) {
-  return (
-    <div>
-      <button type="submit" className={styles.button} onClick={buttonData.handleSignup}>{buttonData.buttonName}</button>
-    </div>
-  );
+class FlatButton extends React.Component {
+  buttonData = {};
+  constructor(props) {
+    super(props);
+    this.buttonData = props.buttonData;
+  }
+  render() {
+    return (
+      <div>
+        <div
+          className={styles.button}
+          onClick={this.buttonData.handleButton}
+        >
+          {this.buttonData.buttonName}
+        </div>
+      </div>
+    );
+  }
 }
+
+export default FlatButton;

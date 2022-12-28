@@ -1,8 +1,21 @@
 import React from "react";
 import styles from "./Login.module.css";
 import FlatButton from "../../service/FlatButton/FlatButton";
+import { render } from "@testing-library/react";
 
-const Login = () => {
+class Login extends React.Component{
+  email="";
+  password="";
+  handleEmail=(element)=>{
+   this.email=element.target.value;
+  }
+  handlePassword=(element)=>{
+    this.password=element.target.value;
+  }
+  handleLogin = () =>{
+    alert(this.email+" "+this.password);
+  }
+ render() {
   return (
     <section className={styles.signupSection}>
       <div className={styles.signupBox}>
@@ -21,6 +34,7 @@ const Login = () => {
               autoComplete="off"
               placeholder="Enter your Email"
               className={styles.signupInputField}
+              onChange={this.handleEmail}
             />
             <div className={styles.signupInputErrorMsg}></div>
           </div>
@@ -35,13 +49,15 @@ const Login = () => {
               id="password"
               placeholder="Enter your Password"
               className={styles.signupInputField}
+              onChange={this.handlePassword}
             />
             <div className={styles.signupInputErrorMsg}></div>
           </div>
 
 
           {/* Submit button */}
-          <FlatButton buttonData={{ buttonName: 'Login' }} />
+          <FlatButton 
+          buttonData={{ buttonName: "Login", handleButton: this.handleLogin }} />
         </form>
 
         <div className={styles.loginRedirect}>
@@ -59,5 +75,6 @@ const Login = () => {
     </section>
   );
 };
+}
 
 export default Login;
