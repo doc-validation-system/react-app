@@ -142,6 +142,7 @@ class SignupSection extends React.Component {
           alertType: "error",
         });
       }
+     
     } else {
       if (this.flagEmail === false) {
         this.setState({
@@ -169,6 +170,14 @@ class SignupSection extends React.Component {
         });
       }
     }
+    this.email="";
+    this.organisationName="";
+    this.password="";
+    this.conrfirmPassword="";
+    this.flagEmail=false;
+    this.flagOrganization=false;
+    this.flagPassword=false;
+    this.flagConfirmPassword=false;
   };
   render() {
     return (
