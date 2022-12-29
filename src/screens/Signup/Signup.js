@@ -23,6 +23,7 @@ class SignupSection extends React.Component {
   flagPassword = false;
   flagOrganization = false;
   flagConfirmPassword = false;
+
   handleEmailInput = (element) => {
     this.email = element.target.value;
     let matchEmail =
@@ -142,7 +143,6 @@ class SignupSection extends React.Component {
           alertType: "error",
         });
       }
-     
     } else {
       if (this.flagEmail === false) {
         this.setState({
@@ -170,14 +170,14 @@ class SignupSection extends React.Component {
         });
       }
     }
-    this.email="";
-    this.organisationName="";
-    this.password="";
-    this.conrfirmPassword="";
-    this.flagEmail=false;
-    this.flagOrganization=false;
-    this.flagPassword=false;
-    this.flagConfirmPassword=false;
+    this.email = "";
+    this.organisationName = "";
+    this.password = "";
+    this.conrfirmPassword = "";
+    this.flagEmail = false;
+    this.flagOrganization = false;
+    this.flagPassword = false;
+    this.flagConfirmPassword = false;
   };
   render() {
     return (
@@ -197,104 +197,124 @@ class SignupSection extends React.Component {
             </div>
           </>
         ) : (
-          <section className={styles.signupSection}>
-            <div className={styles.signupBox}>
-              {/* Header */}
-              <div className={styles.signupHeader}>Sign up</div>
-              {this.state.showAlert ? (
-                <Alert severity={this.state.alertType}>
-                  {this.state.alertMessage}
-                </Alert>
-              ) : (
-                <div></div>
-              )}
+          <div>
+            {/* Header with Logo */}
+            <header className={`${styles.flex} ${styles.header}`}>
+              <img
+                src="./Images/DocValidateAPI-logo.png"
+                alt="DocValidateLogo"
+                className={styles.logoImage}
+              />
+            </header>
+            <section className={styles.signupSection}>
+              <div className={styles.signupBox}>
+                {/* Header */}
+                <div className={styles.signupHeader}>Sign up</div>
+                {this.state.showAlert ? (
+                  <Alert severity={this.state.alertType}>
+                    {this.state.alertMessage}
+                  </Alert>
+                ) : (
+                  <div></div>
+                )}
 
-              {/* Input form */}
-              <form action="" className={styles.signupForm}>
-                {/* Email */}
-                <div id="emailDiv">
-                  <div className={styles.signupInputName}>Email</div>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    autoComplete="off"
-                    placeholder="Enter your Email"
-                    className={styles.signupInputField}
-                    onChange={this.handleEmailInput}
-                  />
-                  <div className={styles.signupInputErrorMsg}></div>
-                </div>
-
-                {/* Organization Name */}
-                <div id="orgDiv">
-                  <div className={styles.signupInputName}>
-                    Organization Name
+                {/* Input form */}
+                <form action="" className={styles.signupForm}>
+                  {/* Email */}
+                  <div id="emailDiv">
+                    <div className={styles.signupInputName}>Email</div>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      autoComplete="off"
+                      placeholder="Enter your Email"
+                      className={styles.signupInputField}
+                      onChange={this.handleEmailInput}
+                    />
+                    <div className={styles.signupInputErrorMsg}></div>
                   </div>
-                  <input
-                    type="text"
-                    name="orgName"
-                    id="orgName"
-                    autoComplete="off"
-                    minLength={3}
-                    placeholder="Enter your organization name"
-                    className={styles.signupInputField}
-                    onChange={this.handleOrganisationInput}
+
+                  {/* Organization Name */}
+                  <div id="orgDiv">
+                    <div className={styles.signupInputName}>
+                      Organization Name
+                    </div>
+                    <input
+                      type="text"
+                      name="orgName"
+                      id="orgName"
+                      autoComplete="off"
+                      minLength={3}
+                      placeholder="Enter your organization name"
+                      className={styles.signupInputField}
+                      onChange={this.handleOrganisationInput}
+                    />
+                    <div className={styles.signupInputErrorMsg}></div>
+                  </div>
+
+                  {/* Password */}
+                  <div id="passDiv">
+                    <div className={styles.signupInputName}>Password</div>
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder="Enter new password"
+                      className={styles.signupInputField}
+                      onChange={this.handlePasswordInput}
+                    />
+                    <div className={styles.signupInputErrorMsg}></div>
+                  </div>
+                  {/* Confirm Password */}
+                  <div id="conPassDiv">
+                    <div className={styles.signupInputName}>
+                      Confirm Password
+                    </div>
+                    <input
+                      type="password"
+                      name="conPass"
+                      id="conPass"
+                      placeholder="Confirm your password"
+                      className={styles.signupInputField}
+                      onChange={this.handleConrfirmPassword}
+                    />
+                  </div>
+
+                  {/* Submit button */}
+                  <FlatButton
+                    buttonData={{
+                      buttonName: "Signup",
+                      handleButton: this.handleSignup,
+                    }}
                   />
-                  <div className={styles.signupInputErrorMsg}></div>
+                </form>
+
+                <div className={styles.loginRedirect}>
+                  Already have an account?{" "}
+                  <span className={styles.loginRedirectLink} onClick={() => window.open("/login","_self")}>Log in</span>
                 </div>
 
-                {/* Password */}
-                <div id="passDiv">
-                  <div className={styles.signupInputName}>Password</div>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="Enter new password"
-                    className={styles.signupInputField}
-                    onChange={this.handlePasswordInput}
-                  />
-                  <div className={styles.signupInputErrorMsg}></div>
+                {/* Disclaimer */}
+                <div className={styles.disclaimer}>
+                  By clicking Sign Up, you agree to our{" "}
+                  <span className={styles.highlight}>Terms</span> and have read{" "}
+                  <br /> and acknowledge our{" "}
+                  <span className={styles.highlight}>
+                    Global Privacy Statement.
+                  </span>
                 </div>
-                {/* Confirm Password */}
-                <div id="conPassDiv">
-                  <div className={styles.signupInputName}>Confirm Password</div>
-                  <input
-                    type="password"
-                    name="conPass"
-                    id="conPass"
-                    placeholder="Confirm your password"
-                    className={styles.signupInputField}
-                    onChange={this.handleConrfirmPassword}
-                  />
-                </div>
-
-                {/* Submit button */}
-                <FlatButton
-                  buttonData={{
-                    buttonName: "Signup",
-                    handleButton: this.handleSignup,
-                  }}
-                />
-              </form>
-
-              <div className={styles.loginRedirect}>
-                Already have an account? Log in
               </div>
-
-              {/* Disclaimer */}
-              <div className={styles.disclaimer}>
-                By clicking Sign Up, you agree to our{" "}
-                <span className={styles.highlight}>Terms</span> and have read{" "}
-                <br /> and acknowledge our{" "}
-                <span className={styles.highlight}>
-                  Global Privacy Statement
-                </span>
-                .
-              </div>
-            </div>
-          </section>
+            </section>
+            {/* Footer with Project team info*/}
+            <footer className={`${styles.flex} ${styles.footer}`}>
+              <p className={styles.footer__text}>
+                © 2022 DocValidateAPI. All rights reserved. <br />A project by
+                Aditi Chatterjee, Charchika Biswas, Kaustav Halder, Sourashis
+                Paul and Swapnodeep Biswas
+              </p>
+            </footer>
+          </div>
         )}
       </>
     );

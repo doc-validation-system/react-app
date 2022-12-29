@@ -25,7 +25,7 @@ class HomeScreen extends React.Component {
             <a href={"/"} className={styles.headerOption}>
               Contact Us
             </a>
-            <a href={"/"} className={styles.headerOption}>
+            <a href={"/signup"} className={styles.headerOption}>
               Signup
             </a>
           </div>
