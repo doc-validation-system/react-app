@@ -1,25 +1,48 @@
 :root {
-  --primary-blue: #286ade;
+  background-color: #eceef1;
 }
 
-.signupSection {
+.header {
+  width: 100%;
+  height: 48px;
+  border-bottom: 1px solid rgba(40, 106, 222, 0.25);
+}
+
+.logoImage {
+  height: 28px;
+}
+
+.footer {
+  padding-bottom: 2px;
+}
+
+.footer__text {
+  text-align: center;
+  font-size: 12px;
+  color: #505050;
+}
+
+/* Utilities */
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginSection {
   width: 360px;
   height: auto;
-
   padding: 18px 36px;
   margin: 64px auto 24px;
-
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
-
   background-color: white;
-
   display: flex;
   justify-content: center;
 }
 
-.signupHeader {
-  color: var(--primary-blue);
+.loginHeader {
+  color: #286ade;
   font-size: 24px;
   font-weight: 500;
   text-align: center;
@@ -27,19 +50,19 @@
   border-bottom: 1px solid rgba(40, 106, 222, 0.15);
 }
 
-.signupForm {
+.loginForm {
   display: flex;
   flex-direction: column;
   margin-top: 24px;
 }
 
-.signupInputName {
+.loginInputName {
   margin-bottom: 6px;
   color: #404040;
   font-weight: 500;
 }
 
-.signupInputField {
+.loginInputField {
   width: 340px;
   height: 34px;
   border: 1px solid rgba(40, 106, 222, 0.3);
@@ -51,17 +74,23 @@
   color: rgba(0, 0, 0, 0.9);
 }
 
-.signupInputErrorMsg {
+.loginInputErrorMsg {
   font-size: 12px;
   color: #ed3432;
   margin-bottom: 8px;
 }
 
-.loginRedirect {
+.signupRedirect {
   margin-top: 18px;
   text-align: center;
   color: rgba(0, 0, 0, 0.7);
   font-weight: 500;
+}
+
+.signupRedirectLink {
+  color: #0647b8;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .disclaimer {

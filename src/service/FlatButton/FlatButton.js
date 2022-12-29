@@ -10,10 +10,7 @@ class FlatButton extends React.Component {
   render() {
     return (
       <div>
-        <div
-          className={styles.button}
-          onClick={this.buttonData.handleButton}
-        >
+        <div className={styles.button} onClick={this.buttonData.handleButton}>
           {this.buttonData.buttonName}
         </div>
       </div>
