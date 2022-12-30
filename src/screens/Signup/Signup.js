@@ -292,7 +292,12 @@ class SignupSection extends React.Component {
 
                 <div className={styles.loginRedirect}>
                   Already have an account?{" "}
-                  <span className={styles.loginRedirectLink} onClick={() => window.open("/login","_self")}>Log in</span>
+                  <span
+                    className={styles.loginRedirectLink}
+                    onClick={() => window.open("/login", "_self")}
+                  >
+                    Log in
+                  </span>
                 </div>
 
                 {/* Disclaimer */}
