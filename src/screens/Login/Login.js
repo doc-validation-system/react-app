@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./Login.module.css";
 import FlatButton from "../../service/FlatButton/FlatButton";
-// import { render } from "@testing-library/react";
 
 class Login extends React.Component {
   email = "";
@@ -77,7 +76,13 @@ class Login extends React.Component {
             </form>
 
             <div className={styles.signupRedirect}>
-              Don't Have Account ? <span className={styles.signupRedirectLink} onClick={() => window.open("/signup", "_self")}>Sign up</span> 
+              Don't Have Account ?{" "}
+              <span
+                className={styles.signupRedirectLink}
+                onClick={() => window.open("/signup", "_self")}
+              >
+                Sign up
+              </span>
             </div>
 
             {/* Disclaimer */}
