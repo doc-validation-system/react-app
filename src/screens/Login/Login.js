@@ -1,22 +1,135 @@
 import React from "react";
 import styles from "./Login.module.css";
 import FlatButton from "../../service/FlatButton/FlatButton";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showSpinner: false,
+      showAlert: false,
+      alertMessage: "",
+      alertType: "",
+    };
+  }
   email = "";
   password = "";
+  flagEmail=false;
+  flagPassword=false;
   handleEmail = (element) => {
     this.email = element.target.value;
+    let matchEmail =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (this.email.match(matchEmail)) {
+      this.flagEmail = true;
+      this.setState({ showAlert: false });
+    } else {
+      this.flagEmail = false;
+      // Need to write validation
+      this.setState({
+        showAlert: true,
+        alertMessage: "Enter a Valid Email",
+        alertType: "error",
+      });
+    }
   };
   handlePassword = (element) => {
     this.password = element.target.value;
+    this.passwordRef = document.getElementById("password");
+    let matchPassword =
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{8,}$/;
+    if (this.password.match(matchPassword)) {
+      this.flagPassword = true;
+      // Need to write validation
+      this.setState({ showAlert: false });
+    } else {
+      this.flagPassword = false;
+      // Need to write validation
+      this.setState({
+        showAlert: true,
+        alertMessage: "Enter a Valid Password",
+        alertType: "error",
+      });
+    }
   };
-  handleLogin = () => {
-    alert(this.email + " " + this.password);
+  handleLogin = async() => {
+    if (
+      this.flagEmail &&
+      this.flagPassword
+    ) {
+      this.setState({ showSpinner: true }); 
+      var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+var bodyData= new URLSearchParams();
+bodyData.append("emailId", this.email);
+bodyData.append("password", this.password);
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: bodyData,
+  redirect: 'follow'
+};
+
+var response= await fetch("https://api-docvalidation.onrender.com/user/login", requestOptions);
+    this.setState({showSpinner:false});
+    var decodedData = JSON.parse(await response.text());
+    if (response.status === 200) {
+      this.setState({
+        showAlert: true,
+        alertMessage: `${decodedData.title} `,
+        alertType: "success",
+      });
+      localStorage.setItem("organizationName" , `${decodedData.organizationName}`);
+      localStorage.setItem(  "token" , `${decodedData.token}`);
+    }else{
+      this.setState({
+        showAlert: true,
+        alertMessage: `${decodedData.title} `,
+        alertType: "error",
+      });
+    }
+    }else{
+      if(this.flagEmail===false){
+        this.setState({
+          showAlert: true,
+          alertMessage: "Please enter your mail",
+          alertType: "error",
+        });
+      }else if(this.flagPassword===false){
+        this.setState({
+          showAlert: true,
+          alertMessage: "Please enter password",
+          alertType: "error",
+        });
+      }
+    }
+    this.email = "";
+    this.password = "";
   };
   render() {
     return (
-      <div>
+      <>
+      {this.state.showSpinner ? (
+          <>
+            <div>
+              <Backdrop
+                sx={{
+                  color: "#fff",
+                  zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={this.state.showSpinner}
+              >
+                <CircularProgress color="inherit" />
+              </Backdrop>
+            </div>
+          </>
+      ):(
+        <div>
         {/* Header with Logo */}
         <header className={`${styles.flex} ${styles.header}`}>
           <img
@@ -29,6 +142,13 @@ class Login extends React.Component {
           <div className={styles.loginBox}>
             {/* Header */}
             <div className={styles.loginHeader}>Log In</div>
+            {this.state.showAlert ? (
+                  <Alert severity={this.state.alertType}>
+                    {this.state.alertMessage}
+                  </Alert>
+                ) : (
+                  <div></div>
+                )}
 
             {/* Input form */}
             <form action="" className={styles.loginForm}>
@@ -104,6 +224,8 @@ class Login extends React.Component {
           </p>
         </footer>
       </div>
+      )}
+      </>   
     );
   }
 }
