@@ -76,16 +76,35 @@ var requestOptions = {
 };
 
 var response= await fetch("https://api-docvalidation.onrender.com/user/login", requestOptions);
-    this.setState({showSpinner:false});
     var decodedData = JSON.parse(await response.text());
     if (response.status === 200) {
-      this.setState({
-        showAlert: true,
-        alertMessage: `${decodedData.title} `,
-        alertType: "success",
-      });
+      // this.setState({
+      //   showAlert: true,
+      //   alertMessage: `${decodedData.title} `,
+      //   alertType: "success",
+      // });
       localStorage.setItem("organizationName" , `${decodedData.organizationName}`);
       localStorage.setItem(  "token" , `${decodedData.token}`);
+      var profileHeader=new Headers();
+      profileHeader.append("Authorization",'Bearer '+`${decodedData.token}`);
+      profileHeader.append("Content-Type", "application/x-www-form-urlencoded");
+      var profileRequestOptions = {
+        method: 'GET',
+        headers: profileHeader,
+        redirect: 'follow'
+      }
+      var profileResponse= await fetch(`https://api-docvalidation.onrender.com/user/profile/${this.email}`, profileRequestOptions);
+        this.setState({showSpinner:false});
+        var profileData = JSON.parse(await profileResponse.text());
+        if(profileResponse.status===200){
+          window.open("/profile","_self")
+        }else{
+          this.setState({
+            showAlert: true,
+            alertMessage: `${profileData.title} `,
+            alertType: "error",
+          });
+        }
     }else{
       this.setState({
         showAlert: true,
