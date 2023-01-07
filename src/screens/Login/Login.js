@@ -25,7 +25,7 @@ class Login extends React.Component {
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (this.email.match(matchEmail)) {
       this.flagEmail = true;
-      this.setState({ showAlert: false });
+      this.setState({ showAlert: false })
     } else {
       this.flagEmail = false;
       // Need to write validation
@@ -33,9 +33,9 @@ class Login extends React.Component {
         showAlert: true,
         alertMessage: "Enter a Valid Email",
         alertType: "error",
-      });
+      })
     }
-  };
+  }
   handlePassword = (element) => {
     this.password = element.target.value;
     this.passwordRef = document.getElementById("password");
@@ -44,7 +44,7 @@ class Login extends React.Component {
     if (this.password.match(matchPassword)) {
       this.flagPassword = true;
       // Need to write validation
-      this.setState({ showAlert: false });
+      this.setState({ showAlert: false })
     } else {
       this.flagPassword = false;
       // Need to write validation
@@ -52,32 +52,29 @@ class Login extends React.Component {
         showAlert: true,
         alertMessage: "Enter a Valid Password",
         alertType: "error",
-      });
+      })
     }
-  };
+  }
   handleLogin = async() => {
-    if (
-      this.flagEmail &&
-      this.flagPassword
-    ) {
-      this.setState({ showSpinner: true }); 
+    if (this.flagEmail && this.flagPassword) {
+      this.setState({ showSpinner: true }) 
       var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-var bodyData= new URLSearchParams();
-bodyData.append("emailId", this.email);
-bodyData.append("password", this.password);
+      var bodyData= new URLSearchParams();
+      bodyData.append("emailId", this.email);
+      bodyData.append("password", this.password);
 
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: bodyData,
-  redirect: 'follow'
-};
+      var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: bodyData,
+      redirect: 'follow'
+      };
 
-var response= await fetch("https://api-docvalidation.onrender.com/user/login", requestOptions);
-    var decodedData = JSON.parse(await response.text());
-    if (response.status === 200) {
+      var response= await fetch("https://api-docvalidation.onrender.com/user/login", requestOptions);
+      var decodedData = JSON.parse(await response.text());
+      if (response.status === 200) {
       // this.setState({
       //   showAlert: true,
       //   alertMessage: `${decodedData.title} `,
@@ -92,8 +89,8 @@ var response= await fetch("https://api-docvalidation.onrender.com/user/login", r
         method: 'GET',
         headers: profileHeader,
         redirect: 'follow'
-      }
-      var profileResponse= await fetch(`https://api-docvalidation.onrender.com/user/profile/${this.email}`, profileRequestOptions);
+        }
+        var profileResponse= await fetch(`https://api-docvalidation.onrender.com/user/profile/${this.email}`, profileRequestOptions);
         this.setState({showSpinner:false});
         var profileData = JSON.parse(await profileResponse.text());
         if(profileResponse.status===200){
@@ -103,14 +100,14 @@ var response= await fetch("https://api-docvalidation.onrender.com/user/login", r
             showAlert: true,
             alertMessage: `${profileData.title} `,
             alertType: "error",
-          });
+          })
         }
     }else{
       this.setState({
         showAlert: true,
         alertMessage: `${decodedData.title} `,
         alertType: "error",
-      });
+      })
     }
     }else{
       if(this.flagEmail===false){
@@ -118,18 +115,18 @@ var response= await fetch("https://api-docvalidation.onrender.com/user/login", r
           showAlert: true,
           alertMessage: "Please enter your mail",
           alertType: "error",
-        });
+        })
       }else if(this.flagPassword===false){
         this.setState({
           showAlert: true,
           alertMessage: "Please enter password",
           alertType: "error",
-        });
+        })
       }
     }
     this.email = "";
     this.password = "";
-  };
+  }
   render() {
     return (
       <>
