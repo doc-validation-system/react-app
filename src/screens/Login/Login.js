@@ -94,7 +94,7 @@ class Login extends React.Component {
         this.setState({showSpinner:false});
         var profileData = JSON.parse(await profileResponse.text());
         if(profileResponse.status===200){
-          window.open("/profile","_self")
+          window.open("/dashboard","_self")
         }else{
           this.setState({
             showAlert: true,

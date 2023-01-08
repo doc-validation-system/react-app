@@ -7,6 +7,7 @@ class FlatButton extends React.Component {
     super(props);
     this.buttonData = props.buttonData;
   }
+  
   render() {
     return (
       <div>
