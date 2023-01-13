@@ -3,6 +3,23 @@ import styles from "./Dashboard.module.css";
 import Card from "./Card";
 
 class DashboardSection extends React.Component {
+  handleProfile=async()=>{
+    const token=localStorage.getItem("token");
+    const email=localStorage.getItem("email");
+    var profileHeader=new Headers();
+    profileHeader.append("Authorization",'Bearer '+`${token}`);
+    profileHeader.append("Content-Type", "application/x-www-form-urlencoded");
+    var profileRequestOptions = {
+      method: 'GET',
+      headers: profileHeader,
+      redirect: 'follow'
+      }
+    var profileResponse= await fetch(`https://api-docvalidation.onrender.com/user/profile/${email}`, profileRequestOptions);
+    var profileData = JSON.parse(await profileResponse.text());
+    if(profileResponse.status===200){
+      window.open("/profile","_self")
+    }     
+  }
   render() {
     return (
       <div className={styles.dashboardPage}>
@@ -17,9 +34,7 @@ class DashboardSection extends React.Component {
             src="./Images/ProfileIcon.png"
             alt="ProfileIcon"
             className={styles.profileIcon}
-            onClick={() => {
-              window.open("/profile", "_self");
-            }}
+            onClick= { this.handleProfile}
           />
         </header>
 

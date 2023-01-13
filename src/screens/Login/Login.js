@@ -82,6 +82,7 @@ class Login extends React.Component {
       // });
       localStorage.setItem("organizationName" , `${decodedData.organizationName}`);
       localStorage.setItem(  "token" , `${decodedData.token}`);
+      localStorage.setItem("email",`${this.email}`);
       var profileHeader=new Headers();
       profileHeader.append("Authorization",'Bearer '+`${decodedData.token}`);
       profileHeader.append("Content-Type", "application/x-www-form-urlencoded");
