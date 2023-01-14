@@ -57,9 +57,9 @@ class Login extends React.Component {
   }
   handleLogin = async() => {
     if (this.flagEmail && this.flagPassword) {
-      this.setState({ showSpinner: true }) 
+      this.setState({ showSpinner: true });
       var myHeaders = new Headers();
-     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
       var bodyData= new URLSearchParams();
       bodyData.append("emailId", this.email);
@@ -71,6 +71,7 @@ class Login extends React.Component {
       body: bodyData,
       redirect: 'follow'
       };
+      
 
       var response= await fetch("https://api-docvalidation.onrender.com/user/login", requestOptions);
       var decodedData = JSON.parse(await response.text());
@@ -80,36 +81,17 @@ class Login extends React.Component {
       //   alertMessage: `${decodedData.title} `,
       //   alertType: "success",
       // });
-      localStorage.setItem("organizationName" , `${decodedData.organizationName}`);
-      localStorage.setItem(  "token" , `${decodedData.token}`);
-      localStorage.setItem("email",`${this.email}`);
-      var profileHeader=new Headers();
-      profileHeader.append("Authorization",'Bearer '+`${decodedData.token}`);
-      profileHeader.append("Content-Type", "application/x-www-form-urlencoded");
-      var profileRequestOptions = {
-        method: 'GET',
-        headers: profileHeader,
-        redirect: 'follow'
-        }
-        var profileResponse= await fetch(`https://api-docvalidation.onrender.com/user/profile/${this.email}`, profileRequestOptions);
-        this.setState({showSpinner:false});
-        var profileData = JSON.parse(await profileResponse.text());
-        if(profileResponse.status===200){
-          window.open("/dashboard","_self")
+        localStorage.setItem("organizationName" , `${decodedData.organizationName}`);
+        localStorage.setItem(  "token" , `${decodedData.token}`);
+        localStorage.setItem("email",`${this.email}`);
+        window.open("/dashboard","_self")
         }else{
           this.setState({
             showAlert: true,
-            alertMessage: `${profileData.title} `,
+            alertMessage: `${decodedData.title} `,
             alertType: "error",
           })
         }
-    }else{
-      this.setState({
-        showAlert: true,
-        alertMessage: `${decodedData.title} `,
-        alertType: "error",
-      })
-    }
     }else{
       if(this.flagEmail===false){
         this.setState({
@@ -123,10 +105,16 @@ class Login extends React.Component {
           alertMessage: "Please enter password",
           alertType: "error",
         })
-      }
+      }else{
+      this.setState({
+        showAlert: true,
+        alertMessage: `${decodedData.title} `,
+        alertType: "error",
+      })
     }
     this.email = "";
-    this.password = "";
+      this.password = "";
+    } 
   }
   render() {
     return (

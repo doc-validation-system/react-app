@@ -2,6 +2,27 @@ import React from "react";
 import styles from "./Profile.module.css";
 
 class ProfileSection extends React.Component {
+  constructor(props){
+    super(props);
+    this.handleProfile();
+  }
+  async handleProfile(){
+    const token=localStorage.getItem("token");
+    const email=localStorage.getItem("email");
+    var profileHeader=new Headers();
+    profileHeader.append("Authorization",'Bearer '+`${token}`);
+    profileHeader.append("Content-Type", "application/x-www-form-urlencoded");
+    var profileRequestOptions = {
+      method: 'GET',
+      headers: profileHeader,
+      redirect: 'follow'
+      }
+    var profileResponse= await fetch(`https://api-docvalidation.onrender.com/user/profile/${email}`, profileRequestOptions);
+    var profileData = JSON.parse(await profileResponse.text());
+    if(profileResponse.status===200){
+      window.open("/profile","_self")
+    }     
+  }
   render() {
     return (
       <>
