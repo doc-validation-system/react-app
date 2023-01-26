@@ -87,7 +87,7 @@ class SignupSection extends React.Component {
       // Need to write validation
       this.setState({
         showAlert: true,
-        alertMessage: "Password & Confirm Password did'nt Match",
+        alertMessage: "Password & Confirm Password didn't Match",
         alertType: "error",
       })
     }
