@@ -4,6 +4,7 @@ import React from "react";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
+import { Navigate } from "react-router-dom";
 
 class SignupSection extends React.Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class SignupSection extends React.Component {
         alertType: "error",
       });
     }
-  }
+  };
   handleOrganisationInput = (element) => {
     this.organisationName = element.target.value;
     if (this.organisationName.length < 2) {
@@ -50,12 +51,12 @@ class SignupSection extends React.Component {
         showAlert: true,
         alertMessage: "Enter a Valid Organization Name",
         alertType: "error",
-      })
+      });
     } else {
       this.flagOrganization = true;
-      this.setState({ showAlert: false })
+      this.setState({ showAlert: false });
     }
-  }
+  };
   handlePasswordInput = (element) => {
     this.password = element.target.value;
     this.passwordRef = document.getElementById("password");
@@ -72,9 +73,9 @@ class SignupSection extends React.Component {
         showAlert: true,
         alertMessage: "Enter a Valid Password",
         alertType: "error",
-      })
+      });
     }
-  }
+  };
   handleConrfirmPassword = (element) => {
     this.conrfirmPassword = element.target.value;
     this.conrfirmPasswordRef = document.getElementById("conPass");
@@ -89,9 +90,9 @@ class SignupSection extends React.Component {
         showAlert: true,
         alertMessage: "Password & Confirm Password didn't Match",
         alertType: "error",
-      })
+      });
     }
-  }
+  };
   handleSignup = async () => {
     if (
       this.flagEmail &&
@@ -141,7 +142,7 @@ class SignupSection extends React.Component {
           showAlert: true,
           alertMessage: `${decodedData.title} ` + `${decodedData.message}`,
           alertType: "error",
-        })
+        });
       }
     } else {
       if (this.flagEmail === false) {
@@ -149,27 +150,28 @@ class SignupSection extends React.Component {
           showAlert: true,
           alertMessage: "Please enter your mail",
           alertType: "error",
-        })
+        });
       } else if (this.flagOrganization === false) {
         this.setState({
           showAlert: true,
           alertMessage: "Please enter your organization name ",
           alertType: "error",
-        })
+        });
       } else if (this.flagPassword === false) {
         this.setState({
           showAlert: true,
           alertMessage: "Please enter password",
           alertType: "error",
-        })
+        });
       } else if (this.flagConfirmPassword === false) {
         this.setState({
           showAlert: true,
           alertMessage: "Password did not match,enter correct password",
           alertType: "error",
-        })
+        });
       }
     }
+
     this.email = "";
     this.organisationName = "";
     this.password = "";
@@ -178,7 +180,8 @@ class SignupSection extends React.Component {
     this.flagOrganization = false;
     this.flagPassword = false;
     this.flagConfirmPassword = false;
-  }
+  };
+  
   render() {
     return (
       <>
