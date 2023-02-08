@@ -4,6 +4,7 @@ import React from "react";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
+import { Navigate } from "react-router-dom";
 
 class SignupSection extends React.Component {
   constructor(props) {
@@ -87,7 +88,7 @@ class SignupSection extends React.Component {
       // Need to write validation
       this.setState({
         showAlert: true,
-        alertMessage: "Password & Confirm Password did'nt Match",
+        alertMessage: "Password & Confirm Password didn't Match",
         alertType: "error",
       });
     }
@@ -170,6 +171,7 @@ class SignupSection extends React.Component {
         });
       }
     }
+
     this.email = "";
     this.organisationName = "";
     this.password = "";
@@ -179,6 +181,7 @@ class SignupSection extends React.Component {
     this.flagPassword = false;
     this.flagConfirmPassword = false;
   };
+  
   render() {
     return (
       <>

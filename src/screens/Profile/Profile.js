@@ -1,11 +1,36 @@
 import React from "react";
-import styles from "./Profile.module.css"
+import styles from "./Profile.module.css";
+import { Navigate } from "react-router-dom";
 
-class ProfileSection extends React.Component{
-    render(){
-        return(
-            <>
-            {/* Header with Logo */}
+class ProfileSection extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleProfile();
+  }
+  async handleProfile() {
+    const token = localStorage.getItem("token");
+    const email = localStorage.getItem("email");
+    var profileHeader = new Headers();
+    profileHeader.append("Authorization", "Bearer " + `${token}`);
+    profileHeader.append("Content-Type", "application/x-www-form-urlencoded");
+    var profileRequestOptions = {
+      method: "GET",
+      headers: profileHeader,
+      redirect: "follow",
+    };
+    var profileResponse = await fetch(
+      `https://api-docvalidation.onrender.com/user/profile/${email}`,
+      profileRequestOptions
+    );
+    var profileData = JSON.parse(await profileResponse.text());
+    if (profileResponse.status === 200) {
+      <Navigate to="/profile" />;
+    }
+  }
+  render() {
+    return (
+      <>
+        {/* Header with Logo */}
         <header className={`${styles.flex} ${styles.header}`}>
           <img
             src="./Images/DocValidateAPI-logo.png"
@@ -13,18 +38,26 @@ class ProfileSection extends React.Component{
             className={styles.logoImage}
           />
         </header>
-            {/*Profile section*/}
-            <section className={styles.profileSection}>
-                <div className={styles.profileBox}>
-                    <div className={styles.profileHeader}>Profile Details</div>
-                </div>
-                {/*Profile details*/}
-                <div className={styles.profileDetails}>
-                    <p className={styles.profileDetailsField}>
-                        Organization Name: <span className={styles.profileDetailsValue}>{localStorage.getItem("organizationName")}</span>
-                    </p>
-                </div>
-            </section>
+        {/*Profile section*/}
+        <section className={styles.profileSection}>
+          <div className={styles.profileHeader}>Profile Details</div>
+          {/*Profile details*/}
+          <div className={styles.profileDetails}>
+            {/* Individual Profile Details */}
+            <p className={styles.profileDetailsField}>
+              Organization Name:{" "}
+              <span className={styles.profileDetailsValue}>
+                {localStorage.getItem("organizationName")}
+              </span>
+            </p>
+            <p className={styles.profileDetailsField}>
+              Email:{" "}
+              <span className={styles.profileDetailsValue}>
+                {localStorage.getItem("email")}
+              </span>
+            </p>
+          </div>
+        </section>
 
         {/* Footer with Project team info*/}
         <footer className={`${styles.flex} ${styles.footer}`}>
@@ -34,8 +67,8 @@ class ProfileSection extends React.Component{
             Swapnodeep Biswas
           </p>
         </footer>
-            </>
-        );
-    }
+      </>
+    );
+  }
 }
 export default ProfileSection;
