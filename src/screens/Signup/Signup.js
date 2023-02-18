@@ -3,19 +3,16 @@ import FlatButton from "../../service/FlatButton/FlatButton";
 import React from "react";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import Alert from "@mui/material/Alert";
-import { Navigate } from "react-router-dom";
+import JSAlert from "js-alert";
 
 class SignupSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showSpinner: false,
-      showAlert: false,
-      alertMessage: "",
-      alertType: "",
     };
   }
+
   email = "";
   organisationName = "";
   password = "";
@@ -27,72 +24,52 @@ class SignupSection extends React.Component {
 
   handleEmailInput = (element) => {
     this.email = element.target.value;
+
     let matchEmail =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
     if (this.email.match(matchEmail)) {
       this.flagEmail = true;
-      this.setState({ showAlert: false });
     } else {
       this.flagEmail = false;
-      // Need to write validation
-      this.setState({
-        showAlert: true,
-        alertMessage: "Enter a Valid Email",
-        alertType: "error",
-      });
     }
   };
+
   handleOrganisationInput = (element) => {
     this.organisationName = element.target.value;
+
     if (this.organisationName.length < 2) {
       this.flagOrganization = false;
-      // Need to write validation
-      this.setState({
-        showAlert: true,
-        alertMessage: "Enter a Valid Organization Name",
-        alertType: "error",
-      });
     } else {
       this.flagOrganization = true;
-      this.setState({ showAlert: false });
     }
   };
+
   handlePasswordInput = (element) => {
     this.password = element.target.value;
     this.passwordRef = document.getElementById("password");
+
     let matchPassword =
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{8,}$/;
+
     if (this.password.match(matchPassword)) {
       this.flagPassword = true;
-      // Need to write validation
-      this.setState({ showAlert: false });
     } else {
       this.flagPassword = false;
-      // Need to write validation
-      this.setState({
-        showAlert: true,
-        alertMessage: "Enter a Valid Password",
-        alertType: "error",
-      });
     }
   };
+
   handleConrfirmPassword = (element) => {
     this.conrfirmPassword = element.target.value;
     this.conrfirmPasswordRef = document.getElementById("conPass");
+
     if (this.conrfirmPassword.match(this.password)) {
       this.flagConfirmPassword = true;
-      // Need to write validation
-      this.setState({ showAlert: false });
     } else {
       this.flagConfirmPassword = false;
-      // Need to write validation
-      this.setState({
-        showAlert: true,
-        alertMessage: "Password & Confirm Password didn't Match",
-        alertType: "error",
-      });
     }
   };
+
   handleSignup = async () => {
     if (
       this.flagEmail &&
@@ -101,15 +78,6 @@ class SignupSection extends React.Component {
       this.flagConfirmPassword
     ) {
       this.setState({ showSpinner: true });
-      // alert(
-      //   this.email +
-      //   " " +
-      //   this.organisationName +
-      //   " " +
-      //   this.password +
-      //   " " +
-      //   this.conrfirmPassword
-      // );
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -118,12 +86,14 @@ class SignupSection extends React.Component {
       bodyData.append("organizationName", this.organisationName);
       bodyData.append("password", this.password);
       console.log(bodyData, null, 3);
+
       var requestOptions = {
         method: "POST",
         headers: myHeaders,
         body: bodyData,
         redirect: "follow",
       };
+
       var response = await fetch(
         "https://api-docvalidation.onrender.com/user/signup",
         requestOptions
@@ -131,44 +101,46 @@ class SignupSection extends React.Component {
 
       this.setState({ showSpinner: false });
       var decodedData = JSON.parse(await response.text());
+
       if (response.status === 201) {
-        this.setState({
-          showAlert: true,
-          alertMessage: `${decodedData.title} ` + `${decodedData.message}`,
-          alertType: "success",
-        });
+        JSAlert.alert(
+          `${decodedData.title} ` + `${decodedData.message}`,
+          null,
+          JSAlert.Icons.Success
+        ).dismissIn(2000);
+        // window.open("/login", "_self");
       } else {
-        this.setState({
-          showAlert: true,
-          alertMessage: `${decodedData.title} ` + `${decodedData.message}`,
-          alertType: "error",
-        });
+        JSAlert.alert(
+          `${decodedData.title} ` + `${decodedData.message}`,
+          null,
+          JSAlert.Icons.Failed
+        );
       }
     } else {
       if (this.flagEmail === false) {
-        this.setState({
-          showAlert: true,
-          alertMessage: "Please enter your mail",
-          alertType: "error",
-        });
+        JSAlert.alert(
+          "Please enter valid email",
+          null,
+          JSAlert.Icons.Failed
+        ).dismissIn(1000);
       } else if (this.flagOrganization === false) {
-        this.setState({
-          showAlert: true,
-          alertMessage: "Please enter your organization name ",
-          alertType: "error",
-        });
+        JSAlert.alert(
+          "Please enter valid organization name",
+          null,
+          JSAlert.Icons.Failed
+        ).dismissIn(1000);
       } else if (this.flagPassword === false) {
-        this.setState({
-          showAlert: true,
-          alertMessage: "Please enter password",
-          alertType: "error",
-        });
+        JSAlert.alert(
+          "Please enter valid password",
+          null,
+          JSAlert.Icons.Failed
+        ).dismissIn(1000);
       } else if (this.flagConfirmPassword === false) {
-        this.setState({
-          showAlert: true,
-          alertMessage: "Password did not match,enter correct password",
-          alertType: "error",
-        });
+        JSAlert.alert(
+          "Please enter matching password",
+          null,
+          JSAlert.Icons.Failed
+        ).dismissIn(1000);
       }
     }
 
@@ -181,7 +153,7 @@ class SignupSection extends React.Component {
     this.flagPassword = false;
     this.flagConfirmPassword = false;
   };
-  
+
   render() {
     return (
       <>
@@ -213,13 +185,6 @@ class SignupSection extends React.Component {
               <div className={styles.signupBox}>
                 {/* Header */}
                 <div className={styles.signupHeader}>Sign up</div>
-                {this.state.showAlert ? (
-                  <Alert severity={this.state.alertType}>
-                    {this.state.alertMessage}
-                  </Alert>
-                ) : (
-                  <div></div>
-                )}
 
                 {/* Input form */}
                 <form action="" className={styles.signupForm}>
