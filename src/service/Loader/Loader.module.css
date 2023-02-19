@@ -1,15 +1,26 @@
+.loaderSection{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  background-image: linear-gradient(to top, #c6dbff, #a0bff9, #7ba3f1, #5686e8, #286ade);
+}
 .spinner {
-    margin: 100px auto;
-    width: 50px;
+    /* margin: 100px auto 8px; */
+    margin-bottom: 8px;
+    width: 80px;
     height: 40px;
     text-align: center;
     font-size: 10px;
+    
   }
   
   .spinner > div {
-    background-color: #333;
+    background-color:#ECEEF1;
     height: 100%;
     width: 6px;
+    margin: 0 1px;
     display: inline-block;
     
     -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
@@ -34,6 +45,10 @@
   .spinner .rect5 {
     -webkit-animation-delay: -0.8s;
     animation-delay: -0.8s;
+  }
+  .logoImage{
+    width: 192px;
+
   }
   
   @-webkit-keyframes sk-stretchdelay {
