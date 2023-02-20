@@ -2,13 +2,40 @@ import React from "react";
 import styles from "./TestAPI.module.css";
 
 class TestAPISection extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      dob: "",
+      uid: "",
+      address: "",
+      uploadedFiles: "",
+    };
+  }
+
+  name = "";
+  value = "";
+  handleInputs = (element) => {
+    // let file = element.files[0]; // Uploading the latest selected file
+
+    // if (file) {
+    //   let fileName = file.name;
+    //   this.uploadFile(fileName);
+    // }
+    this.name = element.target.name;
+    this.value = element.target.value;
+    console.log(this.name + " : " + this.value);
+
+    this.setState({ ...this.state, [this.name]: this.value });
+  };
+
   render() {
     return (
       <div className={styles.testApiPage}>
         {/* Form Sections */}
         <form
           action=""
-          enctype="multipart/formdata"
+          encType="multipart/formdata"
           className={styles.formSection}
         >
           {/* User Details Section */}
@@ -31,7 +58,8 @@ class TestAPISection extends React.Component {
                 autoComplete="off"
                 placeholder="Enter your Name"
                 className={styles.userDetails__InputArea}
-                onChange={this.handleNameInput}
+                value={this.state.name}
+                onChange={(e) => this.handleInputs(e)}
               />
             </div>
 
@@ -44,11 +72,12 @@ class TestAPISection extends React.Component {
               <br />
               <input
                 type="date"
-                name="date"
+                name="dob"
                 id="date"
                 autoComplete="off"
                 className={styles.userDetails__InputArea}
-                onChange={this.handleDobInput}
+                value={this.state.dob}
+                onChange={(e) => this.handleInputs(e)}
               />
             </div>
 
@@ -66,7 +95,8 @@ class TestAPISection extends React.Component {
                 autoComplete="off"
                 placeholder="Enter your Unique ID"
                 className={styles.userDetails__InputArea}
-                onChange={this.handleUidInput}
+                value={this.state.uid}
+                onChange={(e) => this.handleInputs(e)}
               />
             </div>
 
@@ -75,12 +105,14 @@ class TestAPISection extends React.Component {
               <label className={styles.userDetails__Label}>Address</label>
               <br />
               <textarea
-                name="uid"
-                id="uid"
+                name="address"
+                id="address"
                 placeholder="Enter your Address"
                 autoComplete="off"
+                maxLength="200"
                 className={styles.userDetails__AddressInputArea}
-                onChange={this.handleAddressInput}
+                value={this.state.address}
+                onChange={(e) => this.handleInputs(e)}
               />
             </div>
 
@@ -114,14 +146,72 @@ class TestAPISection extends React.Component {
                 id="file"
                 multiple
                 className={styles.uploadDefButton}
-                onChange={this.handleUidInput}
+                onChange={(e) => this.handleInputs(e)}
               />
             </label>
+
+            {/* Uploaded File Details */}
+            <div className={styles.uploadSection}>
+              {/* Uploading File */}
+              <div className={styles.uploadSection__File}>
+                {/* File Icon */}
+                <div className={styles.File__Icon}>
+                  <i className="fa fa-file-alt" aria-hidden="true"></i>
+                </div>
+
+                {/* File Contents */}
+                <div className={styles.File__ContentSection}>
+                  <div className={styles.File__Content}>
+                    {/* File Details */}
+                    <div className={styles.File__Details}>
+                      Image1.png • Uploading
+                    </div>
+                    <div className={styles.File__UploadProgress}>50%</div>
+                  </div>
+
+                  {/* Uploading progress bar */}
+                  <div className={styles.File__ProgressBar}>
+                    <div className={styles.progress}></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Uploaded File */}
+              <div className={styles.uploadSection__File}>
+                {/* File Icon */}
+                <div className={styles.File__Icon}>
+                  <i className="fa fa-file-alt" aria-hidden="true"></i>
+                </div>
+
+                {/* File Contents */}
+                <div
+                  className={`${styles.File__UploadedContentSection} ${styles.File__ContentSection}`}
+                >
+                  <div className={styles.File__ContentUploaded}>
+                    {/* File Details */}
+                    <div className={styles.File__Details}>
+                      Image1.png • Uploaded
+                    </div>
+                    <div className={styles.File__UploadProgress}>70 KB</div>
+                  </div>
+                  {/* Uploaded checkmark */}
+                  <div className={styles.File__Icon}>
+                    <i className="fa fa-check" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* Submit button */}
             <button type="submit" className={styles.submitButton}>
               Submit
             </button>
+
+            <img
+              src="./Images/DocValidateAPI-logo.png"
+              alt="DocValidateLogo"
+              className={styles.footerLogo}
+            />
           </section>
         </form>
       </div>
