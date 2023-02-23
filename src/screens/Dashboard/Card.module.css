@@ -1,0 +1,40 @@
+.card {
+  width: 256px;
+  min-width: 192px;
+  height: auto;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background: rgba(40, 106, 222, 0.1);
+  border-radius: 5px;
+  margin: 16px 48px;
+  border-top: 1px solid rgba(255,255,255,0.5);
+  border-left: 1px solid rgba(255,255,255,0.5);
+  backdrop-filter: blur(5px);
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  transition: 0.15s ease-in;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    opacity: 0.8;
+    box-shadow: rgba(0, 0, 0, 0.25) 2px 7px 18px;
+}
+
+.card:active {
+    transform: scale(0.95);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 3px 12px;
+}
+
+.cardImage {
+    height: 64px;
+    margin-bottom: 18px;
+}
+
+.cardText {
+    font-size: 20px;
+    font-weight: 500;
+}

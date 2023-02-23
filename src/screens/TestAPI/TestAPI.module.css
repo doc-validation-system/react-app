@@ -1,0 +1,147 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@600;700&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@500&display=swap");
+
+.testApiPage {
+  background-image: url("../../../public/Images/TestApiBgImg.png");
+  background-color: #c6dbff;
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+}
+
+.formSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: 100vh;
+}
+
+.formSection__Card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  padding: 48px;
+}
+
+.formSection__userDetails {
+  z-index: 1;
+  background-color: #274472;
+  box-shadow: -2px 0px 9px 3px rgba(0, 0, 0, 0.25),
+    inset 0px 0px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 3px 0 0 3px;
+}
+
+.userDetails__Header {
+  font-family: "Noto Serif JP", serif;
+  color: #c6dbff;
+  font-weight: 600;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.userDetails__Label {
+  font-family: "Alegreya Sans SC", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: #c6dbff;
+}
+
+.userDetails__Mandatory {
+  font-size: 20px;
+  color: #cf392e;
+}
+
+.userDetails__InputArea {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  border-bottom: 2px solid #c6dbff;
+  padding: 12px 0 12px 0;
+  color: #c6dbff;
+  font-size: 16px;
+  width: 472px;
+  margin-bottom: 24px;
+}
+
+.userDetails__InputArea::placeholder {
+  color: #c6dbff;
+  font-weight: 500;
+}
+
+.userDetails__AddressInputArea {
+  border: none;
+  outline: none;
+  width: 464px;
+  height: 92px;
+  margin-top: 12px;
+  background-color: #c6dbff;
+  border-radius: 2px;
+  color: #274472;
+  font-size: 16px;
+  resize: none;
+  font-family: "Roboto", sans-serif;
+  padding: 4px;
+}
+
+.fileUploadIndicator {
+  width: 16px;
+  margin-top: 48px;
+  margin-left: auto;
+}
+
+.formSection__fileUpload {
+  background-color: #eceef1;
+  box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 3px 3px 0px;
+}
+
+.fileUpload__Header {
+  font-family: "Noto Serif JP", serif;
+  color: #274472;
+  font-weight: 700;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.fileUpload__UploadButton {
+  height: 128px;
+  width: 192px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  transition: 0.15s ease-in;
+}
+
+.fileUpload__UploadButton:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.6);
+}
+
+.fileUpload__UploadButton:active {
+  transform: scale(0.98);
+  opacity: 0.95;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.8);
+}
+
+.uploadDefButton {
+  display: none;
+}
+
+.submitButton {
+  width: 144px;
+  height: 36px;
+  background-color: #adc8f2;
+  color: #274472;
+  font-size: 18px;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+  margin-left: auto;
+  cursor: pointer;
+}
