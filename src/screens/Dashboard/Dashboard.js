@@ -7,9 +7,24 @@ class DashboardSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showSpinner: false
+      loggedIn: this.getToken(),
+      showDropdown: false,
     };
   }
+
+  getToken = () => {
+    let token = localStorage.getItem("token");
+    return token ? true : false;
+  };
+
+  viewDropdown = () => {
+    this.setState({ showDropdown: !this.state.showDropdown });
+  };
+
+  handleLogout = () => {
+    localStorage.clear();
+  };
+
   handleProfile = async () => {
     this.setState({showSpinner:true});
     const token = localStorage.getItem("token");
@@ -18,20 +33,19 @@ class DashboardSection extends React.Component {
     profileHeader.append("Authorization", 'Bearer ' + `${token}`);
     profileHeader.append("Content-Type", "application/x-www-form-urlencoded");
     var profileRequestOptions = {
-      method: 'GET',
+      method: "GET",
       headers: profileHeader,
-      redirect: 'follow'
-    }
-    var profileResponse = await fetch(`https://api-docvalidation.onrender.com/user/profile/${email}`, profileRequestOptions);
+      redirect: "follow",
+    };
+    var profileResponse = await fetch(
+      `https://api-docvalidation.onrender.com/user/profile/${email}`,
+      profileRequestOptions
+    );
     var profileData = JSON.parse(await profileResponse.text());
     if (profileResponse.status === 200) {
       window.open("/profile", "_self");
-      this.setState({showSpinner:false});
     }
-    else{
-      this.setState({showSpinner:false});
-    }
-  }
+  };
   render() {
     return ( 
     <>
@@ -53,20 +67,37 @@ class DashboardSection extends React.Component {
           </>
         ) : (
           <div className={styles.dashboardPage}>
-            {/* Header with Logo and Profile Icon */}
-            <header className={styles.header}>
-              <img
-                src="./Images/DocValidateAPI-logo.png"
-                alt="DocValidateLogo"
-                className={styles.logoImage}
-              />
-              <img
-                src="./Images/ProfileIcon.png"
-                alt="ProfileIcon"
-                className={styles.profileIcon}
-                onClick={this.handleProfile}
-              />
-            </header>
+        {/* Header with Logo and Profile Icon */}
+        <header className={styles.header}>
+          <img
+            src="./Images/DocValidateAPI-logo.png"
+            alt="DocValidateLogo"
+            className={styles.logoImage}
+          />
+          <img
+            src="./Images/ProfileIcon.png"
+            id="ProfileIcon"
+            alt="ProfileIcon"
+            className={styles.profileIcon}
+            onClick={this.viewDropdown}
+          />
+
+          {this.state.showDropdown && <div className={styles.profileDropdown} onInput={this.viewDropdown}>
+            <div className={styles.dropdownMenu} onClick={() => {this.viewDropdown(); this.handleProfile();}}>
+              My Profile
+            </div>
+            <a
+              href={"/login"}
+              className={styles.dropdownMenu}
+              onClick={() => {this.viewDropdown(); this.handleLogout();}}
+            >
+              Logout
+              <div className={styles.logoutIcon}>
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+              </div>
+            </a>
+          </div>
+        </header>
 
             <section className={styles.dashboardCards}>
               <Card
