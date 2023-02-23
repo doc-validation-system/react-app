@@ -4,6 +4,7 @@ import React from "react";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import JSAlert from "js-alert";
+import Loader from "../../service/Loader/Loader";
 
 class SignupSection extends React.Component {
   constructor(props) {
@@ -160,7 +161,7 @@ class SignupSection extends React.Component {
         {this.state.showSpinner ? (
           <>
             <div>
-              <Backdrop
+              {/* <Backdrop
                 sx={{
                   color: "#fff",
                   zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -168,7 +169,8 @@ class SignupSection extends React.Component {
                 open={this.state.showSpinner}
               >
                 <CircularProgress color="inherit" />
-              </Backdrop>
+              </Backdrop> */}
+              <Loader />
             </div>
           </>
         ) : (

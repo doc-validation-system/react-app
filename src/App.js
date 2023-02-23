@@ -4,6 +4,7 @@ import LoginSection from "./screens/Login/Login";
 import HomeScreen from "./screens/Home/Home";
 import PrivateRoute from "./screens/PrivateRoute/PrivateRoute";
 import TestAPISection from "./screens/TestAPI/TestAPI";
+import Loader from "./service/Loader/Loader";
 
 function App() {
   return (
