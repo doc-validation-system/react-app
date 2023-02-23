@@ -3,23 +3,47 @@ import styles from "./Dashboard.module.css";
 import Card from "./Card";
 
 class DashboardSection extends React.Component {
-  handleProfile=async()=>{
-    const token=localStorage.getItem("token");
-    const email=localStorage.getItem("email");
-    var profileHeader=new Headers();
-    profileHeader.append("Authorization",'Bearer '+`${token}`);
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedIn: this.getToken(),
+      showDropdown: false,
+    };
+  }
+
+  getToken = () => {
+    let token = localStorage.getItem("token");
+    return token ? true : false;
+  };
+
+  viewDropdown = () => {
+    this.setState({ showDropdown: !this.state.showDropdown });
+  };
+
+  handleLogout = () => {
+    localStorage.clear();
+  };
+
+  handleProfile = async () => {
+    const token = localStorage.getItem("token");
+    const email = localStorage.getItem("email");
+    var profileHeader = new Headers();
+    profileHeader.append("Authorization", "Bearer " + `${token}`);
     profileHeader.append("Content-Type", "application/x-www-form-urlencoded");
     var profileRequestOptions = {
-      method: 'GET',
+      method: "GET",
       headers: profileHeader,
-      redirect: 'follow'
-      }
-    var profileResponse= await fetch(`https://api-docvalidation.onrender.com/user/profile/${email}`, profileRequestOptions);
+      redirect: "follow",
+    };
+    var profileResponse = await fetch(
+      `https://api-docvalidation.onrender.com/user/profile/${email}`,
+      profileRequestOptions
+    );
     var profileData = JSON.parse(await profileResponse.text());
-    if(profileResponse.status===200){
-      window.open("/profile","_self")
-    }     
-  }
+    if (profileResponse.status === 200) {
+      window.open("/profile", "_self");
+    }
+  };
   render() {
     return (
       <div className={styles.dashboardPage}>
@@ -32,10 +56,27 @@ class DashboardSection extends React.Component {
           />
           <img
             src="./Images/ProfileIcon.png"
+            id="ProfileIcon"
             alt="ProfileIcon"
             className={styles.profileIcon}
-            onClick= { this.handleProfile}
+            onClick={this.viewDropdown}
           />
+
+          {this.state.showDropdown && <div className={styles.profileDropdown} onInput={this.viewDropdown}>
+            <div className={styles.dropdownMenu} onClick={() => {this.viewDropdown(); this.handleProfile();}}>
+              My Profile
+            </div>
+            <a
+              href={"/login"}
+              className={styles.dropdownMenu}
+              onClick={() => {this.viewDropdown(); this.handleLogout();}}
+            >
+              Logout
+              <div className={styles.logoutIcon}>
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+              </div>
+            </a>
+          </div>}
         </header>
 
         <section className={styles.dashboardCards}>

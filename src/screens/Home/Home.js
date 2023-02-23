@@ -2,6 +2,22 @@ import React from "react";
 import styles from "./Home.module.css";
 
 class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedIn: this.getToken(),
+    };
+  }
+
+  getToken = () => {
+    let token = localStorage.getItem("token");
+    return token ? true : false;
+  };
+
+  handleLogout = () => {
+    localStorage.clear();
+  };
+
   render() {
     return (
       <div className={styles.homePageContainer}>
@@ -19,15 +35,30 @@ class HomeScreen extends React.Component {
             <a href={"/"} className={styles.headerOption}>
               Home
             </a>
+            {this.state.loggedIn && (
+              <a href={"/dashboard"} className={styles.headerOption}>
+                Dashboard
+              </a>
+            )}
             <a href={"/"} className={styles.headerOption}>
               About Us
             </a>
             <a href={"/"} className={styles.headerOption}>
               Contact Us
             </a>
-            <a href={"/login"} className={styles.headerOption}>
-              Login
-            </a>
+            {this.state.loggedIn ? (
+              <a
+                href={"/login"}
+                className={styles.headerOption}
+                onClick={this.handleLogout}
+              >
+                Logout
+              </a>
+            ) : (
+              <a href={"/login"} className={styles.headerOption}>
+                Login
+              </a>
+            )}
           </div>
         </header>
 
