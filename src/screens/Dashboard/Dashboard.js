@@ -26,7 +26,7 @@ class DashboardSection extends React.Component {
   };
 
   handleProfile = async () => {
-    this.setState({showSpinner:true});
+    this.setState({ showSpinner: true });
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     var profileHeader = new Headers();
@@ -47,8 +47,8 @@ class DashboardSection extends React.Component {
     }
   };
   render() {
-    return ( 
-    <>
+    return (
+      <>
         {this.state.showSpinner ? (
           <>
             <div>
@@ -67,37 +67,38 @@ class DashboardSection extends React.Component {
           </>
         ) : (
           <div className={styles.dashboardPage}>
-        {/* Header with Logo and Profile Icon */}
-        <header className={styles.header}>
-          <img
-            src="./Images/DocValidateAPI-logo.png"
-            alt="DocValidateLogo"
-            className={styles.logoImage}
-          />
-          <img
-            src="./Images/ProfileIcon.png"
-            id="ProfileIcon"
-            alt="ProfileIcon"
-            className={styles.profileIcon}
-            onClick={this.viewDropdown}
-          />
+            {/* Header with Logo and Profile Icon */}
 
-          {this.state.showDropdown && <div className={styles.profileDropdown} onInput={this.viewDropdown}>
-            <div className={styles.dropdownMenu} onClick={() => {this.viewDropdown(); this.handleProfile();}}>
-              My Profile
-            </div>
-            <a
-              href={"/login"}
-              className={styles.dropdownMenu}
-              onClick={() => {this.viewDropdown(); this.handleLogout();}}
-            >
-              Logout
-              <div className={styles.logoutIcon}>
-                <i class="fa fa-sign-out" aria-hidden="true"></i>
-              </div>
-            </a>
-          </div>
-        </header>
+            <header className={styles.header}>
+              <img
+                src="./Images/DocValidateAPI-logo.png"
+                alt="DocValidateLogo"
+                className={styles.logoImage}
+              />
+              <img
+                src="./Images/ProfileIcon.png"
+                id="ProfileIcon"
+                alt="ProfileIcon"
+                className={styles.profileIcon}
+                onMouseOver={this.viewDropdown}
+              />
+
+              {this.state.showDropdown && <div className={styles.profileDropdown} onInput={this.viewDropdown}>
+                <div className={styles.dropdownMenu} onClick={() => { this.viewDropdown(); this.handleProfile(); }}>
+                  My Profile
+                </div>
+                <a
+                  href={"/login"}
+                  className={styles.dropdownMenu}
+                  onClick={() => { this.viewDropdown(); this.handleLogout(); }}
+                >
+                  Logout
+                  <div className={styles.logoutIcon}>
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                  </div>
+                </a>
+              </div>}
+            </header>
 
             <section className={styles.dashboardCards}>
               <Card
@@ -127,9 +128,9 @@ class DashboardSection extends React.Component {
             </footer>
           </div>
         )}
-        </>
-        );
+      </>
+    );
   }
 }
 
-        export default DashboardSection;
+export default DashboardSection;
