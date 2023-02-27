@@ -18,6 +18,7 @@
 
 .logoImage {
   height: 28px;
+  cursor: pointer;
 }
 
 .profileIcon {
@@ -26,7 +27,7 @@
   border-bottom: 1px solid rgba(40, 106, 222, 0.15);
   height: 36px;
   cursor: pointer;
-  color:#286ADE;
+  color: #286ade;
   transition: 0.15s ease-in;
   border: 30px;
 }
@@ -54,7 +55,7 @@
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
-  color: #286ADE;
+  color: #286ade;
   transition: 0.1s ease-in;
   display: flex;
   align-items: center;

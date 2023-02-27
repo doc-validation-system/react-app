@@ -1,12 +1,13 @@
 import React from "react";
 import styles from "./Home.module.css";
+import { useNavigate } from "react-router-dom";
 
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loggedIn: this.getToken(),
-    };
+    }
   }
 
   getToken = () => {
@@ -32,13 +33,13 @@ class HomeScreen extends React.Component {
 
           {/* Navbar options */}
           <div className={styles.headerOptions}>
-            <a href={"/"} className={styles.headerOption}>
+            <span className={styles.headerOption} onClick={() => this.props.navigate("/")}>
               Home
-            </a>
+            </span>
             {this.state.loggedIn && (
-              <a href={"/dashboard"} className={styles.headerOption}>
+              <span className={styles.headerOption} onClick={() => this.props.navigate("/dashboard")}>
                 Dashboard
-              </a>
+              </span>
             )}
             <a href={"/"} className={styles.headerOption}>
               About Us
@@ -48,16 +49,16 @@ class HomeScreen extends React.Component {
             </a>
             {this.state.loggedIn ? (
               <a
-                href={"/login"}
+                href={"/"}
                 className={styles.headerOption}
                 onClick={this.handleLogout}
               >
                 Logout
               </a>
             ) : (
-              <a href={"/login"} className={styles.headerOption}>
+              <span className={styles.headerOption} onClick={() => this.props.navigate("/login")}>
                 Login
-              </a>
+              </span>
             )}
           </div>
         </header>
@@ -100,4 +101,9 @@ class HomeScreen extends React.Component {
   }
 }
 
-export default HomeScreen;
+function HomeNavigate() {
+  const navigate = useNavigate();
+  return <HomeScreen navigate={navigate} />;
+}
+
+export default HomeNavigate;

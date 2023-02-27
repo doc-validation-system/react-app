@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardSection from "../Dashboard/Dashboard";
+import DashboardNavigate from "../Dashboard/Dashboard";
 import ProfileSection from "../Profile/Profile";
 import LoginSection from "../Login/Login";
 
@@ -17,13 +17,13 @@ class PrivateRoute extends React.Component {
   getToken = () => {
     let token = localStorage.getItem("token");
     return token ? true : false;
-  };
+  }
 
   render() {
     if (this.state.loggedIn) {
-      if(this.routeName.path === "/dashboard")
-        return <DashboardSection />;
-      if(this.routeName.path === "/profile")
+      if (this.routeName.path === "/dashboard")
+        return <DashboardNavigate />;
+      if (this.routeName.path === "/profile")
         return <ProfileSection />;
     }
 
