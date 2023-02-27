@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./Dashboard.module.css";
 import Card from "./Card";
 import Loader from "../../service/Loader/Loader";
+import { useNavigate } from "react-router-dom";
+import JSAlert from "js-alert";
 
 class DashboardSection extends React.Component {
   constructor(props) {
@@ -10,6 +12,7 @@ class DashboardSection extends React.Component {
       loggedIn: this.getToken(),
       showDropdown: false,
     };
+    this.handleProfile = this.handleProfile.bind(this);
   }
 
   getToken = () => {
@@ -19,11 +22,11 @@ class DashboardSection extends React.Component {
 
   viewDropdown = () => {
     this.setState({ showDropdown: !this.state.showDropdown });
-  };
+  }
 
   handleLogout = () => {
     localStorage.clear();
-  };
+  }
 
   handleProfile = async () => {
     this.setState({ showSpinner: true });
@@ -43,26 +46,25 @@ class DashboardSection extends React.Component {
     );
     var profileData = JSON.parse(await profileResponse.text());
     if (profileResponse.status === 200) {
-      window.open("/profile", "_self");
+      this.setState({ showSpinner: false });
+      this.props.navigate("/profile");
+    } else {
+      this.setState({ showSpinner: false });
+      JSAlert.alert(
+        `${profileData.title}`,
+        null,
+        JSAlert.Icons.Failed
+      );
     }
-  };
+  }
+
   render() {
     return (
       <>
         {this.state.showSpinner ? (
           <>
             <div>
-              {/* <Backdrop
-              sx={{
-                color: "#fff",
-                zIndex: (theme) => theme.zIndex.drawer + 1,
-              }}
-              open={this.state.showSpinner}
-            >
-              <CircularProgress color="inherit" />
-            </Backdrop> */}
               <Loader />
-
             </div>
           </>
         ) : (
@@ -74,6 +76,7 @@ class DashboardSection extends React.Component {
                 src="./Images/DocValidateAPI-logo.png"
                 alt="DocValidateLogo"
                 className={styles.logoImage}
+                onClick={() => this.props.navigate("/")}
               />
               <img
                 src="./Images/ProfileIcon.png"
@@ -133,4 +136,13 @@ class DashboardSection extends React.Component {
   }
 }
 
-export default DashboardSection;
+function DashboardNavigate() {
+  const navigate = useNavigate();
+  return (
+    <div>
+      <DashboardSection navigate={navigate} />
+    </div>
+  )
+}
+
+export default DashboardNavigate;

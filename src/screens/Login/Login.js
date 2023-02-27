@@ -1,10 +1,9 @@
 import React from "react";
 import styles from "./Login.module.css";
 import FlatButton from "../../service/FlatButton/FlatButton";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
 import JSAlert from "js-alert";
 import Loader from "../../service/Loader/Loader";
+import { useNavigate } from "react-router-dom";
 
 class Login extends React.Component {
   constructor(props) {
@@ -12,6 +11,7 @@ class Login extends React.Component {
     this.state = {
       showSpinner: false,
     };
+    this.handleLogin = this.handleLogin.bind(this);
   }
   email = "";
   password = "";
@@ -23,7 +23,7 @@ class Login extends React.Component {
 
     let matchEmail =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    
+
     if (this.email.match(matchEmail)) {
       this.flagEmail = true;
     } else {
@@ -34,11 +34,11 @@ class Login extends React.Component {
   handlePassword = (element) => {
     this.password = element.target.value;
     this.passwordRef = document.getElementById("password");
-    
+
     let matchPassword =
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~]).{8,}$/;
-    
-      if (this.password.match(matchPassword)) {
+
+    if (this.password.match(matchPassword)) {
       this.flagPassword = true;
     } else {
       this.flagPassword = false;
@@ -48,7 +48,7 @@ class Login extends React.Component {
   handleLogin = async () => {
     if (this.flagEmail && this.flagPassword) {
       this.setState({ showSpinner: true });
-      
+
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -67,7 +67,7 @@ class Login extends React.Component {
         "https://api-docvalidation.onrender.com/user/login",
         requestOptions
       );
-      
+
       var decodedData = JSON.parse(await response.text());
       if (response.status === 200) {
         localStorage.setItem(
@@ -76,9 +76,9 @@ class Login extends React.Component {
         );
         localStorage.setItem("token", `${decodedData.token}`);
         localStorage.setItem("email", `${this.email}`);
-        window.open("/dashboard", "_self");
+        this.props.navigate("/dashboard");
       } else {
-        this.setState({showSpinner: false});
+        this.setState({ showSpinner: false });
         JSAlert.alert(
           `${decodedData.title}`,
           null,
@@ -98,8 +98,8 @@ class Login extends React.Component {
           null,
           JSAlert.Icons.Failed
         );
-      } 
-      
+      }
+
       this.email = "";
       this.password = "";
     }
@@ -111,17 +111,7 @@ class Login extends React.Component {
         {this.state.showSpinner ? (
           <>
             <div>
-              {/* <Backdrop
-                sx={{
-                  color: "#fff",
-                  zIndex: (theme) => theme.zIndex.drawer + 1,
-                }}
-                open={this.state.showSpinner}
-              >
-                <CircularProgress color="inherit" />
-              </Backdrop> */}
               <Loader />
-
             </div>
           </>
         ) : (
@@ -132,6 +122,7 @@ class Login extends React.Component {
                 src="./Images/DocValidateAPI-logo.png"
                 alt="DocValidateLogo"
                 className={styles.logoImage}
+                onClick={() => { this.props.navigate("/"); }}
               />
             </header>
             <section className={styles.loginSection}>
@@ -188,7 +179,7 @@ class Login extends React.Component {
                   Don't Have Account ?{" "}
                   <span
                     className={styles.signupRedirectLink}
-                    onClick={() => window.open("/signup", "_self")}
+                    onClick={() => this.props.navigate("/signup")}
                   >
                     Sign up
                   </span>
@@ -221,4 +212,13 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+function LoginNavigate() {
+  const navigate = useNavigate();
+  return (
+    <div>
+      <Login navigate={navigate} />
+    </div>
+  );
+}
+
+export default LoginNavigate;
