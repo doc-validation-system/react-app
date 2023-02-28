@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./TestAPI.module.css";
 import FileCard from "../../service/FileCard/FileCard";
+import JSAlert from "js-alert";
 
 class TestAPISection extends React.Component {
   constructor(props) {
@@ -14,6 +15,46 @@ class TestAPISection extends React.Component {
       address: "",
       uploadedFile: [],
     };
+  }
+
+  name = "";
+
+  flagName = false;
+  flagDOB = false;
+  flagAadhar = false;
+  flagPan = false;
+  flagVoter = false;
+
+  isAlpha = (str) => { 
+    return /^[a-zA-Z()]+$/.test(str);
+   }
+
+  handleNameInput = (element) => {
+    this.name = element.target.value;
+
+    let matchName = /^[a-zA-Z]$/;
+    //let flag="de-y".match(matchName);
+    if (this.name.length >= 5) {
+      let nameArr = this.name.split(" ");
+      nameArr = nameArr.filter(element => {
+        if (element !== "") {
+          return element;
+        }
+      })
+
+
+      if (nameArr.length >= 2) {
+        for (let word = 0; word < nameArr.length; word++) {
+          if (nameArr[word].length < 2 && this.isAlpha(nameArr[word])) {
+            this.flagName = false;
+            return;
+          }
+        }
+        this.flagName = true;
+      }
+
+      console.log(this.name);
+    }
   }
 
   handleInputs = (element) => {
@@ -43,7 +84,22 @@ class TestAPISection extends React.Component {
   handleSubmit = (element) => {
     element.preventDefault();
     console.log(this.state);
+
+    if (this.flagName) {
+      JSAlert.alert(
+        "Correct Input",
+        null,
+        JSAlert.Icons.Success
+      ).dismissIn(1000);
+    } else {
+      JSAlert.alert(
+        "Enter valid name",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    }
   };
+
   render() {
     return (
       <div className={styles.testApiPage}>
@@ -75,7 +131,10 @@ class TestAPISection extends React.Component {
                   placeholder="Enter your Name"
                   className={styles.userDetails__InputArea}
                   value={this.state.name}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => {
+                    this.handleInputs(e);
+                    this.handleNameInput(e);
+                  }}
                 />
               </div>
 
@@ -109,7 +168,7 @@ class TestAPISection extends React.Component {
                   name="uidAadhar"
                   id="uidAadharInp"
                   autoComplete="off"
-                  placeholder="Enter your Aadhar ID"
+                  placeholder="Enter your Aadhaar ID"
                   className={styles.userDetails__InputArea}
                   value={this.state.uidAadhar}
                   onChange={(e) => this.handleInputs(e)}
@@ -219,7 +278,7 @@ class TestAPISection extends React.Component {
                 );
               })}
             </div>
-            ;{/* Submit button */}
+            {/* Submit button */}
             <button
               type="submit"
               className={styles.submitButton}
