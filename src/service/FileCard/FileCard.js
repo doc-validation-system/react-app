@@ -2,11 +2,11 @@ import React from "react";
 import styles from "./FileCard.module.css";
 
 class FileCard extends React.Component {
-  fileCardData = {};
 
   constructor(props) {
     super(props);
-    this.fileCardData = props.fileCardData;
+    this.name = props.name;
+    this.size = props.size;
   }
 
   render() {
@@ -23,8 +23,8 @@ class FileCard extends React.Component {
         <div className={styles.File__UploadedContentSection}>
           <div className={styles.File__ContentUploaded}>
             {/* File Details */}
-            <div className={styles.File__Details}>{this.fileCardData.name}</div>
-            <div className={styles.File__UploadProgress}>{this.fileCardData.size}</div>
+            <div className={styles.File__Details}>{this.props.name}</div>
+            <div className={styles.File__UploadProgress}>{this.props.size}</div>
           </div>
           {/* Uploaded checkmark */}
           <div className={styles.File__Icon}>

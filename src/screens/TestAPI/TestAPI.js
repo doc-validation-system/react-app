@@ -18,6 +18,10 @@ class TestAPISection extends React.Component {
   }
 
   name = "";
+  dob = "";
+  aadhar = "";
+  pan = "";
+  voter = "";
 
   flagName = false;
   flagDOB = false;
@@ -25,48 +29,103 @@ class TestAPISection extends React.Component {
   flagPan = false;
   flagVoter = false;
 
-  isAlpha = (str) => { 
-    return /^[a-zA-Z()]+$/.test(str);
-   }
-
   handleNameInput = (element) => {
+    // Getting the name
     this.name = element.target.value;
 
-    let matchName = /^[a-zA-Z]$/;
-    //let flag="de-y".match(matchName);
-    if (this.name.length >= 5) {
-      let nameArr = this.name.split(" ");
-      nameArr = nameArr.filter(element => {
-        if (element !== "") {
-          return element;
-        }
-      })
+    // Breaking the name into subnames
+    let nameArrWithSpaces = this.name.split(" ");
 
+    // Handling extra spaces
+    const nameArr = nameArrWithSpaces.filter((word) => word !== "");
 
-      if (nameArr.length >= 2) {
-        for (let word = 0; word < nameArr.length; word++) {
-          if (nameArr[word].length < 2 && this.isAlpha(nameArr[word])) {
-            this.flagName = false;
-            return;
-          }
+    // Regex for matching
+    let matchName = /^[A-Za-z ]+$/;
+
+    if (nameArr.length >= 2) {
+      // Loop for validating each word
+      for (let word of nameArr) {
+        word = word.trim();
+
+        // Each words of a name should be at least contain 2 letters, and
+        // word must match regex pattern
+        if (word.length < 2 || !word.match(matchName)) {
+          this.flagName = false;
+          continue;
         }
         this.flagName = true;
       }
-
-      console.log(this.name);
     }
-  }
+  };
 
-  handleInputs = (element) => {
+  setEndDate = () => {
+    const today = new Date();
+    let day = today.getDate();
+    let month = today.getMonth() + 1;
+    let year = today.getFullYear();
+
+    if (day < 10) {
+      day = "0" + day;
+    }
+    if (month < 10) {
+      month = "0" + month;
+    }
+
+    return year + "-" + month + "-" + day;
+  };
+
+  disableManualDateInput = (element) => {
+    element.preventDefault();
+    return false;
+  };
+
+  handleDobInput = (element) => {
+    this.dob = element.target.value;
+    console.log(this.dob);
+    this.flagDOB = this.dob ? true : false;
+  };
+
+  handleAadharInput = (element) => {
+    this.aadhar = element.target.value;
+
+    let martchAadhar = /^[2-9]{1}[0-9]+$/;
+
+    this.flagAadhar =
+      this.aadhar.length === 12 && this.aadhar.match(martchAadhar)
+        ? true
+        : false;
+  };
+
+  handlePanInput = (element) => {
+    this.pan = element.target.value;
+
+    let martchPan = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+
+    this.flagPan =
+      this.pan.length === 10 && this.pan.match(martchPan) ? true : false;
+  };
+
+  handleVoterInput = (element) => {
+    this.voter = element.target.value;
+
+    let martchVoter = /^[A-Z]{3}[0-9]{7}$/;
+
+    this.flagVoter =
+      this.voter.length === 10 && this.voter.match(martchVoter) ? true : false;
+  };
+
+  handleInputStates = (element) => {
     const { name, value } = element.target;
+
     let files = [];
 
     if (name === "uploadedFile") {
       files = document.getElementById("file").files;
 
       let data = [];
-      for (var i = 0; i < files.length; i++) {
+      for (var i = 0; i < this.files.length; i++) {
         data.push({
+          fileId: i + 1,
           name: files[i].name,
           size: files[i].size,
         });
@@ -77,23 +136,47 @@ class TestAPISection extends React.Component {
     } else {
       this.setState({ ...this.state, [name]: value });
     }
-
-    //console.log(this.state);
   };
 
   handleSubmit = (element) => {
     element.preventDefault();
     console.log(this.state);
 
-    if (this.flagName) {
+    if (
+      this.flagName &&
+      this.flagDOB &&
+      this.flagAadhar &&
+      this.flagPan &&
+      this.flagVoter
+    ) {
+      JSAlert.alert("Correct Input", null, JSAlert.Icons.Success).dismissIn(
+        1000
+      );
+    } else if (!this.flagName) {
+      JSAlert.alert("Enter a valid Name", null, JSAlert.Icons.Failed).dismissIn(
+        1000
+      );
+    } else if (!this.flagDOB) {
       JSAlert.alert(
-        "Correct Input",
+        "Enter a valid Date of Birth",
         null,
-        JSAlert.Icons.Success
+        JSAlert.Icons.Failed
       ).dismissIn(1000);
-    } else {
+    } else if (!this.flagAadhar) {
       JSAlert.alert(
-        "Enter valid name",
+        "Enter a valid Aadhar ID",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    } else if (!this.flagPan) {
+      JSAlert.alert(
+        "Enter a valid Pan ID",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    } else if (!this.flagVoter) {
+      JSAlert.alert(
+        "Enter a valid Voter ID",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
@@ -131,10 +214,8 @@ class TestAPISection extends React.Component {
                   placeholder="Enter your Name"
                   className={styles.userDetails__InputArea}
                   value={this.state.name}
-                  onChange={(e) => {
-                    this.handleInputs(e);
-                    this.handleNameInput(e);
-                  }}
+                  onChange={(e) => this.handleInputStates(e)}
+                  onBlur={(e) => this.handleNameInput(e)}
                 />
               </div>
 
@@ -149,10 +230,13 @@ class TestAPISection extends React.Component {
                   type="date"
                   name="dob"
                   id="date"
+                  max={this.setEndDate()}
                   autoComplete="off"
                   className={styles.userDetails__InputArea}
                   value={this.state.dob}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => this.handleInputStates(e)}
+                  onBlur={(e) => this.handleDobInput(e)}
+                  onKeyDown={(e) => this.disableManualDateInput(e)}
                 />
               </div>
 
@@ -171,7 +255,8 @@ class TestAPISection extends React.Component {
                   placeholder="Enter your Aadhaar ID"
                   className={styles.userDetails__InputArea}
                   value={this.state.uidAadhar}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => this.handleInputStates(e)}
+                  onBlur={(e) => this.handleAadharInput(e)}
                 />
               </div>
 
@@ -190,7 +275,8 @@ class TestAPISection extends React.Component {
                   placeholder="Enter your Pan ID"
                   className={styles.userDetails__InputArea}
                   value={this.state.uidPan}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => this.handleInputStates(e)}
+                  onBlur={(e) => this.handlePanInput(e)}
                 />
               </div>
 
@@ -209,7 +295,8 @@ class TestAPISection extends React.Component {
                   placeholder="Enter your Voter ID"
                   className={styles.userDetails__InputArea}
                   value={this.state.uidVoter}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => this.handleInputStates(e)}
+                  onBlur={(e) => this.handleVoterInput(e)}
                 />
               </div>
 
@@ -225,7 +312,7 @@ class TestAPISection extends React.Component {
                   maxLength="200"
                   className={styles.userDetails__AddressInputArea}
                   value={this.state.address}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => this.handleInputStates(e)}
                 />
               </div>
             </div>
@@ -259,24 +346,12 @@ class TestAPISection extends React.Component {
                 id="file"
                 multiple
                 className={styles.uploadDefButton}
-                onChange={(e) => this.handleInputs(e)}
+                onChange={(e) => this.handleInputStates(e)}
               />
             </label>
             {/* Uploaded File Details */}
             <div className={styles.uploadSection}>
-              {this.state.uploadedFile.map((element) => {
-                console.log(element.name + " " + element.size);
-                return (
-                  <div key={element.name}>
-                    <FileCard
-                      fileCardData={{
-                        name: element.name,
-                        size: element.size,
-                      }}
-                    />
-                  </div>
-                );
-              })}
+              <FileCard name="Swapnodeep.pdf" size="4 MB" />
             </div>
             {/* Submit button */}
             <button
