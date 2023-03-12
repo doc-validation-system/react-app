@@ -23,8 +23,8 @@ class FileCard extends React.Component {
         <div className={styles.File__UploadedContentSection}>
           <div className={styles.File__ContentUploaded}>
             {/* File Details */}
-            <div className={styles.File__Details}>{this.props.name}</div>
-            <div className={styles.File__UploadProgress}>{this.props.size}</div>
+            <div className={styles.File__Details}>{this.name}</div>
+            <div className={styles.File__UploadProgress}>{this.size}</div>
           </div>
           {/* Uploaded checkmark */}
           <div className={styles.File__Icon}>

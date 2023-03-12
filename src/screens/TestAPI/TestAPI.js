@@ -13,7 +13,18 @@ class TestAPISection extends React.Component {
       uidPan: "",
       uidVoter: "",
       address: "",
-      uploadedFile: [],
+      uploadedFile: [
+        {
+          fileId: -1,
+          name: "Bantu.pdf",
+          size: "400 GB",
+        },
+        {
+          fileId: 0,
+          name: "Gandu.pdf",
+          size: "1000 GB",
+        },
+      ],
     };
   }
 
@@ -122,20 +133,20 @@ class TestAPISection extends React.Component {
     if (name === "uploadedFile") {
       files = document.getElementById("file").files;
 
-      let data = [];
       for (var i = 0; i < files.length; i++) {
-        data.push({
+        this.state.uploadedFile.push({
           fileId: i + 1,
           name: files[i].name,
           size: files[i].size,
         });
       }
 
-      this.state.uploadedFile = data;
       console.log(this.state.uploadedFile.length);
     } else {
       this.setState({ ...this.state, [name]: value });
     }
+
+    console.log(this.state.uploadedFile);
   };
 
   handleSubmit = (element) => {
@@ -351,8 +362,16 @@ class TestAPISection extends React.Component {
             </label>
             {/* Uploaded File Details */}
             <div className={styles.uploadSection}>
-              <FileCard name="Swapnodeep.pdf" size="4 MB" />
+              {this.state.uploadedFile.length > 0 &&
+                this.state.uploadedFile.map((element) => {
+                  return (
+                    <div key={element.fileId}>
+                      <FileCard name={element.name} size={element.size} />
+                    </div>
+                  );
+                })}
             </div>
+
             {/* Submit button */}
             <button
               type="submit"
