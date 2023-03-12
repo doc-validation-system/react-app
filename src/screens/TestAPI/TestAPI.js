@@ -88,10 +88,10 @@ class TestAPISection extends React.Component {
   handleAadharInput = (element) => {
     this.aadhar = element.target.value;
 
-    let martchAadhar = /^[2-9]{1}[0-9]+$/;
+    let matchAadhar = /^[2-9]{1}[0-9]+$/;
 
     this.flagAadhar =
-      this.aadhar.length === 12 && this.aadhar.match(martchAadhar)
+      this.aadhar.length === 12 && this.aadhar.match(matchAadhar)
         ? true
         : false;
   };
@@ -108,10 +108,10 @@ class TestAPISection extends React.Component {
   handleVoterInput = (element) => {
     this.voter = element.target.value;
 
-    let martchVoter = /^[A-Z]{3}[0-9]{7}$/;
+    let matchVoter = /^[A-Z]{3}[0-9]{7}$/;
 
     this.flagVoter =
-      this.voter.length === 10 && this.voter.match(martchVoter) ? true : false;
+      this.voter.length === 10 && this.voter.match(matchVoter) ? true : false;
   };
 
   handleInputStates = (element) => {
@@ -123,7 +123,7 @@ class TestAPISection extends React.Component {
       files = document.getElementById("file").files;
 
       let data = [];
-      for (var i = 0; i < this.files.length; i++) {
+      for (var i = 0; i < files.length; i++) {
         data.push({
           fileId: i + 1,
           name: files[i].name,
