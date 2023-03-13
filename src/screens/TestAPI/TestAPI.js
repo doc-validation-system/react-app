@@ -13,18 +13,7 @@ class TestAPISection extends React.Component {
       uidPan: "",
       uidVoter: "",
       address: "",
-      uploadedFile: [
-        {
-          fileId: -1,
-          name: "Bantu.pdf",
-          size: "400 GB",
-        },
-        {
-          fileId: 0,
-          name: "Gandu.pdf",
-          size: "1000 GB",
-        },
-      ],
+      uploadedFile: [],
     };
   }
 
@@ -128,11 +117,23 @@ class TestAPISection extends React.Component {
   handleInputStates = (element) => {
     const { name, value } = element.target;
 
+    this.setState({ ...this.state, [name]: value });
+
+    console.log(this.state);
+  };
+
+  handleFileInputStates = () => {
     let files = [];
 
-    if (name === "uploadedFile") {
-      files = document.getElementById("file").files;
+    files = document.getElementById("file").files;
 
+    if (files.length > 3) {
+      JSAlert.alert(
+        "Only 3 files are accepted",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    } else {
       for (var i = 0; i < files.length; i++) {
         this.state.uploadedFile.push({
           fileId: i + 1,
@@ -140,13 +141,34 @@ class TestAPISection extends React.Component {
           size: files[i].size,
         });
       }
-
-      console.log(this.state.uploadedFile.length);
-    } else {
-      this.setState({ ...this.state, [name]: value });
     }
 
     console.log(this.state.uploadedFile);
+  };
+
+  rerenderUI = () => {
+    this.forceUpdate();
+  };
+
+  abbrName = (element) => {
+    if (element.length > 25) {
+      return element.slice(0, 14) + "..." + element.slice(element.length-4, element.length);
+    }
+
+    return element;
+  };
+
+  convertSize = (element) => {
+    // Converting to KB
+    element /= 1024;
+    let sizeUnit = " KB";
+
+    if (element >= 1024) {
+      element /= 1024;
+      sizeUnit = " MB";
+    }
+
+    return element.toFixed(2) + sizeUnit;
   };
 
   handleSubmit = (element) => {
@@ -356,17 +378,25 @@ class TestAPISection extends React.Component {
                 name="uploadedFile"
                 id="file"
                 multiple
+                accept=".png, .jpg, .jpeg, .pdf"
                 className={styles.uploadDefButton}
-                onChange={(e) => this.handleInputStates(e)}
+                onChange={() => {
+                  this.handleFileInputStates();
+                  this.rerenderUI();
+                }}
               />
             </label>
             {/* Uploaded File Details */}
             <div className={styles.uploadSection}>
               {this.state.uploadedFile.length > 0 &&
                 this.state.uploadedFile.map((element) => {
+                  console.log(element + "\n");
                   return (
                     <div key={element.fileId}>
-                      <FileCard name={element.name} size={element.size} />
+                      <FileCard
+                        name={this.abbrName(element.name)}
+                        size={this.convertSize(element.size)}
+                      />
                     </div>
                   );
                 })}
