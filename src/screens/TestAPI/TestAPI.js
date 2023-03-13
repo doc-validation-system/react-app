@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./TestAPI.module.css";
 import FileCard from "../../service/FileCard/FileCard";
+import JSAlert from "js-alert";
 
 class TestAPISection extends React.Component {
   constructor(props) {
@@ -13,37 +14,265 @@ class TestAPISection extends React.Component {
       uidVoter: "",
       address: "",
       uploadedFile: [],
+      flagName: false,
+      flagDOB: false,
+      flagAadhar: false,
+      flagPan: false,
+      flagVoter: false,
+      flagFileUpload: false,
     };
   }
 
-  handleInputs = (element) => {
-    const { name, value } = element.target;
-    let files = [];
+  name = "";
+  dob = "";
+  aadhar = "";
+  pan = "";
+  voter = "";
 
-    if (name === "uploadedFile") {
-      files = document.getElementById("file").files;
+  handleNameInput = (element) => {
+    // Getting the name
+    this.name = element.target.value;
 
-      let data = [];
-      for (var i = 0; i < files.length; i++) {
-        data.push({
-          name: files[i].name,
-          size: files[i].size,
-        });
+    // Breaking the name into subnames
+    let nameArrWithSpaces = this.name.split(" ");
+
+    // Handling extra spaces
+    const nameArr = nameArrWithSpaces.filter((word) => word !== "");
+
+    // Regex for matching
+    let matchName = /^[A-Za-z ]+$/;
+
+    if (nameArr.length >= 2) {
+      // Loop for validating each word
+      for (let word of nameArr) {
+        word = word.trim();
+
+        // Each words of a name should be at least contain 2 letters, and
+        // word must match regex pattern
+        if (word.length < 2 || !word.match(matchName)) {
+          this.setState({ flagName: false });
+          continue;
+        } else {
+          this.setState({ flagName: true });
+        }
       }
+    }
+  };
 
-      this.state.uploadedFile = data;
-      console.log(this.state.uploadedFile.length);
-    } else {
-      this.setState({ ...this.state, [name]: value });
+  setEndDate = () => {
+    const today = new Date();
+    let day = today.getDate();
+    let month = today.getMonth() + 1;
+    let year = today.getFullYear();
+
+    if (day < 10) {
+      day = "0" + day;
+    }
+    if (month < 10) {
+      month = "0" + month;
     }
 
-    //console.log(this.state);
+    return year + "-" + month + "-" + day;
   };
+
+  disableManualDateInput = (element) => {
+    element.preventDefault();
+    return false;
+  };
+
+  handleDobInput = (element) => {
+    this.dob = element.target.value;
+    console.log(this.dob);
+    if (this.dob) {
+      this.setState({ flagDOB: true });
+    } else {
+      this.setState({ flagDOB: false });
+    }
+  };
+
+  handleAadharInput = (element) => {
+    this.aadhar = element.target.value;
+
+    let matchAadhar = /^[2-9]{1}[0-9]+$/;
+
+    if (this.aadhar.length === 12 && this.aadhar.match(matchAadhar)) {
+      this.setState({ flagAadhar: true });
+    } else {
+      this.setState({ flagAadhar: false });
+    }
+  };
+
+  handlePanInput = (element) => {
+    this.pan = element.target.value;
+
+    let martchPan = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+
+    if (this.pan.length === 10 && this.pan.match(martchPan)) {
+      this.setState({ flagPan: true });
+    } else {
+      this.setState({ flagPan: true });
+    }
+  };
+
+  handleVoterInput = (element) => {
+    this.voter = element.target.value;
+
+    let matchVoter = /^[A-Z]{3}[0-9]{7}$/;
+
+    if (this.voter.length === 10 && this.voter.match(matchVoter)) {
+      this.setState({ flagVoter: true });
+    } else {
+      this.setState({ flagVoter: false });
+    }
+  };
+
+  handleInputStates = (element) => {
+    const { name, value } = element.target;
+
+    this.setState({ ...this.state, [name]: value });
+  };
+
+  async handleFileInputStates() {
+    // When entering files anew
+    await this.setState({ uploadedFile: [] });
+
+    let files = [];
+
+    files = document.getElementById("file").files;
+
+    if (files.length > 3) {
+      this.setState({ flagFileUpload: false });
+
+      JSAlert.alert(
+        "Only 3 files are accepted",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    } else {
+      this.setState({ flagFileUpload: true });
+
+      for (var i = 0; i < files.length; i++) {
+        await this.setState({
+          uploadedFile: [
+            ...this.state.uploadedFile,
+            {
+              fileId: i + 1,
+              name: files[i].name,
+              size: files[i].size,
+            },
+          ],
+        });
+      }
+    }
+
+    console.log(this.state.uploadedFile);
+
+    return false;
+  }
+
+  handleFileUploadInput = () => {
+    if (this.state.uploadedFile.length < 1) {
+      this.setState({ flagFileUpload: false });
+    } else {
+      this.setState({ flagFileUpload: true });
+    }
+  };
+
+  rerenderUI = () => {
+    this.forceUpdate();
+  };
+
+  abbrName = (element) => {
+    if (element.length > 25) {
+      return (
+        element.slice(0, 14) +
+        "..." +
+        element.slice(element.length - 4, element.length)
+      );
+    }
+
+    return element;
+  };
+
+  convertSize = (element) => {
+    // Converting to KB
+    element /= 1024;
+    let sizeUnit = " KB";
+
+    // Converting to MB
+    if (element >= 1024) {
+      element /= 1024;
+      sizeUnit = " MB";
+    }
+
+    return element.toFixed(2) + sizeUnit;
+  };
+
+  async deleteCard(elementId) {
+    await this.setState({
+      uploadedFile: this.state.uploadedFile.filter((file) => {
+        return file.fileId !== elementId;
+      }),
+    });
+
+    this.handleFileUploadInput();
+
+    console.log(this.state.uploadedFile.length);
+    console.log(this.state.uploadedFile);
+  }
 
   handleSubmit = (element) => {
     element.preventDefault();
     console.log(this.state);
+
+    if (
+      this.state.flagName &&
+      this.state.flagDOB &&
+      this.state.flagAadhar &&
+      this.state.flagPan &&
+      this.state.flagVoter &&
+      this.state.flagFileUpload
+    ) {
+      JSAlert.alert("Correct Input", null, JSAlert.Icons.Success).dismissIn(
+        1000
+      );
+    } else if (!this.state.flagName) {
+      JSAlert.alert("Enter a valid Name", null, JSAlert.Icons.Failed).dismissIn(
+        1000
+      );
+    } else if (!this.state.flagDOB) {
+      JSAlert.alert(
+        "Enter a valid Date of Birth",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    } else if (!this.state.flagAadhar) {
+      JSAlert.alert(
+        "Enter a valid Aadhar ID",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    } else if (!this.state.flagPan) {
+      JSAlert.alert(
+        "Enter a valid Pan ID",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    } else if (!this.state.flagVoter) {
+      JSAlert.alert(
+        "Enter a valid Voter ID",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    } else if (!this.state.flagFileUpload) {
+      JSAlert.alert(
+        "Select files to upload",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    }
   };
+
   render() {
     return (
       <div className={styles.testApiPage}>
@@ -75,7 +304,8 @@ class TestAPISection extends React.Component {
                   placeholder="Enter your Name"
                   className={styles.userDetails__InputArea}
                   value={this.state.name}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => this.handleInputStates(e)}
+                  onBlur={(e) => this.handleNameInput(e)}
                 />
               </div>
 
@@ -90,10 +320,13 @@ class TestAPISection extends React.Component {
                   type="date"
                   name="dob"
                   id="date"
+                  max={this.setEndDate()}
                   autoComplete="off"
                   className={styles.userDetails__InputArea}
                   value={this.state.dob}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => this.handleInputStates(e)}
+                  onBlur={(e) => this.handleDobInput(e)}
+                  onKeyDown={(e) => this.disableManualDateInput(e)}
                 />
               </div>
 
@@ -109,10 +342,11 @@ class TestAPISection extends React.Component {
                   name="uidAadhar"
                   id="uidAadharInp"
                   autoComplete="off"
-                  placeholder="Enter your Aadhar ID"
+                  placeholder="Enter your Aadhaar ID"
                   className={styles.userDetails__InputArea}
                   value={this.state.uidAadhar}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => this.handleInputStates(e)}
+                  onBlur={(e) => this.handleAadharInput(e)}
                 />
               </div>
 
@@ -131,7 +365,8 @@ class TestAPISection extends React.Component {
                   placeholder="Enter your Pan ID"
                   className={styles.userDetails__InputArea}
                   value={this.state.uidPan}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => this.handleInputStates(e)}
+                  onBlur={(e) => this.handlePanInput(e)}
                 />
               </div>
 
@@ -150,7 +385,8 @@ class TestAPISection extends React.Component {
                   placeholder="Enter your Voter ID"
                   className={styles.userDetails__InputArea}
                   value={this.state.uidVoter}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => this.handleInputStates(e)}
+                  onBlur={(e) => this.handleVoterInput(e)}
                 />
               </div>
 
@@ -166,7 +402,7 @@ class TestAPISection extends React.Component {
                   maxLength="200"
                   className={styles.userDetails__AddressInputArea}
                   value={this.state.address}
-                  onChange={(e) => this.handleInputs(e)}
+                  onChange={(e) => this.handleInputStates(e)}
                 />
               </div>
             </div>
@@ -199,27 +435,36 @@ class TestAPISection extends React.Component {
                 name="uploadedFile"
                 id="file"
                 multiple
+                accept=".png, .jpg, .jpeg, .pdf"
                 className={styles.uploadDefButton}
-                onChange={(e) => this.handleInputs(e)}
+                onClick={(element) => {
+                  element.target.value = "";
+                }}
+                onChange={() => {
+                  this.handleFileInputStates();
+                  this.rerenderUI();
+                }}
               />
             </label>
             {/* Uploaded File Details */}
             <div className={styles.uploadSection}>
-              {this.state.uploadedFile.map((element) => {
-                console.log(element.name + " " + element.size);
-                return (
-                  <div key={element.name}>
-                    <FileCard
-                      fileCardData={{
-                        name: element.name,
-                        size: element.size,
-                      }}
-                    />
-                  </div>
-                );
-              })}
+              {this.state.uploadedFile.length > 0 &&
+                this.state.uploadedFile.map((element) => {
+                  return (
+                    <div key={element.fileId}>
+                      <FileCard
+                        name={this.abbrName(element.name)}
+                        size={this.convertSize(element.size)}
+                        deleteCard={() => {
+                          this.deleteCard(element.fileId);
+                        }}
+                      />
+                    </div>
+                  );
+                })}
             </div>
-            ;{/* Submit button */}
+
+            {/* Submit button */}
             <button
               type="submit"
               className={styles.submitButton}
