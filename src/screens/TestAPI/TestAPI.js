@@ -14,6 +14,12 @@ class TestAPISection extends React.Component {
       uidVoter: "",
       address: "",
       uploadedFile: [],
+      flagName: false,
+      flagDOB: false,
+      flagAadhar: false,
+      flagPan: false,
+      flagVoter: false,
+      flagFileUpload: false,
     };
   }
 
@@ -22,12 +28,6 @@ class TestAPISection extends React.Component {
   aadhar = "";
   pan = "";
   voter = "";
-
-  flagName = false;
-  flagDOB = false;
-  flagAadhar = false;
-  flagPan = false;
-  flagVoter = false;
 
   handleNameInput = (element) => {
     // Getting the name
@@ -50,10 +50,11 @@ class TestAPISection extends React.Component {
         // Each words of a name should be at least contain 2 letters, and
         // word must match regex pattern
         if (word.length < 2 || !word.match(matchName)) {
-          this.flagName = false;
+          this.setState({ flagName: false });
           continue;
+        } else {
+          this.setState({ flagName: true });
         }
-        this.flagName = true;
       }
     }
   };
@@ -82,7 +83,11 @@ class TestAPISection extends React.Component {
   handleDobInput = (element) => {
     this.dob = element.target.value;
     console.log(this.dob);
-    this.flagDOB = this.dob ? true : false;
+    if (this.dob) {
+      this.setState({ flagDOB: true });
+    } else {
+      this.setState({ flagDOB: false });
+    }
   };
 
   handleAadharInput = (element) => {
@@ -90,10 +95,11 @@ class TestAPISection extends React.Component {
 
     let matchAadhar = /^[2-9]{1}[0-9]+$/;
 
-    this.flagAadhar =
-      this.aadhar.length === 12 && this.aadhar.match(matchAadhar)
-        ? true
-        : false;
+    if (this.aadhar.length === 12 && this.aadhar.match(matchAadhar)) {
+      this.setState({ flagAadhar: true });
+    } else {
+      this.setState({ flagAadhar: false });
+    }
   };
 
   handlePanInput = (element) => {
@@ -101,8 +107,11 @@ class TestAPISection extends React.Component {
 
     let martchPan = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
 
-    this.flagPan =
-      this.pan.length === 10 && this.pan.match(martchPan) ? true : false;
+    if (this.pan.length === 10 && this.pan.match(martchPan)) {
+      this.setState({ flagPan: true });
+    } else {
+      this.setState({ flagPan: true });
+    }
   };
 
   handleVoterInput = (element) => {
@@ -110,40 +119,63 @@ class TestAPISection extends React.Component {
 
     let matchVoter = /^[A-Z]{3}[0-9]{7}$/;
 
-    this.flagVoter =
-      this.voter.length === 10 && this.voter.match(matchVoter) ? true : false;
+    if (this.voter.length === 10 && this.voter.match(matchVoter)) {
+      this.setState({ flagVoter: true });
+    } else {
+      this.setState({ flagVoter: false });
+    }
   };
 
   handleInputStates = (element) => {
     const { name, value } = element.target;
 
     this.setState({ ...this.state, [name]: value });
-
-    console.log(this.state);
   };
 
-  handleFileInputStates = () => {
+  async handleFileInputStates() {
+    // When entering files anew
+    await this.setState({ uploadedFile: [] });
+
     let files = [];
 
     files = document.getElementById("file").files;
 
     if (files.length > 3) {
+      this.setState({ flagFileUpload: false });
+
       JSAlert.alert(
         "Only 3 files are accepted",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
     } else {
+      this.setState({ flagFileUpload: true });
+
       for (var i = 0; i < files.length; i++) {
-        this.state.uploadedFile.push({
-          fileId: i + 1,
-          name: files[i].name,
-          size: files[i].size,
+        await this.setState({
+          uploadedFile: [
+            ...this.state.uploadedFile,
+            {
+              fileId: i + 1,
+              name: files[i].name,
+              size: files[i].size,
+            },
+          ],
         });
       }
     }
 
     console.log(this.state.uploadedFile);
+
+    return false;
+  }
+
+  handleFileUploadInput = () => {
+    if (this.state.uploadedFile.length < 1) {
+      this.setState({ flagFileUpload: false });
+    } else {
+      this.setState({ flagFileUpload: true });
+    }
   };
 
   rerenderUI = () => {
@@ -152,7 +184,11 @@ class TestAPISection extends React.Component {
 
   abbrName = (element) => {
     if (element.length > 25) {
-      return element.slice(0, 14) + "..." + element.slice(element.length-4, element.length);
+      return (
+        element.slice(0, 14) +
+        "..." +
+        element.slice(element.length - 4, element.length)
+      );
     }
 
     return element;
@@ -163,6 +199,7 @@ class TestAPISection extends React.Component {
     element /= 1024;
     let sizeUnit = " KB";
 
+    // Converting to MB
     if (element >= 1024) {
       element /= 1024;
       sizeUnit = " MB";
@@ -171,45 +208,65 @@ class TestAPISection extends React.Component {
     return element.toFixed(2) + sizeUnit;
   };
 
+  async deleteCard(elementId) {
+    await this.setState({
+      uploadedFile: this.state.uploadedFile.filter((file) => {
+        return file.fileId !== elementId;
+      }),
+    });
+
+    this.handleFileUploadInput();
+
+    console.log(this.state.uploadedFile.length);
+    console.log(this.state.uploadedFile);
+  }
+
   handleSubmit = (element) => {
     element.preventDefault();
     console.log(this.state);
 
     if (
-      this.flagName &&
-      this.flagDOB &&
-      this.flagAadhar &&
-      this.flagPan &&
-      this.flagVoter
+      this.state.flagName &&
+      this.state.flagDOB &&
+      this.state.flagAadhar &&
+      this.state.flagPan &&
+      this.state.flagVoter &&
+      this.state.flagFileUpload
     ) {
       JSAlert.alert("Correct Input", null, JSAlert.Icons.Success).dismissIn(
         1000
       );
-    } else if (!this.flagName) {
+    } else if (!this.state.flagName) {
       JSAlert.alert("Enter a valid Name", null, JSAlert.Icons.Failed).dismissIn(
         1000
       );
-    } else if (!this.flagDOB) {
+    } else if (!this.state.flagDOB) {
       JSAlert.alert(
         "Enter a valid Date of Birth",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
-    } else if (!this.flagAadhar) {
+    } else if (!this.state.flagAadhar) {
       JSAlert.alert(
         "Enter a valid Aadhar ID",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
-    } else if (!this.flagPan) {
+    } else if (!this.state.flagPan) {
       JSAlert.alert(
         "Enter a valid Pan ID",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
-    } else if (!this.flagVoter) {
+    } else if (!this.state.flagVoter) {
       JSAlert.alert(
         "Enter a valid Voter ID",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    } else if (!this.state.flagFileUpload) {
+      JSAlert.alert(
+        "Select files to upload",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
@@ -380,6 +437,9 @@ class TestAPISection extends React.Component {
                 multiple
                 accept=".png, .jpg, .jpeg, .pdf"
                 className={styles.uploadDefButton}
+                onClick={(element) => {
+                  element.target.value = "";
+                }}
                 onChange={() => {
                   this.handleFileInputStates();
                   this.rerenderUI();
@@ -390,12 +450,14 @@ class TestAPISection extends React.Component {
             <div className={styles.uploadSection}>
               {this.state.uploadedFile.length > 0 &&
                 this.state.uploadedFile.map((element) => {
-                  console.log(element + "\n");
                   return (
                     <div key={element.fileId}>
                       <FileCard
                         name={this.abbrName(element.name)}
                         size={this.convertSize(element.size)}
+                        deleteCard={() => {
+                          this.deleteCard(element.fileId);
+                        }}
                       />
                     </div>
                   );

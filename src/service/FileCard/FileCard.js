@@ -2,16 +2,17 @@ import React from "react";
 import styles from "./FileCard.module.css";
 
 class FileCard extends React.Component {
-
   constructor(props) {
     super(props);
+    this.fileId = props.fileId;
     this.name = props.name;
     this.size = props.size;
+    this.deleteCard = props.deleteCard;
   }
 
   render() {
     return (
-      <div className={styles.uploadSection__File}>
+      <div key={this.fileId} className={styles.uploadSection__File}>
         {/* Uploaded File */}
 
         {/* File Icon */}
@@ -27,7 +28,7 @@ class FileCard extends React.Component {
             <div className={styles.File__UploadProgress}>{this.size}</div>
           </div>
           {/* Uploaded checkmark */}
-          <div className={styles.File__Icon}>
+          <div className={styles.Trash__Icon} onClick={this.deleteCard}>
           <i className="fa fa-trash" aria-hidden="true"></i>
           </div>
         </div>

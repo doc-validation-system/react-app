@@ -29,3 +29,9 @@
   font-weight: 500;
   color: #274472;
 }
+
+.Trash__Icon {
+  font-size: 28px;
+  color: #274472;
+  cursor: pointer;
+}
