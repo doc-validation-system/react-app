@@ -132,37 +132,51 @@ class TestAPISection extends React.Component {
     this.setState({ ...this.state, [name]: value });
   };
 
+  fileIdAssigner = 1;
+
   async handleFileInputStates() {
     // When entering files anew
-    await this.setState({ uploadedFile: [] });
+    // await this.setState({ uploadedFile: [] });
+
+    let noOfFiles = await this.state.uploadedFile.length;
 
     let files = [];
 
-    files = document.getElementById("file").files;
+    if (noOfFiles < 3) {
+      files = document.getElementById("file").files;
 
-    if (files.length > 3) {
-      this.setState({ flagFileUpload: false });
+      if (files.length > 3) {
+        this.setState({ flagFileUpload: false });
 
+        JSAlert.alert(
+          "Only 3 files are accepted",
+          null,
+          JSAlert.Icons.Failed
+        ).dismissIn(1000);
+      } else {
+        this.setState({ flagFileUpload: true });
+
+        for (var i = 0; i < files.length; i++) {
+          await this.setState({
+            uploadedFile: [
+              ...this.state.uploadedFile,
+              {
+                fileId: this.fileIdAssigner++,
+                name: files[i].name,
+                size: files[i].size,
+              },
+            ],
+          });
+        }
+      }
+    } else {
       JSAlert.alert(
-        "Only 3 files are accepted",
+        "Delete files before uploading. Only 3 files are accepted",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
-    } else {
-      this.setState({ flagFileUpload: true });
 
-      for (var i = 0; i < files.length; i++) {
-        await this.setState({
-          uploadedFile: [
-            ...this.state.uploadedFile,
-            {
-              fileId: i + 1,
-              name: files[i].name,
-              size: files[i].size,
-            },
-          ],
-        });
-      }
+      return;
     }
 
     console.log(this.state.uploadedFile);
@@ -236,6 +250,21 @@ class TestAPISection extends React.Component {
       JSAlert.alert("Correct Input", null, JSAlert.Icons.Success).dismissIn(
         1000
       );
+      this.setState({
+        name: "",
+        dob: "",
+        uidAadhar: "",
+        uidPan: "",
+        uidVoter: "",
+        address: "",
+        uploadedFile: [],
+        flagName: false,
+        flagDOB: false,
+        flagAadhar: false,
+        flagPan: false,
+        flagVoter: false,
+        flagFileUpload: false,
+      });
     } else if (!this.state.flagName) {
       JSAlert.alert("Enter a valid Name", null, JSAlert.Icons.Failed).dismissIn(
         1000
