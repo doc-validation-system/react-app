@@ -4,8 +4,6 @@ import LoginNavigate from "./screens/Login/Login";
 import HomeScreen from "./screens/Home/Home";
 import PrivateRoute from "./screens/PrivateRoute/PrivateRoute";
 import TestAPISection from "./screens/TestAPI/TestAPI";
-//import ProfileSection from "./screens/Profile/Profile";
-
 
 function App() {
   return (

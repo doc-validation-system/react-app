@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./TestAPI.module.css";
 import FileCard from "../../service/FileCard/FileCard";
+import TestAPIModal from "../TestAPI_Modal/TestAPIModal";
 import JSAlert from "js-alert";
 
 class TestAPISection extends React.Component {
@@ -135,9 +136,6 @@ class TestAPISection extends React.Component {
   fileIdAssigner = 1;
 
   async handleFileInputStates() {
-    // When entering files anew
-    // await this.setState({ uploadedFile: [] });
-
     let noOfFiles = await this.state.uploadedFile.length;
 
     let files = [];
@@ -304,211 +302,217 @@ class TestAPISection extends React.Component {
 
   render() {
     return (
-      <div className={styles.testApiPage}>
-        {/* Form Sections */}
-        <form
-          action=""
-          encType="multipart/formdata"
-          className={styles.formSection}
-        >
-          {/* User Details Section */}
-          <section
-            className={`${styles.formSection__Card} ${styles.formSection__userDetails}`}
+      <>
+        <div className={styles.testApiModal}>
+          <TestAPIModal/>
+        </div>
+        <div className={styles.testApiPage}>
+          {/* Form Sections */}
+          <form
+            action=""
+            encType="multipart/formdata"
+            className={styles.formSection}
           >
-            {/* User Details Header */}
-            <div className={styles.userDetails__Header}>User Details</div>
-
-            <div className={styles.userDetails__Form}>
-              {/* Name */}
-              <div id="nameDiv">
-                <label className={styles.userDetails__Label}>
-                  Name <span className={styles.userDetails__Mandatory}>*</span>
-                </label>
-                <br />
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  autoComplete="off"
-                  placeholder="Enter your Name"
-                  className={styles.userDetails__InputArea}
-                  value={this.state.name}
-                  onChange={(e) => this.handleInputStates(e)}
-                  onBlur={(e) => this.handleNameInput(e)}
-                />
-              </div>
-
-              {/* DOB */}
-              <div id="dobDiv">
-                <label className={styles.userDetails__Label}>
-                  Date of Birth{" "}
-                  <span className={styles.userDetails__Mandatory}>*</span>
-                </label>
-                <br />
-                <input
-                  type="date"
-                  name="dob"
-                  id="date"
-                  max={this.setEndDate()}
-                  autoComplete="off"
-                  className={styles.userDetails__InputArea}
-                  value={this.state.dob}
-                  onChange={(e) => this.handleInputStates(e)}
-                  onBlur={(e) => this.handleDobInput(e)}
-                  onKeyDown={(e) => this.disableManualDateInput(e)}
-                />
-              </div>
-
-              {/* Aadhar Card UID */}
-              <div id="uidAadharDiv">
-                <label className={styles.userDetails__Label}>
-                  Aadhar ID{" "}
-                  <span className={styles.userDetails__Mandatory}>*</span>
-                </label>
-                <br />
-                <input
-                  type="text"
-                  name="uidAadhar"
-                  id="uidAadharInp"
-                  autoComplete="off"
-                  placeholder="Enter your Aadhaar ID"
-                  className={styles.userDetails__InputArea}
-                  value={this.state.uidAadhar}
-                  onChange={(e) => this.handleInputStates(e)}
-                  onBlur={(e) => this.handleAadharInput(e)}
-                />
-              </div>
-
-              {/* Pan Card UID */}
-              <div id="uidPanDiv">
-                <label className={styles.userDetails__Label}>
-                  Pan ID{" "}
-                  <span className={styles.userDetails__Mandatory}>*</span>
-                </label>
-                <br />
-                <input
-                  type="text"
-                  name="uidPan"
-                  id="uidPanInp"
-                  autoComplete="off"
-                  placeholder="Enter your Pan ID"
-                  className={styles.userDetails__InputArea}
-                  value={this.state.uidPan}
-                  onChange={(e) => this.handleInputStates(e)}
-                  onBlur={(e) => this.handlePanInput(e)}
-                />
-              </div>
-
-              {/* Voter Card UID */}
-              <div id="uidVoterDiv">
-                <label className={styles.userDetails__Label}>
-                  Voter ID.{" "}
-                  <span className={styles.userDetails__Mandatory}>*</span>
-                </label>
-                <br />
-                <input
-                  type="text"
-                  name="uidVoter"
-                  id="uidVoterInp"
-                  autoComplete="off"
-                  placeholder="Enter your Voter ID"
-                  className={styles.userDetails__InputArea}
-                  value={this.state.uidVoter}
-                  onChange={(e) => this.handleInputStates(e)}
-                  onBlur={(e) => this.handleVoterInput(e)}
-                />
-              </div>
-
-              {/* Address */}
-              <div id="addressDiv">
-                <label className={styles.userDetails__Label}>Address</label>
-                <br />
-                <textarea
-                  name="address"
-                  id="address"
-                  placeholder="Enter your Address"
-                  autoComplete="off"
-                  maxLength="200"
-                  className={styles.userDetails__AddressInputArea}
-                  value={this.state.address}
-                  onChange={(e) => this.handleInputStates(e)}
-                />
-              </div>
-            </div>
-
-            <img
-              src="./Images/DirectionalArrow.png"
-              alt="Proceed towards uploading documents"
-              className={styles.fileUploadIndicator}
-            ></img>
-          </section>
-
-          {/* File Upload Section */}
-          <section
-            className={`${styles.formSection__Card} ${styles.formSection__fileUpload}`}
-          >
-            {/* File Upload Header */}
-            <div className={styles.fileUpload__Header}>File Upload</div>
-            {/* File Uplaad Section */}
-            <label htmlFor="file">
-              {/* File Upload Button */}
-              <img
-                src="./Images/FileUploadBground.png"
-                alt=""
-                className={styles.fileUpload__UploadButton}
-              />
-
-              {/* File Input */}
-              <input
-                type="file"
-                name="uploadedFile"
-                id="file"
-                multiple
-                accept=".png, .jpg, .jpeg, .pdf"
-                className={styles.uploadDefButton}
-                onClick={(element) => {
-                  element.target.value = "";
-                }}
-                onChange={() => {
-                  this.handleFileInputStates();
-                  this.rerenderUI();
-                }}
-              />
-            </label>
-            {/* Uploaded File Details */}
-            <div className={styles.uploadSection}>
-              {this.state.uploadedFile.length > 0 &&
-                this.state.uploadedFile.map((element) => {
-                  return (
-                    <div key={element.fileId}>
-                      <FileCard
-                        name={this.abbrName(element.name)}
-                        size={this.convertSize(element.size)}
-                        deleteCard={() => {
-                          this.deleteCard(element.fileId);
-                        }}
-                      />
-                    </div>
-                  );
-                })}
-            </div>
-
-            {/* Submit button */}
-            <button
-              type="submit"
-              className={styles.submitButton}
-              onClick={(e) => this.handleSubmit(e)}
+            {/* User Details Section */}
+            <section
+              className={`${styles.formSection__Card} ${styles.formSection__userDetails}`}
             >
-              Submit
-            </button>
-            <img
-              src="./Images/DocValidateAPI-logo.png"
-              alt="DocValidateLogo"
-              className={styles.footerLogo}
-            />
-          </section>
-        </form>
-      </div>
+              {/* User Details Header */}
+              <div className={styles.userDetails__Header}>User Details</div>
+
+              <div className={styles.userDetails__Form}>
+                {/* Name */}
+                <div id="nameDiv">
+                  <label className={styles.userDetails__Label}>
+                    Name{" "}
+                    <span className={styles.userDetails__Mandatory}>*</span>
+                  </label>
+                  <br />
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    autoComplete="off"
+                    placeholder="Enter your Name"
+                    className={styles.userDetails__InputArea}
+                    value={this.state.name}
+                    onChange={(e) => this.handleInputStates(e)}
+                    onBlur={(e) => this.handleNameInput(e)}
+                  />
+                </div>
+
+                {/* DOB */}
+                <div id="dobDiv">
+                  <label className={styles.userDetails__Label}>
+                    Date of Birth{" "}
+                    <span className={styles.userDetails__Mandatory}>*</span>
+                  </label>
+                  <br />
+                  <input
+                    type="date"
+                    name="dob"
+                    id="date"
+                    max={this.setEndDate()}
+                    autoComplete="off"
+                    className={styles.userDetails__InputArea}
+                    value={this.state.dob}
+                    onChange={(e) => this.handleInputStates(e)}
+                    onBlur={(e) => this.handleDobInput(e)}
+                    onKeyDown={(e) => this.disableManualDateInput(e)}
+                  />
+                </div>
+
+                {/* Aadhar Card UID */}
+                <div id="uidAadharDiv">
+                  <label className={styles.userDetails__Label}>
+                    Aadhar ID{" "}
+                    <span className={styles.userDetails__Mandatory}>*</span>
+                  </label>
+                  <br />
+                  <input
+                    type="text"
+                    name="uidAadhar"
+                    id="uidAadharInp"
+                    autoComplete="off"
+                    placeholder="Enter your Aadhaar ID"
+                    className={styles.userDetails__InputArea}
+                    value={this.state.uidAadhar}
+                    onChange={(e) => this.handleInputStates(e)}
+                    onBlur={(e) => this.handleAadharInput(e)}
+                  />
+                </div>
+
+                {/* Pan Card UID */}
+                <div id="uidPanDiv">
+                  <label className={styles.userDetails__Label}>
+                    Pan ID{" "}
+                    <span className={styles.userDetails__Mandatory}>*</span>
+                  </label>
+                  <br />
+                  <input
+                    type="text"
+                    name="uidPan"
+                    id="uidPanInp"
+                    autoComplete="off"
+                    placeholder="Enter your Pan ID"
+                    className={styles.userDetails__InputArea}
+                    value={this.state.uidPan}
+                    onChange={(e) => this.handleInputStates(e)}
+                    onBlur={(e) => this.handlePanInput(e)}
+                  />
+                </div>
+
+                {/* Voter Card UID */}
+                <div id="uidVoterDiv">
+                  <label className={styles.userDetails__Label}>
+                    Voter ID.{" "}
+                    <span className={styles.userDetails__Mandatory}>*</span>
+                  </label>
+                  <br />
+                  <input
+                    type="text"
+                    name="uidVoter"
+                    id="uidVoterInp"
+                    autoComplete="off"
+                    placeholder="Enter your Voter ID"
+                    className={styles.userDetails__InputArea}
+                    value={this.state.uidVoter}
+                    onChange={(e) => this.handleInputStates(e)}
+                    onBlur={(e) => this.handleVoterInput(e)}
+                  />
+                </div>
+
+                {/* Address */}
+                <div id="addressDiv">
+                  <label className={styles.userDetails__Label}>Address</label>
+                  <br />
+                  <textarea
+                    name="address"
+                    id="address"
+                    placeholder="Enter your Address"
+                    autoComplete="off"
+                    maxLength="200"
+                    className={styles.userDetails__AddressInputArea}
+                    value={this.state.address}
+                    onChange={(e) => this.handleInputStates(e)}
+                  />
+                </div>
+              </div>
+
+              <img
+                src="./Images/DirectionalArrow.png"
+                alt="Proceed towards uploading documents"
+                className={styles.fileUploadIndicator}
+              ></img>
+            </section>
+
+            {/* File Upload Section */}
+            <section
+              className={`${styles.formSection__Card} ${styles.formSection__fileUpload}`}
+            >
+              {/* File Upload Header */}
+              <div className={styles.fileUpload__Header}>File Upload</div>
+              {/* File Uplaad Section */}
+              <label htmlFor="file">
+                {/* File Upload Button */}
+                <img
+                  src="./Images/FileUploadBground.png"
+                  alt=""
+                  className={styles.fileUpload__UploadButton}
+                />
+
+                {/* File Input */}
+                <input
+                  type="file"
+                  name="uploadedFile"
+                  id="file"
+                  multiple
+                  accept=".png, .jpg, .jpeg, .pdf"
+                  className={styles.uploadDefButton}
+                  onClick={(element) => {
+                    element.target.value = "";
+                  }}
+                  onChange={() => {
+                    this.handleFileInputStates();
+                    this.rerenderUI();
+                  }}
+                />
+              </label>
+              {/* Uploaded File Details */}
+              <div className={styles.uploadSection}>
+                {this.state.uploadedFile.length > 0 &&
+                  this.state.uploadedFile.map((element) => {
+                    return (
+                      <div key={element.fileId}>
+                        <FileCard
+                          name={this.abbrName(element.name)}
+                          size={this.convertSize(element.size)}
+                          deleteCard={() => {
+                            this.deleteCard(element.fileId);
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
+              </div>
+
+              {/* Submit button */}
+              <button
+                type="submit"
+                className={styles.submitButton}
+                onClick={(e) => this.handleSubmit(e)}
+              >
+                Submit
+              </button>
+              <img
+                src="./Images/DocValidateAPI-logo.png"
+                alt="DocValidateLogo"
+                className={styles.footerLogo}
+              />
+            </section>
+          </form>
+        </div>
+      </>
     );
   }
 }
