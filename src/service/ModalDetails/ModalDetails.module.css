@@ -1,28 +1,29 @@
-  
-  .cardDetails__Area {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .cardDetails__Field {
-    width: 50%;
-    display: flex;
-    align-items: center;
-    font-weight: 700;
-    color: #274472;
-    font-size: 16px;
-    margin-bottom: 4px;
-  }
-  
-  .field__Value {
-    font-weight: 400;
-    color: #C6DBFF;
-    font-size: 18px;
-    margin-left: 4px;
-  }
-  
-  .field__CheckMark {
-    margin-left: 4px;
-    width: 20px;
-  }
-  
+.cardDetails__Area {
+  width: 576px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  height: auto;
+}
+
+.cardDetails__Field {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  color: #274472;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.field__Value {
+  font-weight: 400;
+  color: #c6dbff;
+  font-size: 18px;
+  margin-left: 4px;
+}
+
+.field__CheckMark {
+  margin-left: 4px;
+  width: 20px;
+}

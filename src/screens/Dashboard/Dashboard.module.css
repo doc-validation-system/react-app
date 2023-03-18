@@ -30,6 +30,33 @@
   color: #286ade;
   transition: 0.15s ease-in;
   border: 30px;
+  border-radius: 50px;
+}
+
+
+.profileIcon:hover {
+  opacity: 0.7;
+  transform: scale(1.05);
+}
+
+.profileIcon:active {
+  transition: none;
+  transform: scale(0.92);
+}
+
+.profileIcon + .profileDropdown {
+  animation: dropdown-menu 0.5s ease-out !important;
+  -webkit-animation: dropdown-menu 0.5s ease-out !important;
+}
+
+@keyframes dropdown-menu {
+  0% {
+    opacity: 0%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
 }
 
 .profileDropdown {
@@ -70,25 +97,6 @@
   background: rgba(40, 106, 222, 0.15);
   border-radius: 3px;
   transform: scale(1.03);
-}
-
-.profileIcon:hover {
-  opacity: 0.7;
-  transform: scale(1.05);
-}
-
-.profileIcon + .profileDropdown {
-  -webkit-animation: dropdown-menu 0.5s ease-out;
-}
-
-@keyframes dropdown-menu {
-  0% {
-    opacity: 0%;
-  }
-
-  100% {
-    opacity: 100%;
-  }
 }
 
 @media screen and (max-width: 1200px) {

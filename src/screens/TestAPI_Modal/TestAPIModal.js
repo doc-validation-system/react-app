@@ -3,6 +3,10 @@ import styles from "./TestAPIModal.module.css";
 import ModalDetails from "../../service/ModalDetails/ModalDetails";
 
 class TestAPIModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.closeModal = props.closeModal;
+  }
   render() {
     return (
       <div className={styles.testApiModal}>
@@ -38,11 +42,11 @@ class TestAPIModal extends React.Component {
             >
               <defs>
                 <linearGradient id="GradientColor">
-                  <stop offset="0%" stop-color="#3959dd" />
-                  <stop offset="100%" stop-color="#4460da" />
+                  <stop offset="0%" stopColor="#3959dd" />
+                  <stop offset="100%" stopColor="#4460da" />
                 </linearGradient>
               </defs>
-              <circle cx="96" cy="64" r="54" stroke-linecap="round" />
+              <circle cx="96" cy="64" r="54" strokeLinecap="round" />
             </svg>
           </div>
 
@@ -68,6 +72,7 @@ class TestAPIModal extends React.Component {
             src="./Images/CloseIcon.png"
             alt="CloseIcon"
             className={styles.validationDetailsSection__CloseButton}
+            onClick={this.closeModal}
           />
 
           {/* Section Heading */}
@@ -82,8 +87,7 @@ class TestAPIModal extends React.Component {
               <span style={{ fontSize: "20px" }}>A</span>ADHAR CARD DETAILS
             </div>
             <ModalDetails
-              uid="2123 4567 8910
-"
+              uid="2123 4567 8910"
               name="Swapnodeep Biswas"
               dob="28-02-2000"
               faceDetected="Successful"
@@ -97,10 +101,9 @@ class TestAPIModal extends React.Component {
               <span style={{ fontSize: "20px" }}>P</span>AN CARD DETAILS
             </div>
             <ModalDetails
-              uid="ABCDE1234A
-"
+              uid="ABCDE1234A"
               name="Swapnodeep Biswas"
-              dob="----------------"
+              dob="------------"
               faceDetected="Successful"
             />
           </div>
@@ -112,8 +115,7 @@ class TestAPIModal extends React.Component {
               <span style={{ fontSize: "20px" }}>V</span>OTER CARD DETAILS
             </div>
             <ModalDetails
-              uid="ABC1234567
-"
+              uid="ABC1234567"
               name="Swapnodeep Biswas"
               dob="28-02-2000"
               faceDetected="Unsuccessful"

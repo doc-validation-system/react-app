@@ -21,7 +21,9 @@ class TestAPISection extends React.Component {
       flagPan: false,
       flagVoter: false,
       flagFileUpload: false,
+      flagModalViewer: false,
     };
+    this.closeModal = this.closeModal.bind(this);
   }
 
   name = "";
@@ -106,12 +108,12 @@ class TestAPISection extends React.Component {
   handlePanInput = (element) => {
     this.pan = element.target.value;
 
-    let martchPan = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+    let matchPan = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
 
-    if (this.pan.length === 10 && this.pan.match(martchPan)) {
+    if (this.pan.length === 10 && this.pan.match(matchPan)) {
       this.setState({ flagPan: true });
     } else {
-      this.setState({ flagPan: true });
+      this.setState({ flagPan: false });
     }
   };
 
@@ -233,6 +235,10 @@ class TestAPISection extends React.Component {
     console.log(this.state.uploadedFile);
   }
 
+  closeModal = () => {
+    this.setState({ flagModalViewer: false });
+  };
+
   handleSubmit = (element) => {
     element.preventDefault();
     console.log(this.state);
@@ -245,9 +251,9 @@ class TestAPISection extends React.Component {
       this.state.flagVoter &&
       this.state.flagFileUpload
     ) {
-      JSAlert.alert("Correct Input", null, JSAlert.Icons.Success).dismissIn(
-        1000
-      );
+      // JSAlert.alert("Correct Input", null, JSAlert.Icons.Success).dismissIn(
+      //   1000
+      // );
       this.setState({
         name: "",
         dob: "",
@@ -262,6 +268,7 @@ class TestAPISection extends React.Component {
         flagPan: false,
         flagVoter: false,
         flagFileUpload: false,
+        flagModalViewer: true,
       });
     } else if (!this.state.flagName) {
       JSAlert.alert("Enter a valid Name", null, JSAlert.Icons.Failed).dismissIn(
@@ -303,9 +310,11 @@ class TestAPISection extends React.Component {
   render() {
     return (
       <>
-        <div className={styles.testApiModal}>
-          <TestAPIModal/>
-        </div>
+        {this.state.flagModalViewer && (
+          <div className={styles.testApiModal}>
+            <TestAPIModal closeModal={this.closeModal} />
+          </div>
+        )}
         <div className={styles.testApiPage}>
           {/* Form Sections */}
           <form
