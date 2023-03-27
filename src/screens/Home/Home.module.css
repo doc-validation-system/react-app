@@ -16,7 +16,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  -webkit-animation: headerFooter-fade-in 2s ease-out;
+  animation: headerFooter-fade-in 2s ease-out !important;
+  -webkit-animation: headerFooter-fade-in 2s ease-out !important;
 }
 
 @keyframes headerFooter-fade-in {
@@ -45,7 +46,8 @@
   text-decoration: none;
   margin: 0 16px;
   padding-bottom: 2px;
-  transition: 0.15s ease-in;
+  transition: 0.15s ease-in !important;
+  -webkit-transition: 0.15s ease-in !important;
   cursor: pointer;
 }
 
@@ -61,17 +63,8 @@
   align-items: center;
   margin: 36px 0 8px;
   width: 100vw;
-  -webkit-animation: homeImage-fade-in 2s ease-out;
-}
-
-@keyframes homeImage-fade-in {
-  0% {
-    opacity: 0%;
-  }
-
-  100% {
-    opacity: 100%;
-  }
+  animation: homeImage-fade-in 2s ease-out !important;
+  -webkit-animation: homeImage-fade-in 2s ease-out !important;
 }
 
 .homeImage {
@@ -86,7 +79,8 @@
   font-size: 40px;
   font-family: "Outfit", sans-serif;
   font-weight: 200;
-  -webkit-animation: headerText-fade-in 1s ease-out;
+  animation: headerText-fade-in 1s ease-out !important;
+  -webkit-animation: headerText-fade-in 1s ease-out !important;
 }
 
 @keyframes headerText-fade-in {
@@ -107,7 +101,8 @@
   font-size: 20px;
   font-weight: 400;
   margin: 16px 272px 0;
-  -webkit-animation: mainText-fade-in 1.8s ease-out;
+  animation: mainText-fade-in 1.8s ease-out !important;
+  -webkit-animation: mainText-fade-in 1.8s ease-out !important;
 }
 
 @keyframes mainText-fade-in {
@@ -126,7 +121,8 @@
   display: flex;
   justify-content: center;
   margin: 24px 0 132px;
-  -webkit-animation: button-fade-in 4s ease-out;
+  animation: button-fade-in 4s ease-out !important;
+  -webkit-animation: button-fade-in 4s ease-out !important;
 }
 
 @keyframes button-fade-in {
@@ -157,7 +153,8 @@
   color: #286ade;
   font-weight: 500;
   cursor: pointer;
-  transition: 0.1s ease-in;
+  transition: 0.1s ease-in !important;
+  -webkit-transition: 0.1s ease-in !important;
 }
 
 .homeCtaButton:hover {
@@ -172,7 +169,8 @@
   font-size: 12px;
   color: #cdcdcd;
   text-align: center;
-  -webkit-animation: headerFooter-fade-in 2s ease-out;
+  animation: headerFooter-fade-in 2s ease-out !important;
+  -webkit-animation: headerFooter-fade-in 2s ease-out !important;
 }
 
 @media screen and (max-width: 980px) {

@@ -22,18 +22,18 @@ class DashboardSection extends React.Component {
 
   viewDropdown = () => {
     this.setState({ showDropdown: !this.state.showDropdown });
-  }
+  };
 
   handleLogout = () => {
     localStorage.clear();
-  }
+  };
 
   handleProfile = async () => {
     this.setState({ showSpinner: true });
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     var profileHeader = new Headers();
-    profileHeader.append("Authorization", 'Bearer ' + `${token}`);
+    profileHeader.append("Authorization", "Bearer " + `${token}`);
     profileHeader.append("Content-Type", "application/x-www-form-urlencoded");
     var profileRequestOptions = {
       method: "GET",
@@ -50,13 +50,9 @@ class DashboardSection extends React.Component {
       this.props.navigate("/profile");
     } else {
       this.setState({ showSpinner: false });
-      JSAlert.alert(
-        `${profileData.title}`,
-        null,
-        JSAlert.Icons.Failed
-      );
+      JSAlert.alert(`${profileData.title}`, null, JSAlert.Icons.Failed);
     }
-  }
+  };
 
   render() {
     return (
@@ -83,50 +79,76 @@ class DashboardSection extends React.Component {
                 id="ProfileIcon"
                 alt="ProfileIcon"
                 className={styles.profileIcon}
-                onMouseOver={this.viewDropdown}
+                onClick={this.viewDropdown}
               />
 
-              {this.state.showDropdown && <div className={styles.profileDropdown} onInput={this.viewDropdown}>
-                <div className={styles.dropdownMenu} onClick={() => { this.viewDropdown(); this.handleProfile(); }}>
-                  My Profile
-                </div>
-                <a
-                  href={"/login"}
-                  className={styles.dropdownMenu}
-                  onClick={() => { this.viewDropdown(); this.handleLogout(); }}
+              {this.state.showDropdown && (
+                <div
+                  className={styles.profileDropdown}
+                  onInput={this.viewDropdown}
                 >
-                  Logout
-                  <div className={styles.logoutIcon}>
-                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                  <div
+                    className={styles.dropdownMenu}
+                    onClick={() => {
+                      this.viewDropdown();
+                      this.handleProfile();
+                    }}
+                  >
+                    My Profile
                   </div>
-                </a>
-              </div>}
+                  <a
+                    href={"/login"}
+                    className={styles.dropdownMenu}
+                    onClick={() => {
+                      this.viewDropdown();
+                      this.handleLogout();
+                    }}
+                  >
+                    Logout
+                    <div className={styles.logoutIcon}>
+                      <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </div>
+                  </a>
+                </div>
+              )}
             </header>
 
             <section className={styles.dashboardCards}>
-              <Card
-                cardData={{
-                  cardImage: "./Images/ApiKeyImg.png",
-                  cardText: "Generate API Key",
-                }}
-              />
-              <Card
-                cardData={{
-                  cardImage: "./Images/TestApiImg.png",
-                  cardText: "Test API",
-                }}
-              />
-              <Card
-                cardData={{ cardImage: "./Images/DocsImg.png", cardText: "Docs" }}
-              />
+              <div>
+                <Card
+                  cardData={{
+                    cardImage: "./Images/ApiKeyImg.png",
+                    cardText: "Generate API Key",
+                    toPage: "",
+                  }}
+                />
+              </div>
+              <div onClick={() => this.props.navigate("/testApi")}>
+                <Card
+                  cardData={{
+                    cardImage: "./Images/TestApiImg.png",
+                    cardText: "Test API",
+                    toPage: "/testApi",
+                  }}
+                />
+              </div>
+              <div>
+                <Card
+                  cardData={{
+                    cardImage: "./Images/DocsImg.png",
+                    cardText: "Docs",
+                    toPage: "",
+                  }}
+                />
+              </div>
             </section>
 
             {/* Footer with Project team info*/}
             <footer className={styles.footer}>
               <p className={styles.footer__text}>
-                © 2022 DocValidateAPI. All rights reserved. <br />A project by Aditi
-                Chatterjee, Charchika Biswas, Kaustav Halder, Sourashis Paul and
-                Swapnodeep Biswas
+                © 2022 DocValidateAPI. All rights reserved. <br />A project by
+                Aditi Chatterjee, Charchika Biswas, Kaustav Halder, Sourashis
+                Paul and Swapnodeep Biswas
               </p>
             </footer>
           </div>
@@ -142,7 +164,7 @@ function DashboardNavigate() {
     <div>
       <DashboardSection navigate={navigate} />
     </div>
-  )
+  );
 }
 
 export default DashboardNavigate;

@@ -6,6 +6,7 @@ class Card extends React.Component {
   constructor(props) {
     super(props);
     this.cardData = props.cardData;
+    this.navigate = props.navigate;
   }
 
   render() {

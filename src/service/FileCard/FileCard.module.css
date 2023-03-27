@@ -7,6 +7,11 @@
   display: flex;
   align-items: center;
   border: 1px solid #abc3e9;
+  transition: 100ms ease-in;
+}
+
+.uploadSection__File:hover {
+  opacity: 0.9;
 }
 
 .File__Icon {
@@ -34,4 +39,9 @@
   font-size: 28px;
   color: #274472;
   cursor: pointer;
+  transition: 90ms ease-in;
+}
+
+.Trash__Icon:hover {
+  transform: scale(1.2);
 }
