@@ -1,7 +1,24 @@
 import React from "react";
 import styles from "./Home.module.css";
+import { useNavigate } from "react-router-dom";
 
 class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedIn: this.getToken(),
+    }
+  }
+
+  getToken = () => {
+    let token = localStorage.getItem("token");
+    return token ? true : false;
+  };
+
+  handleLogout = () => {
+    localStorage.clear();
+  };
+
   render() {
     return (
       <div className={styles.homePageContainer}>
@@ -16,18 +33,33 @@ class HomeScreen extends React.Component {
 
           {/* Navbar options */}
           <div className={styles.headerOptions}>
-            <a href={"/"} className={styles.headerOption}>
+            <span className={styles.headerOption} onClick={() => this.props.navigate("/")}>
               Home
-            </a>
+            </span>
+            {this.state.loggedIn && (
+              <span className={styles.headerOption} onClick={() => this.props.navigate("/dashboard")}>
+                Dashboard
+              </span>
+            )}
             <a href={"/"} className={styles.headerOption}>
               About Us
             </a>
             <a href={"/"} className={styles.headerOption}>
               Contact Us
             </a>
-            <a href={"/login"} className={styles.headerOption}>
-              Login
-            </a>
+            {this.state.loggedIn ? (
+              <a
+                href={"/"}
+                className={styles.headerOption}
+                onClick={this.handleLogout}
+              >
+                Logout
+              </a>
+            ) : (
+              <span className={styles.headerOption} onClick={() => this.props.navigate("/login")}>
+                Login
+              </span>
+            )}
           </div>
         </header>
 
@@ -69,4 +101,9 @@ class HomeScreen extends React.Component {
   }
 }
 
-export default HomeScreen;
+function HomeNavigate() {
+  const navigate = useNavigate();
+  return <HomeScreen navigate={navigate} />;
+}
+
+export default HomeNavigate;

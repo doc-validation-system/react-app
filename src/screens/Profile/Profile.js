@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./Profile.module.css";
-import { Navigate } from "react-router-dom";
 
 class ProfileSection extends React.Component {
   render() {
@@ -47,4 +46,5 @@ class ProfileSection extends React.Component {
     );
   }
 }
+
 export default ProfileSection;

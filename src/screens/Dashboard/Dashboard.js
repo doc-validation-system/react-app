@@ -2,70 +2,105 @@ import React from "react";
 import styles from "./Dashboard.module.css";
 import Card from "./Card";
 import Loader from "../../service/Loader/Loader";
+import { useNavigate } from "react-router-dom";
+import JSAlert from "js-alert";
 
 class DashboardSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showSpinner: false
+      loggedIn: this.getToken(),
+      showDropdown: false,
     };
+    this.handleProfile = this.handleProfile.bind(this);
   }
+
+  getToken = () => {
+    let token = localStorage.getItem("token");
+    return token ? true : false;
+  };
+
+  viewDropdown = () => {
+    this.setState({ showDropdown: !this.state.showDropdown });
+  }
+
+  handleLogout = () => {
+    localStorage.clear();
+  }
+
   handleProfile = async () => {
-    this.setState({showSpinner:true});
+    this.setState({ showSpinner: true });
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     var profileHeader = new Headers();
     profileHeader.append("Authorization", 'Bearer ' + `${token}`);
     profileHeader.append("Content-Type", "application/x-www-form-urlencoded");
     var profileRequestOptions = {
-      method: 'GET',
+      method: "GET",
       headers: profileHeader,
-      redirect: 'follow'
-    }
-    var profileResponse = await fetch(`https://api-docvalidation.onrender.com/user/profile/${email}`, profileRequestOptions);
+      redirect: "follow",
+    };
+    var profileResponse = await fetch(
+      `https://api-docvalidation.onrender.com/user/profile/${email}`,
+      profileRequestOptions
+    );
     var profileData = JSON.parse(await profileResponse.text());
     if (profileResponse.status === 200) {
-      window.open("/profile", "_self");
-      this.setState({showSpinner:false});
-    }
-    else{
-      this.setState({showSpinner:false});
+      this.setState({ showSpinner: false });
+      this.props.navigate("/profile");
+    } else {
+      this.setState({ showSpinner: false });
+      JSAlert.alert(
+        `${profileData.title}`,
+        null,
+        JSAlert.Icons.Failed
+      );
     }
   }
+
   render() {
-    return ( 
-    <>
+    return (
+      <>
         {this.state.showSpinner ? (
           <>
             <div>
-              {/* <Backdrop
-              sx={{
-                color: "#fff",
-                zIndex: (theme) => theme.zIndex.drawer + 1,
-              }}
-              open={this.state.showSpinner}
-            >
-              <CircularProgress color="inherit" />
-            </Backdrop> */}
               <Loader />
-
             </div>
           </>
         ) : (
           <div className={styles.dashboardPage}>
             {/* Header with Logo and Profile Icon */}
+
             <header className={styles.header}>
               <img
                 src="./Images/DocValidateAPI-logo.png"
                 alt="DocValidateLogo"
                 className={styles.logoImage}
+                onClick={() => this.props.navigate("/")}
               />
               <img
                 src="./Images/ProfileIcon.png"
+                id="ProfileIcon"
                 alt="ProfileIcon"
                 className={styles.profileIcon}
-                onClick={this.handleProfile}
+                onMouseOver={this.viewDropdown}
               />
+
+              {this.state.showDropdown && <div className={styles.profileDropdown} onInput={this.viewDropdown}>
+                <div className={styles.dropdownMenu} onClick={() => { this.viewDropdown(); this.handleProfile(); }}>
+                  My Profile
+                </div>
+                <a
+                  href={"/login"}
+                  className={styles.dropdownMenu}
+                  onClick={() => { this.viewDropdown(); this.handleLogout(); }}
+                >
+                  Logout
+                  <div className={styles.logoutIcon}>
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                  </div>
+                </a>
+              </div>}
             </header>
 
             <section className={styles.dashboardCards}>
@@ -96,9 +131,18 @@ class DashboardSection extends React.Component {
             </footer>
           </div>
         )}
-        </>
-        );
+      </>
+    );
   }
 }
 
-        export default DashboardSection;
+function DashboardNavigate() {
+  const navigate = useNavigate();
+  return (
+    <div>
+      <DashboardSection navigate={navigate} />
+    </div>
+  )
+}
+
+export default DashboardNavigate;

@@ -1,10 +1,9 @@
 import styles from "./Signup.module.css";
 import FlatButton from "../../service/FlatButton/FlatButton";
 import React from "react";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
 import JSAlert from "js-alert";
 import Loader from "../../service/Loader/Loader";
+import { useNavigate } from "react-router-dom";
 
 class SignupSection extends React.Component {
   constructor(props) {
@@ -12,6 +11,7 @@ class SignupSection extends React.Component {
     this.state = {
       showSpinner: false,
     };
+    this.handleSignup = this.handleSignup.bind(this);
   }
 
   email = "";
@@ -109,7 +109,7 @@ class SignupSection extends React.Component {
           null,
           JSAlert.Icons.Success
         ).dismissIn(2000);
-        // window.open("/login", "_self");
+        this.props.navigate("/login");
       } else {
         JSAlert.alert(
           `${decodedData.title} ` + `${decodedData.message}`,
@@ -161,15 +161,6 @@ class SignupSection extends React.Component {
         {this.state.showSpinner ? (
           <>
             <div>
-              {/* <Backdrop
-                sx={{
-                  color: "#fff",
-                  zIndex: (theme) => theme.zIndex.drawer + 1,
-                }}
-                open={this.state.showSpinner}
-              >
-                <CircularProgress color="inherit" />
-              </Backdrop> */}
               <Loader />
             </div>
           </>
@@ -181,6 +172,7 @@ class SignupSection extends React.Component {
                 src="./Images/DocValidateAPI-logo.png"
                 alt="DocValidateLogo"
                 className={styles.logoImage}
+                onClick={() => { this.props.navigate("/") }}
               />
             </header>
             <section className={styles.signupSection}>
@@ -264,7 +256,7 @@ class SignupSection extends React.Component {
                   Already have an account?{" "}
                   <span
                     className={styles.loginRedirectLink}
-                    onClick={() => window.open("/login", "_self")}
+                    onClick={() => this.props.navigate("/login")}
                   >
                     Log in
                   </span>
@@ -296,4 +288,13 @@ class SignupSection extends React.Component {
   }
 }
 
-export default SignupSection;
+function SignupNavigate() {
+  const navigate = useNavigate();
+  return (
+    <div>
+      <SignupSection navigate={navigate} />
+    </div>
+  );
+}
+
+export default SignupNavigate;

@@ -18,6 +18,7 @@
 
 .logoImage {
   height: 28px;
+  cursor: pointer;
 }
 
 .profileIcon {
@@ -26,7 +27,49 @@
   border-bottom: 1px solid rgba(40, 106, 222, 0.15);
   height: 36px;
   cursor: pointer;
+  color: #286ade;
   transition: 0.15s ease-in;
+  border: 30px;
+}
+
+.profileDropdown {
+  width: 100px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background: rgba(40, 106, 222, 0.1);
+  border-radius: 3px;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 64px;
+  top: 50px;
+  z-index: 1;
+}
+
+.dropdownMenu {
+  margin: 2px 0;
+  padding: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  color: #286ade;
+  transition: 0.1s ease-in;
+  display: flex;
+  align-items: center;
+}
+
+.logoutIcon {
+  margin-left: 4px;
+  font-size: 14px;
+}
+
+.dropdownMenu:hover {
+  background: rgba(40, 106, 222, 0.15);
+  border-radius: 3px;
+  transform: scale(1.03);
 }
 
 .profileIcon:hover {
@@ -34,13 +77,27 @@
   transform: scale(1.05);
 }
 
-.profileIcon:active {
-  transform: scale(0.95);
+.profileIcon + .profileDropdown {
+  -webkit-animation: dropdown-menu 0.5s ease-out;
+}
+
+@keyframes dropdown-menu {
+  0% {
+    opacity: 0%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
 }
 
 @media screen and (max-width: 1200px) {
   .profileIcon {
     right: 130px;
+  }
+
+  .profileDropdown {
+    right: 34px;
   }
 }
 
@@ -48,17 +105,20 @@
   .profileIcon {
     right: 100px;
   }
+
+  .profileDropdown {
+    right: 8px;
+  }
 }
 
 .dashboardCards {
-    margin: 40px 240px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    flex-wrap: wrap;
+  margin: 40px 240px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
-
 
 .footer {
   padding-bottom: 2px;

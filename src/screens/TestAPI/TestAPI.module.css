@@ -44,6 +44,32 @@
   margin-bottom: 36px;
 }
 
+.userDetails__Form {
+  height: 418px;
+  padding-right: 4px;
+  overflow-y: scroll;
+}
+
+.userDetails__Form::-webkit-scrollbar {
+  width: 4px;
+  background-color: #274472;
+  border-radius: 20px;
+}
+
+.userDetails__Form::-webkit-scrollbar-thumb {
+  width: 4px;
+  background-color: #c6dbff;
+  border-radius: 20px;
+}
+
+.userDetails__Form::-webkit-scrollbar-thumb:hover {
+  background-color: #b6d0fc;
+}
+
+.userDetails__Form::-webkit-scrollbar-thumb:active {
+  background-color: #a3c0f1;
+}
+
 .userDetails__Label {
   font-family: "Alegreya Sans SC", sans-serif;
   font-weight: 500;
@@ -64,7 +90,7 @@
   padding: 12px 0 12px 0;
   color: #c6dbff;
   font-size: 16px;
-  width: 472px;
+  width: 466px;
   margin-bottom: 24px;
 }
 
@@ -76,7 +102,7 @@
 .userDetails__AddressInputArea {
   border: none;
   outline: none;
-  width: 464px;
+  width: 458px;
   height: 92px;
   margin-top: 12px;
   background-color: #c6dbff;
@@ -133,6 +159,17 @@
   display: none;
 }
 
+.uploadSection {
+  height: 186px;
+  width: 472px;
+  margin: 36px 0px;
+  overflow-y: scroll;
+}
+
+.uploadSection::-webkit-scrollbar {
+  width: 0px;
+}
+
 .submitButton {
   width: 144px;
   height: 36px;
@@ -144,4 +181,20 @@
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
   margin-left: auto;
   cursor: pointer;
+  transition: 50ms ease-in;
+}
+
+.submitButton:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.submitButton:active {
+  transform: scale(0.98);
+  opacity: 0.95;
+}
+
+.footerLogo {
+  width: 144px;
+  margin-top: 48px;
 }
