@@ -67,6 +67,16 @@
   -webkit-animation: homeImage-fade-in 2s ease-out !important;
 }
 
+@keyframes homeImage-fade-in {
+  0% {
+    opacity: 0%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
+}
+
 .homeImage {
   width: 340px;
 }

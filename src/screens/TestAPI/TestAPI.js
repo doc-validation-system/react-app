@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./TestAPI.module.css";
-import FileCard from "../../service/FileCard/FileCard";
+// import FileCard from "../../service/FileCard/FileCard";
+// import FileInput from "../../service/FileInput/FileInput";
 import TestAPIModal from "../TestAPI_Modal/TestAPIModal";
 import JSAlert from "js-alert";
 
@@ -14,13 +15,17 @@ class TestAPISection extends React.Component {
       uidPan: "",
       uidVoter: "",
       address: "",
-      uploadedFile: [],
+      aadharFile: "",
+      panFile: "",
+      voterFile: "",
       flagName: false,
       flagDOB: false,
       flagAadhar: false,
       flagPan: false,
       flagVoter: false,
-      flagFileUpload: false,
+      flagAadharFile: false,
+      flagPanFile: false,
+      flagVoterFile: false,
       flagModalViewer: false,
     };
     this.closeModal = this.closeModal.bind(this);
@@ -135,71 +140,47 @@ class TestAPISection extends React.Component {
     this.setState({ ...this.state, [name]: value });
   };
 
-  fileIdAssigner = 1;
+  async handleFileInputStates(element) {
+    let file = await element.target.files[0];
+    let fileName = element.target.name;
 
-  async handleFileInputStates() {
-    let noOfFiles = await this.state.uploadedFile.length;
+    await this.setState({
+      ...this.state,
+      [fileName]: {
+        name: file.name,
+        size: file.size,
+      },
+    });
 
-    let files = [];
-
-    if (noOfFiles < 3) {
-      files = document.getElementById("file").files;
-
-      if (files.length > 3) {
-        this.setState({ flagFileUpload: false });
-
-        JSAlert.alert(
-          "Only 3 files are accepted",
-          null,
-          JSAlert.Icons.Failed
-        ).dismissIn(1000);
-      } else {
-        this.setState({ flagFileUpload: true });
-
-        for (var i = 0; i < files.length; i++) {
-          await this.setState({
-            uploadedFile: [
-              ...this.state.uploadedFile,
-              {
-                fileId: this.fileIdAssigner++,
-                name: files[i].name,
-                size: files[i].size,
-              },
-            ],
-          });
-        }
-      }
+    // Aadhar Card Checker
+    if (this.state.aadharFile === "") {
+      await this.setState({ flagAadharFile: false });
     } else {
-      JSAlert.alert(
-        "Delete files before uploading. Only 3 files are accepted",
-        null,
-        JSAlert.Icons.Failed
-      ).dismissIn(1000);
-
-      return;
+      await this.setState({ flagAadharFile: true });
     }
 
-    console.log(this.state.uploadedFile);
+    // Pan Card Checker
+    if (this.state.panFile === "") {
+      await this.setState({ flagPanFile: false });
+    } else {
+      await this.setState({ flagPanFile: true });
+    }
 
-    return false;
+    // Voter Card Checker
+    if (this.state.voterFile === "") {
+      await this.setState({ flagVoterFile: false });
+    } else {
+      await this.setState({ flagVoterFile: true });
+    }
+
+    console.log(this.state.aadharFile, this.state.flagAadharFile);
   }
 
-  handleFileUploadInput = () => {
-    if (this.state.uploadedFile.length < 1) {
-      this.setState({ flagFileUpload: false });
-    } else {
-      this.setState({ flagFileUpload: true });
-    }
-  };
-
-  rerenderUI = () => {
-    this.forceUpdate();
-  };
-
   abbrName = (element) => {
+    // Abbreviating long file names
     if (element.length > 25) {
       return (
-        element.slice(0, 14) +
+        element.slice(0, 17) +
         "..." +
         element.slice(element.length - 4, element.length)
       );
@@ -222,19 +203,6 @@ class TestAPISection extends React.Component {
     return element.toFixed(2) + sizeUnit;
   };
 
-  async deleteCard(elementId) {
-    await this.setState({
-      uploadedFile: this.state.uploadedFile.filter((file) => {
-        return file.fileId !== elementId;
-      }),
-    });
-
-    this.handleFileUploadInput();
-
-    console.log(this.state.uploadedFile.length);
-    console.log(this.state.uploadedFile);
-  }
-
   closeModal = () => {
     this.setState({ flagModalViewer: false });
   };
@@ -249,11 +217,10 @@ class TestAPISection extends React.Component {
       this.state.flagAadhar &&
       this.state.flagPan &&
       this.state.flagVoter &&
-      this.state.flagFileUpload
+      this.state.flagAadharFile &&
+      this.state.flagPanFile &&
+      this.state.flagVoterFile
     ) {
-      // JSAlert.alert("Correct Input", null, JSAlert.Icons.Success).dismissIn(
-      //   1000
-      // );
       this.setState({
         name: "",
         dob: "",
@@ -261,13 +228,17 @@ class TestAPISection extends React.Component {
         uidPan: "",
         uidVoter: "",
         address: "",
-        uploadedFile: [],
+        aadharFile: "",
+        panFile: "",
+        voterFile: "",
         flagName: false,
         flagDOB: false,
         flagAadhar: false,
         flagPan: false,
         flagVoter: false,
-        flagFileUpload: false,
+        flagAadharFile: false,
+        flagPanFile: false,
+        flagVoterFile: false,
         flagModalViewer: true,
       });
     } else if (!this.state.flagName) {
@@ -298,9 +269,21 @@ class TestAPISection extends React.Component {
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
-    } else if (!this.state.flagFileUpload) {
+    } else if (!this.state.flagAadharFile) {
       JSAlert.alert(
-        "Select files to upload",
+        "Upload your Aadhar Card",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    } else if (!this.state.flagPanFile) {
+      JSAlert.alert(
+        "Upload your Pan Card",
+        null,
+        JSAlert.Icons.Failed
+      ).dismissIn(1000);
+    } else if (!this.state.flagVoterFile) {
+      JSAlert.alert(
+        "Upload your Voter Card",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
@@ -461,48 +444,100 @@ class TestAPISection extends React.Component {
             >
               {/* File Upload Header */}
               <div className={styles.fileUpload__Header}>File Upload</div>
-              {/* File Uplaad Section */}
-              <label htmlFor="file">
-                {/* File Upload Button */}
-                <img
-                  src="./Images/FileUploadBground.png"
-                  alt=""
-                  className={styles.fileUpload__UploadButton}
-                />
 
-                {/* File Input */}
-                <input
-                  type="file"
-                  name="uploadedFile"
-                  id="file"
-                  multiple
-                  accept=".png, .jpg, .jpeg, .pdf"
-                  className={styles.uploadDefButton}
-                  onClick={(element) => {
-                    element.target.value = "";
-                  }}
-                  onChange={() => {
-                    this.handleFileInputStates();
-                    this.rerenderUI();
-                  }}
-                />
-              </label>
-              {/* Uploaded File Details */}
-              <div className={styles.uploadSection}>
-                {this.state.uploadedFile.length > 0 &&
-                  this.state.uploadedFile.map((element) => {
-                    return (
-                      <div key={element.fileId}>
-                        <FileCard
-                          name={this.abbrName(element.name)}
-                          size={this.convertSize(element.size)}
-                          deleteCard={() => {
-                            this.deleteCard(element.fileId);
-                          }}
-                        />
+              {/* File Upload Icon */}
+              <img
+                src="./Images/FileUploadSectionIcon.png"
+                alt=""
+                className={styles.fileUpload__Icon}
+              />
+
+              {/* File Upload Area */}
+
+              <div className={styles.fileUpload__FileInputArea}>
+                {/* Aadhar Card Input */}
+                <div className={styles.fileInput}>
+                  <label htmlFor="aadharFile">
+                    {/* Aadhar Card Upload Button */}
+                    <div className={styles.fileInput__BrowseButton}>Browse</div>
+
+                    <input
+                      type="file"
+                      name="aadharFile"
+                      id="aadharFile"
+                      accept=".png, .jpg, .jpeg, .pdf"
+                      className={styles.uploadDefButton}
+                      onChange={(e) => this.handleFileInputStates(e)}
+                    />
+                  </label>
+                  {/* Aadhar Card Details */}
+                  <div className={styles.fileInput__FileDetails}>
+                    {this.state.flagAadharFile ? (
+                      <div>
+                        {this.abbrName(this.state.aadharFile.name)} {"  "}(
+                        {this.convertSize(this.state.aadharFile.size)})
                       </div>
-                    );
-                  })}
+                    ) : (
+                      "Upload your Aadhar Card"
+                    )}
+                  </div>
+                </div>
+
+                {/* Pan Card Input */}
+                <div className={styles.fileInput}>
+                  <label htmlFor="panFile">
+                    {/* Pan Card Upload Button */}
+                    <div className={styles.fileInput__BrowseButton}>Browse</div>
+
+                    <input
+                      type="file"
+                      name="panFile"
+                      id="panFile"
+                      accept=".png, .jpg, .jpeg, .pdf"
+                      className={styles.uploadDefButton}
+                      onChange={(e) => this.handleFileInputStates(e)}
+                    />
+                  </label>
+                  {/* Pan Card Details */}
+                  <div className={styles.fileInput__FileDetails}>
+                    {this.state.flagPanFile ? (
+                      <div>
+                        {this.abbrName(this.state.panFile.name)} {"  "}(
+                        {this.convertSize(this.state.panFile.size)})
+                      </div>
+                    ) : (
+                      "Upload your Pan Card"
+                    )}
+                  </div>
+                </div>
+
+                {/* Voter Card Input */}
+                <div className={styles.fileInput}>
+                  <label htmlFor="voterFile">
+                    {/* Voter Card Upload Button */}
+                    <div className={styles.fileInput__BrowseButton}>Browse</div>
+
+                    <input
+                      type="file"
+                      name="voterFile"
+                      id="voterFile"
+                      accept=".png, .jpg, .jpeg, .pdf"
+                      className={styles.uploadDefButton}
+                      onChange={(e) => this.handleFileInputStates(e)}
+                    />
+                  </label>
+                  {/* Voter Card Details */}
+                  <div className={styles.fileInput__FileDetails}>
+                    {this.state.flagVoterFile ? (
+                      <div>
+                        {this.abbrName(this.state.voterFile.name)} {"  "}(
+                        {this.convertSize(this.state.voterFile.size)})
+                      </div>
+                    ) : (
+                      "Upload your Voter Card"
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* Submit button */}
