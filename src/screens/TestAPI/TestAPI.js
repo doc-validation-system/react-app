@@ -1,7 +1,5 @@
 import React from "react";
 import styles from "./TestAPI.module.css";
-// import FileCard from "../../service/FileCard/FileCard";
-// import FileInput from "../../service/FileInput/FileInput";
 import TestAPIModal from "../TestAPI_Modal/TestAPIModal";
 import JSAlert from "js-alert";
 
@@ -15,6 +13,7 @@ class TestAPISection extends React.Component {
       uidPan: "",
       uidVoter: "",
       address: "",
+      uploadedFiles: {},
       aadharFile: "",
       panFile: "",
       voterFile: "",
@@ -23,9 +22,6 @@ class TestAPISection extends React.Component {
       flagAadhar: false,
       flagPan: false,
       flagVoter: false,
-      flagAadharFile: false,
-      flagPanFile: false,
-      flagVoterFile: false,
       flagModalViewer: false,
     };
     this.closeModal = this.closeModal.bind(this);
@@ -36,6 +32,7 @@ class TestAPISection extends React.Component {
   aadhar = "";
   pan = "";
   voter = "";
+  imageFiles = [];
 
   handleNameInput = (element) => {
     // Getting the name
@@ -142,51 +139,66 @@ class TestAPISection extends React.Component {
 
   async handleFileInputStates(element) {
     let file = await element.target.files[0];
+    let flagFile = -1;
     let fileName = element.target.name;
 
     await this.setState({
-      ...this.state,
-      [fileName]: {
-        name: file.name,
-        size: file.size,
+      uploadedFiles: {
+        ...this.state.uploadedFiles,
+        [fileName]: {
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          file: file,
+          path: element.target.value,
+        },
       },
     });
 
-    // Aadhar Card Checker
-    if (this.state.aadharFile === "") {
-      await this.setState({ flagAadharFile: false });
-    } else {
-      await this.setState({ flagAadharFile: true });
+    
+    // Renaming the File
+    let apiKey = "abcdefgh";
+    file = new File(
+        [file.name],
+        `${apiKey}_${fileName.slice(0, fileName.length - 4)}.${
+            file.type.split("/")[1]
+        }`,
+      { type: file.type }
+    );
+
+    // Checking for presence of files
+    for (let i = 0; i < this.imageFiles.length; i++) {
+        console.log(this.imageFiles[i].name);
+        if (this.imageFiles[i].name.split(".")[0] === file.name.split(".")[0]) {
+            flagFile = i;
+            break;
+        }
     }
-
-    // Pan Card Checker
-    if (this.state.panFile === "") {
-      await this.setState({ flagPanFile: false });
+    
+    //   Files not present
+    if (flagFile < 0) {
+        this.imageFiles.push(file);
     } else {
-      await this.setState({ flagPanFile: true });
+        this.imageFiles[flagFile] = file;
     }
+    
+    flagFile = -1;
 
-    // Voter Card Checker
-    if (this.state.voterFile === "") {
-      await this.setState({ flagVoterFile: false });
-    } else {
-      await this.setState({ flagVoterFile: true });
-    }
+    console.log(this.state.uploadedFiles);
+    console.log("ImageFile:", this.imageFiles);
+}
 
-    console.log(this.state.aadharFile, this.state.flagAadharFile);
-  }
-
-  abbrName = (element) => {
+abbrName = (element) => {
     // Abbreviating long file names
     if (element.length > 25) {
-      return (
-        element.slice(0, 17) +
-        "..." +
-        element.slice(element.length - 4, element.length)
-      );
-    }
-
-    return element;
+        return (
+            element.slice(0, 17) +
+            "..." +
+            element.slice(element.length - 4, element.length)
+            );
+        }
+        
+        return element;
   };
 
   convertSize = (element) => {
@@ -207,7 +219,7 @@ class TestAPISection extends React.Component {
     this.setState({ flagModalViewer: false });
   };
 
-  handleSubmit = (element) => {
+  handleSubmit = async (element) => {
     element.preventDefault();
     console.log(this.state);
 
@@ -217,30 +229,34 @@ class TestAPISection extends React.Component {
       this.state.flagAadhar &&
       this.state.flagPan &&
       this.state.flagVoter &&
-      this.state.flagAadharFile &&
-      this.state.flagPanFile &&
-      this.state.flagVoterFile
+      Object.keys(this.state.uploadedFiles).length === 3
     ) {
-      this.setState({
-        name: "",
-        dob: "",
-        uidAadhar: "",
-        uidPan: "",
-        uidVoter: "",
-        address: "",
-        aadharFile: "",
-        panFile: "",
-        voterFile: "",
-        flagName: false,
-        flagDOB: false,
-        flagAadhar: false,
-        flagPan: false,
-        flagVoter: false,
-        flagAadharFile: false,
-        flagPanFile: false,
-        flagVoterFile: false,
-        flagModalViewer: true,
-      });
+      var formdata = new FormData();
+
+      // Appending User Inputs
+      for (let file in this.state.uploadedFiles) {
+        formdata.append("image", file.file, file.path);
+      }
+
+      formdata.append("name", this.state.name);
+      formdata.append("dob", this.state.dob);
+      formdata.append("apiKey", "abcdefgh");
+      formdata.append("aadharId", this.state.uidAadhar);
+      formdata.append("panId", this.state.uidPan);
+      formdata.append("voterId", this.state.uidVoter);
+
+      var requestOptions = {
+        method: "POST",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      let response = await fetch(
+        "http://localhost:6001/user/getdata",
+        requestOptions
+      );
+
+      console.log(JSON.parse(await response.text()));
     } else if (!this.state.flagName) {
       JSAlert.alert("Enter a valid Name", null, JSAlert.Icons.Failed).dismissIn(
         1000
@@ -269,21 +285,9 @@ class TestAPISection extends React.Component {
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
-    } else if (!this.state.flagAadharFile) {
+    } else if (Object.keys(this.state.uploadedFiles).length !== 3) {
       JSAlert.alert(
-        "Upload your Aadhar Card",
-        null,
-        JSAlert.Icons.Failed
-      ).dismissIn(1000);
-    } else if (!this.state.flagPanFile) {
-      JSAlert.alert(
-        "Upload your Pan Card",
-        null,
-        JSAlert.Icons.Failed
-      ).dismissIn(1000);
-    } else if (!this.state.flagVoterFile) {
-      JSAlert.alert(
-        "Upload your Voter Card",
+        "Upload your three Identification Card",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
@@ -465,17 +469,23 @@ class TestAPISection extends React.Component {
                       type="file"
                       name="aadharFile"
                       id="aadharFile"
-                      accept=".png, .jpg, .jpeg, .pdf"
+                      accept=".png, .jpg, .jpeg"
                       className={styles.uploadDefButton}
                       onChange={(e) => this.handleFileInputStates(e)}
                     />
                   </label>
                   {/* Aadhar Card Details */}
                   <div className={styles.fileInput__FileDetails}>
-                    {this.state.flagAadharFile ? (
+                    {this.state.uploadedFiles.aadharFile ? (
                       <div>
-                        {this.abbrName(this.state.aadharFile.name)} {"  "}(
-                        {this.convertSize(this.state.aadharFile.size)})
+                        {this.abbrName(
+                          this.state.uploadedFiles.aadharFile.name
+                        )}{" "}
+                        {"  "}(
+                        {this.convertSize(
+                          this.state.uploadedFiles.aadharFile.size
+                        )}
+                        )
                       </div>
                     ) : (
                       "Upload your Aadhar Card"
@@ -493,17 +503,21 @@ class TestAPISection extends React.Component {
                       type="file"
                       name="panFile"
                       id="panFile"
-                      accept=".png, .jpg, .jpeg, .pdf"
+                      accept=".png, .jpg, .jpeg"
                       className={styles.uploadDefButton}
                       onChange={(e) => this.handleFileInputStates(e)}
                     />
                   </label>
                   {/* Pan Card Details */}
                   <div className={styles.fileInput__FileDetails}>
-                    {this.state.flagPanFile ? (
+                    {this.state.uploadedFiles.panFile ? (
                       <div>
-                        {this.abbrName(this.state.panFile.name)} {"  "}(
-                        {this.convertSize(this.state.panFile.size)})
+                        {this.abbrName(this.state.uploadedFiles.panFile.name)}{" "}
+                        {"  "}(
+                        {this.convertSize(
+                          this.state.uploadedFiles.panFile.size
+                        )}
+                        )
                       </div>
                     ) : (
                       "Upload your Pan Card"
@@ -521,17 +535,21 @@ class TestAPISection extends React.Component {
                       type="file"
                       name="voterFile"
                       id="voterFile"
-                      accept=".png, .jpg, .jpeg, .pdf"
+                      accept=".png, .jpg, .jpeg"
                       className={styles.uploadDefButton}
                       onChange={(e) => this.handleFileInputStates(e)}
                     />
                   </label>
                   {/* Voter Card Details */}
                   <div className={styles.fileInput__FileDetails}>
-                    {this.state.flagVoterFile ? (
+                    {this.state.uploadedFiles.voterFile ? (
                       <div>
-                        {this.abbrName(this.state.voterFile.name)} {"  "}(
-                        {this.convertSize(this.state.voterFile.size)})
+                        {this.abbrName(this.state.uploadedFiles.voterFile.name)}{" "}
+                        {"  "}(
+                        {this.convertSize(
+                          this.state.uploadedFiles.voterFile.size
+                        )}
+                        )
                       </div>
                     ) : (
                       "Upload your Voter Card"
