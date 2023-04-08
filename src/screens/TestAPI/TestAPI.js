@@ -14,17 +14,18 @@ class TestAPISection extends React.Component {
       uidVoter: "",
       address: "",
       uploadedFiles: {},
-      aadharFile: "",
-      panFile: "",
-      voterFile: "",
       flagName: false,
       flagDOB: false,
       flagAadhar: false,
       flagPan: false,
       flagVoter: false,
+      flagShowLoader: false,
       flagModalViewer: false,
     };
+
     this.closeModal = this.closeModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFileInputStates = this.handleFileInputStates.bind(this);
   }
 
   name = "";
@@ -32,7 +33,6 @@ class TestAPISection extends React.Component {
   aadhar = "";
   pan = "";
   voter = "";
-  imageFiles = [];
 
   handleNameInput = (element) => {
     // Getting the name
@@ -86,7 +86,7 @@ class TestAPISection extends React.Component {
   };
 
   handleDobInput = (element) => {
-    this.dob = element.target.value;
+    this.dob = new Date(element.target.value).toISOString();
     console.log(this.dob);
     if (this.dob) {
       this.setState({ flagDOB: true });
@@ -138,67 +138,35 @@ class TestAPISection extends React.Component {
   };
 
   async handleFileInputStates(element) {
-    let file = await element.target.files[0];
-    let flagFile = -1;
+    let validationFile = await element.target.files[0];
     let fileName = element.target.name;
 
     await this.setState({
       uploadedFiles: {
         ...this.state.uploadedFiles,
         [fileName]: {
-          name: file.name,
-          type: file.type,
-          size: file.size,
-          file: file,
-          path: element.target.value,
+          file: validationFile,
+          name: validationFile.name,
+          type: validationFile.type,
+          size: validationFile.size,
         },
       },
     });
 
-    
-    // Renaming the File
-    let apiKey = "abcdefgh";
-    file = new File(
-        [file.name],
-        `${apiKey}_${fileName.slice(0, fileName.length - 4)}.${
-            file.type.split("/")[1]
-        }`,
-      { type: file.type }
-    );
-
-    // Checking for presence of files
-    for (let i = 0; i < this.imageFiles.length; i++) {
-        console.log(this.imageFiles[i].name);
-        if (this.imageFiles[i].name.split(".")[0] === file.name.split(".")[0]) {
-            flagFile = i;
-            break;
-        }
-    }
-    
-    //   Files not present
-    if (flagFile < 0) {
-        this.imageFiles.push(file);
-    } else {
-        this.imageFiles[flagFile] = file;
-    }
-    
-    flagFile = -1;
-
     console.log(this.state.uploadedFiles);
-    console.log("ImageFile:", this.imageFiles);
-}
+  }
 
-abbrName = (element) => {
+  abbrName = (element) => {
     // Abbreviating long file names
-    if (element.length > 25) {
-        return (
-            element.slice(0, 17) +
-            "..." +
-            element.slice(element.length - 4, element.length)
-            );
-        }
-        
-        return element;
+    if (element.length > 16) {
+      return (
+        element.slice(0, 14) +
+        "..." +
+        element.slice(element.length - 4, element.length)
+      );
+    }
+
+    return element;
   };
 
   convertSize = (element) => {
@@ -228,35 +196,92 @@ abbrName = (element) => {
       this.state.flagDOB &&
       this.state.flagAadhar &&
       this.state.flagPan &&
-      this.state.flagVoter &&
-      Object.keys(this.state.uploadedFiles).length === 3
+      this.state.flagVoter
+      // Object.keys(this.state.uploadedFiles).length === 3
     ) {
-      var formdata = new FormData();
+      let formdata = new FormData();
 
-      // Appending User Inputs
-      for (let file in this.state.uploadedFiles) {
-        formdata.append("image", file.file, file.path);
-      }
+      // API Key
+      let apiKey = "kKssKzoPqzcqFxrxwpDk1141718181OQMnn";
+
+      // Appending Uploaded Files
+      // Aadhar Card
+      formdata.append(
+        "image",
+        this.state.uploadedFiles.aadharFile.file,
+        `${apiKey}_aadhar.${
+          this.state.uploadedFiles.aadharFile.file.type.split("/")[1]
+        }`
+      );
+
+      // Pan Card
+      // formdata.append(
+      //   "image",
+      //   this.state.uploadedFiles.panFile.file,
+      //   `${apiKey}_pan.${
+      //     this.state.uploadedFiles.panFile.file.type.split("/")[1]
+      //   }`
+      // );
+
+      // Voter Card
+      // formdata.append(
+      //   "image",
+      //   this.state.uploadedFiles.voterFile.file,
+      //   `${apiKey}_voter.${
+      //     this.state.uploadedFiles.voterFile.file.type.split("/")[1]
+      //   }`
+      // );
 
       formdata.append("name", this.state.name);
       formdata.append("dob", this.state.dob);
-      formdata.append("apiKey", "abcdefgh");
+      formdata.append("apiKey", apiKey);
       formdata.append("aadharId", this.state.uidAadhar);
       formdata.append("panId", this.state.uidPan);
       formdata.append("voterId", this.state.uidVoter);
 
-      var requestOptions = {
+      for (let key of formdata.keys()) {
+        console.log(key, formdata.getAll(key));
+      }
+
+      // Initializing the form
+      this.setState({
+        name: "",
+        dob: "",
+        uidAadhar: "",
+        uidPan: "",
+        uidVoter: "",
+        address: "",
+        uploadedFiles: {},
+        flagName: false,
+        flagDOB: false,
+        flagAadhar: false,
+        flagPan: false,
+        flagVoter: false,
+        flagModalViewer: false,
+        flagShowLoader: true,
+      });
+
+      let url = "https://api-docvalidation.onrender.com/user/getdata";
+
+      let requestOptions = {
         method: "POST",
         body: formdata,
-        redirect: "follow",
       };
 
-      let response = await fetch(
-        "http://localhost:6001/user/getdata",
-        requestOptions
-      );
+      // Fetching DocValidation API
+      let response = await fetch(url, requestOptions);
 
-      console.log(JSON.parse(await response.text()));
+      // Parsing received data
+      let decodedData = JSON.parse(await response.text());
+
+      if (decodedData) {
+        this.setState({
+          flagShowLoader: false,
+          flagModalViewer: true
+        });
+      }
+
+      console.log(JSON.stringify(decodedData, null, 3));
     } else if (!this.state.flagName) {
       JSAlert.alert("Enter a valid Name", null, JSAlert.Icons.Failed).dismissIn(
         1000
@@ -287,7 +312,7 @@ abbrName = (element) => {
       ).dismissIn(1000);
     } else if (Object.keys(this.state.uploadedFiles).length !== 3) {
       JSAlert.alert(
-        "Upload your three Identification Card",
+        "Upload your three Identification Cards",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
@@ -297,6 +322,15 @@ abbrName = (element) => {
   render() {
     return (
       <>
+        {this.state.flagShowLoader && (
+          <div className={styles.testApiModal__Loader}>
+            <img
+              src="./Images/ModalLoader.gif"
+              alt=""
+              className={styles.loader__Icon}
+            />
+          </div>
+        )}
         {this.state.flagModalViewer && (
           <div className={styles.testApiModal}>
             <TestAPIModal closeModal={this.closeModal} />
@@ -330,7 +364,9 @@ abbrName = (element) => {
                     id="name"
                     autoComplete="off"
                     placeholder="Enter your Name"
-                    className={styles.userDetails__InputArea}
+                    className={`${styles.userDetails__InputArea} ${
+                      this.state.name && styles.inputArea_Active
+                    }`}
                     value={this.state.name}
                     onChange={(e) => this.handleInputStates(e)}
                     onBlur={(e) => this.handleNameInput(e)}
@@ -350,7 +386,9 @@ abbrName = (element) => {
                     id="date"
                     max={this.setEndDate()}
                     autoComplete="off"
-                    className={styles.userDetails__InputArea}
+                    className={`${styles.userDetails__InputArea} ${
+                      this.state.dob && styles.inputArea_Active
+                    }`}
                     value={this.state.dob}
                     onChange={(e) => this.handleInputStates(e)}
                     onBlur={(e) => this.handleDobInput(e)}
@@ -371,7 +409,9 @@ abbrName = (element) => {
                     id="uidAadharInp"
                     autoComplete="off"
                     placeholder="Enter your Aadhaar ID"
-                    className={styles.userDetails__InputArea}
+                    className={`${styles.userDetails__InputArea} ${
+                      this.state.uidAadhar && styles.inputArea_Active
+                    }`}
                     value={this.state.uidAadhar}
                     onChange={(e) => this.handleInputStates(e)}
                     onBlur={(e) => this.handleAadharInput(e)}
@@ -391,7 +431,9 @@ abbrName = (element) => {
                     id="uidPanInp"
                     autoComplete="off"
                     placeholder="Enter your Pan ID"
-                    className={styles.userDetails__InputArea}
+                    className={`${styles.userDetails__InputArea} ${
+                      this.state.uidPan && styles.inputArea_Active
+                    }`}
                     value={this.state.uidPan}
                     onChange={(e) => this.handleInputStates(e)}
                     onBlur={(e) => this.handlePanInput(e)}
@@ -411,7 +453,9 @@ abbrName = (element) => {
                     id="uidVoterInp"
                     autoComplete="off"
                     placeholder="Enter your Voter ID"
-                    className={styles.userDetails__InputArea}
+                    className={`${styles.userDetails__InputArea} ${
+                      this.state.uidVoter && styles.inputArea_Active
+                    }`}
                     value={this.state.uidVoter}
                     onChange={(e) => this.handleInputStates(e)}
                     onBlur={(e) => this.handleVoterInput(e)}
@@ -428,7 +472,9 @@ abbrName = (element) => {
                     placeholder="Enter your Address"
                     autoComplete="off"
                     maxLength="200"
-                    className={styles.userDetails__AddressInputArea}
+                    className={`${styles.userDetails__AddressInputArea} ${
+                      this.state.address && styles.addressInputArea_Active
+                    }`}
                     value={this.state.address}
                     onChange={(e) => this.handleInputStates(e)}
                   />
