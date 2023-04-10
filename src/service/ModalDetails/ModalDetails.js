@@ -8,7 +8,13 @@ class ModalDetails extends React.Component {
     this.name = props.name;
     this.dob = props.dob;
     this.faceDetected = props.faceDetected;
+    this.validationFlags = props.validationFlags;
   }
+
+  validationMark = (flag) => {
+    return flag ? "CorrectIcon.png" : "WrongIcon.png";
+  };
+
   render() {
     return (
       <>
@@ -21,8 +27,8 @@ class ModalDetails extends React.Component {
             <div className={styles.field__Value}>{this.uid}</div>
             {/* Field Check mark */}
             <img
-              src="./Images/CorrectIcon.png"
-              alt="Correct"
+              src={`./Images/${this.validationMark(this.validationFlags.id)}`}
+              alt=""
               className={styles.field__CheckMark}
             />
           </div>
@@ -34,8 +40,8 @@ class ModalDetails extends React.Component {
             <div className={styles.field__Value}>{this.name}</div>
             {/* Field Check mark */}
             <img
-              src="./Images/CorrectIcon.png"
-              alt="Correct"
+              src={`./Images/${this.validationMark(this.validationFlags.name)}`}
+              alt=""
               className={styles.field__CheckMark}
             />
           </div>
@@ -47,8 +53,8 @@ class ModalDetails extends React.Component {
             <div className={styles.field__Value}>{this.dob}</div>
             {/* Field Check mark */}
             <img
-              src="./Images/CorrectIcon.png"
-              alt="Correct"
+              src={`./Images/${this.validationMark(this.validationFlags.dob)}`}
+              alt=""
               className={styles.field__CheckMark}
             />
           </div>
