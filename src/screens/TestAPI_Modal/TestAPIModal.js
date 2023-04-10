@@ -6,7 +6,27 @@ class TestAPIModal extends React.Component {
   constructor(props) {
     super(props);
     this.closeModal = props.closeModal;
+    this.formResult = props.formResult;
   }
+
+  componentDidMount() {
+    console.log("Accuracy: ", this.formResult.decodedData.accuracy);
+
+    // The accuracy value from the server
+    let accuracy = Math.ceil(this.formResult.decodedData.accuracy);
+    
+    // Calculated value for the circular progress bar
+    let percentVal = Math.ceil(472 - (accuracy / 100) * (472 - 134));
+
+    let counter = 472;
+    setInterval(() => {
+      if (counter === percentVal) clearInterval(counter);
+      else {
+        document.getElementById("circle").style.strokeDashoffset = --counter;
+      }
+    }, 16);
+  }
+
   render() {
     return (
       <div className={styles.testApiModal}>
@@ -30,7 +50,9 @@ class TestAPIModal extends React.Component {
             {/* Outer and Inner Rings */}
             <div className={styles.progressBar__OuterRing}>
               <div className={styles.progressBar__InnerRing}>
-                <div className={styles.progressBar__ScorePercentage}>80%</div>
+                <div className={styles.progressBar__ScorePercentage}>
+                  {this.formResult.decodedData.accuracy}%
+                </div>
               </div>
             </div>
 
@@ -46,7 +68,14 @@ class TestAPIModal extends React.Component {
                   <stop offset="100%" stopColor="#4460da" />
                 </linearGradient>
               </defs>
-              <circle cx="96" cy="64" r="54" strokeLinecap="round" />
+              <circle
+                id="circle"
+                cx="96"
+                cy="64"
+                r="54"
+                strokeLinecap="round"
+                // style={circleAnim}
+              />
             </svg>
           </div>
 
@@ -87,9 +116,10 @@ class TestAPIModal extends React.Component {
               <span style={{ fontSize: "20px" }}>A</span>ADHAR CARD DETAILS
             </div>
             <ModalDetails
-              uid="2123 4567 8910"
-              name="Swapnodeep Biswas"
-              dob="28-02-2000"
+              uid={this.formResult.aadharId}
+              name={this.formResult.name}
+              dob={this.formResult.dob}
+              validationFlags={this.formResult.decodedData.data.aadhar}
               faceDetected="Successful"
             />
           </div>
@@ -101,9 +131,10 @@ class TestAPIModal extends React.Component {
               <span style={{ fontSize: "20px" }}>P</span>AN CARD DETAILS
             </div>
             <ModalDetails
-              uid="ABCDE1234A"
-              name="Swapnodeep Biswas"
-              dob="------------"
+              uid={this.formResult.panId}
+              name={this.formResult.name}
+              dob={this.formResult.dob}
+              validationFlags={this.formResult.decodedData.data.pan}
               faceDetected="Successful"
             />
           </div>
@@ -115,10 +146,11 @@ class TestAPIModal extends React.Component {
               <span style={{ fontSize: "20px" }}>V</span>OTER CARD DETAILS
             </div>
             <ModalDetails
-              uid="ABC1234567"
-              name="Swapnodeep Biswas"
-              dob="28-02-2000"
-              faceDetected="Unsuccessful"
+              uid={this.formResult.voterId}
+              name={this.formResult.name}
+              dob={this.formResult.dob}
+              validationFlags={this.formResult.decodedData.data.voter}
+              faceDetected="Successful"
             />
           </div>
         </section>

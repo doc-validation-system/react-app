@@ -4,6 +4,8 @@ import LoginNavigate from "./screens/Login/Login";
 import HomeScreen from "./screens/Home/Home";
 import PrivateRoute from "./screens/PrivateRoute/PrivateRoute";
 import TestAPISection from "./screens/TestAPI/TestAPI";
+import DocScreen from "./screens/Docscreen/Docscreen";
+import About from "./screens/About/About";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           path="/dashboard"
           element={<PrivateRoute routeName={{ path: "/dashboard" }} />}
         />
+        <Route exact path="/docscreen" element={<DocScreen />} />
+        <Route exact path="/about" element={<About />} />
         <Route exact path="/testApi" element={<TestAPISection />} />
       </Routes>
     </BrowserRouter>

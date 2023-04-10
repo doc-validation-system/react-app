@@ -41,9 +41,9 @@ class HomeScreen extends React.Component {
                 Dashboard
               </span>
             )}
-            <a href={"/"} className={styles.headerOption}>
+            <div className={styles.headerOption} onClick={() => this.props.navigate("/about")}>
               About Us
-            </a>
+            </div>
             <a href={"/"} className={styles.headerOption}>
               Contact Us
             </a>

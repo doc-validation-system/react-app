@@ -187,6 +187,9 @@ class TestAPISection extends React.Component {
     this.setState({ flagModalViewer: false });
   };
 
+  // To store details for the modal
+  formDetails = {};
+
   handleSubmit = async (element) => {
     element.preventDefault();
     console.log(this.state);
@@ -196,9 +199,15 @@ class TestAPISection extends React.Component {
       this.state.flagDOB &&
       this.state.flagAadhar &&
       this.state.flagPan &&
-      this.state.flagVoter
-      // Object.keys(this.state.uploadedFiles).length === 3
+      this.state.flagVoter &&
+      Object.keys(this.state.uploadedFiles).length >= 1
     ) {
+      this.formDetails.name = this.state.name;
+      this.formDetails.dob = this.state.dob;
+      this.formDetails.aadharId = this.state.uidAadhar;
+      this.formDetails.panId = this.state.uidPan;
+      this.formDetails.voterId = this.state.uidVoter;
+
       let formdata = new FormData();
 
       // API Key
@@ -215,22 +224,22 @@ class TestAPISection extends React.Component {
       );
 
       // Pan Card
-      // formdata.append(
-      //   "image",
-      //   this.state.uploadedFiles.panFile.file,
-      //   `${apiKey}_pan.${
-      //     this.state.uploadedFiles.panFile.file.type.split("/")[1]
-      //   }`
-      // );
+      formdata.append(
+        "image",
+        this.state.uploadedFiles.panFile.file,
+        `${apiKey}_pan.${
+          this.state.uploadedFiles.panFile.file.type.split("/")[1]
+        }`
+      );
 
       // Voter Card
-      // formdata.append(
-      //   "image",
-      //   this.state.uploadedFiles.voterFile.file,
-      //   `${apiKey}_voter.${
-      //     this.state.uploadedFiles.voterFile.file.type.split("/")[1]
-      //   }`
-      // );
+      formdata.append(
+        "image",
+        this.state.uploadedFiles.voterFile.file,
+        `${apiKey}_voter.${
+          this.state.uploadedFiles.voterFile.file.type.split("/")[1]
+        }`
+      );
 
       formdata.append("name", this.state.name);
       formdata.append("dob", this.state.dob);
@@ -261,7 +270,9 @@ class TestAPISection extends React.Component {
         flagShowLoader: true,
       });
 
-      let url = "https://api-docvalidation.onrender.com/user/getdata";
+      // let url = "https://api-docvalidation.onrender.com/user/getdata";
+
+      let url = "http://localhost:6001/user/getdata";
 
       let requestOptions = {
         method: "POST",
@@ -273,15 +284,43 @@ class TestAPISection extends React.Component {
 
       // Parsing received data
       let decodedData = JSON.parse(await response.text());
+      this.formDetails.decodedData = decodedData;
 
-      if (decodedData) {
-        this.setState({
-          flagShowLoader: false,
-          flagModalViewer: true
-        });
+      let aadharData = this.formDetails.decodedData.data.aadhar;
+      let panData = this.formDetails.decodedData.data.pan;
+      let voterData = this.formDetails.decodedData.data.voter;
+
+      if (!aadharData) {
+        this.formDetails.decodedData.data.aadhar = {
+          id: false,
+          name: false,
+          dob: false,
+        };
       }
 
-      console.log(JSON.stringify(decodedData, null, 3));
+      if (!panData) {
+        this.formDetails.decodedData.data.pan = {
+          id: false,
+          name: false,
+          dob: false,
+        };
+      }
+
+      if (!voterData) {
+        this.formDetails.decodedData.data.voter = {
+          id: false,
+          name: false,
+          dob: false,
+        };
+      }
+
+      console.log(this.formDetails);
+      if (this.formDetails.decodedData) {
+        this.setState({
+          flagShowLoader: false,
+          flagModalViewer: true,
+        });
+      }
     } else if (!this.state.flagName) {
       JSAlert.alert("Enter a valid Name", null, JSAlert.Icons.Failed).dismissIn(
         1000
@@ -310,9 +349,9 @@ class TestAPISection extends React.Component {
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
-    } else if (Object.keys(this.state.uploadedFiles).length !== 3) {
+    } else if (Object.keys(this.state.uploadedFiles).length < 1) {
       JSAlert.alert(
-        "Upload your three Identification Cards",
+        "Upload at least one Identification Card",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
@@ -325,15 +364,21 @@ class TestAPISection extends React.Component {
         {this.state.flagShowLoader && (
           <div className={styles.testApiModal__Loader}>
             <img
-              src="./Images/ModalLoader.gif"
+              src="./Images/DocValidateTitleLogo.png"
               alt=""
               className={styles.loader__Icon}
             />
+            <div className={styles.loader__Text}>
+              Please wait while we process your entries...
+            </div>
           </div>
         )}
         {this.state.flagModalViewer && (
           <div className={styles.testApiModal}>
-            <TestAPIModal closeModal={this.closeModal} />
+            <TestAPIModal
+              closeModal={this.closeModal}
+              formResult={this.formDetails}
+            />
           </div>
         )}
         <div className={styles.testApiPage}>

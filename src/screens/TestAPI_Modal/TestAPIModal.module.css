@@ -3,6 +3,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@500&display=swap");
 
 
+:root {
+  --percentValue: 0;
+}
+
 .testApiModal {
   display: flex;
   justify-content: center;
@@ -110,7 +114,7 @@ circle {
   -webkit-animation: circle-anim 2.4s linear forwards !important;
 }
 
-@keyframes circle-anim {
+/* @keyframes circle-anim {
   0% {
     stroke-dashoffset: 472;
   }
@@ -122,14 +126,14 @@ circle {
 
   100% {
     opacity: 1;
-    stroke-dashoffset: 201.6;
+    stroke-dashoffset: var(--percentValue);
     /* Usually 0 means nothing is hiding, i.e. full svg is visible.
     Here, 134 is equivalent to 0 depending on the size of the circle*/
     /* 472 means nothing is visible */
     /* Value = 472 - (percentageValue * (472 - 134)) */
     /* Eg:- 472 - (80% * (472-134)) = 201.6 */
-  }
-}
+  /* }
+} */ 
 
 svg {
   position: absolute;
