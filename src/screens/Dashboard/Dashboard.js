@@ -115,6 +115,7 @@ class DashboardSection extends React.Component {
 
             <section className={styles.dashboardCards}>
               <div>
+                {/* Generate Api Key */}
                 <Card
                   cardData={{
                     cardImage: "./Images/ApiKeyImg.png",
@@ -123,6 +124,7 @@ class DashboardSection extends React.Component {
                   }}
                 />
               </div>
+              {/* TestApi Validation Demo portal */}
               <div onClick={() => this.props.navigate("/testApi")}>
                 <Card
                   cardData={{
@@ -132,7 +134,8 @@ class DashboardSection extends React.Component {
                   }}
                 />
               </div>
-              <div>
+              {/* Doc Screen */}
+              <div onClick={() => this.props.navigate("/docscreen")}>
                 <Card
                   cardData={{
                     cardImage: "./Images/DocsImg.png",
