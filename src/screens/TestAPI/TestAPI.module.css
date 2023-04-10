@@ -2,6 +2,28 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@500&display=swap");
 
+.testApiModal__Loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background: linear-gradient(
+    107.22deg,
+    rgba(39, 68, 114, 0.5) 0.46%,
+    rgba(39, 68, 114, 0.7) 100%
+  );
+  backdrop-filter: blur(12px);
+}
+
+.loader__Icon {
+  height: 256px;
+  border-radius: 5px;
+  opacity: 0.7;
+}
+
 .testApiModal {
   height: 100%;
   width: 100%;
@@ -108,21 +130,33 @@
 
 .userDetails__Mandatory {
   font-size: 20px;
-  color: #cf392e;
+  color: #FF0000;
 }
 
 .userDetails__InputArea {
   border: none;
   outline: none;
   background-color: transparent;
-  border-bottom: 2px solid #c6dbff;
+  border-bottom: 2px solid #486aa3;
   padding: 12px 0 12px 0;
-  color: #c6dbff;
+  color: #486aa3;
   font-size: 16px;
+  font-weight: 500;
+  text-rendering: geometricPrecision;
   width: 466px;
   margin-bottom: 24px;
+  z-index: 2;
 }
 
+.inputArea_Active {
+  border-bottom: 2px solid #c6dbff;
+  color: #c6dbff;
+  letter-spacing: 1px;
+}
+
+input[type=text]::placeholder {
+  color: #486aa3;
+}
 input[type=date]::-webkit-calendar-picker-indicator {
   background-image: url("../../../public/Images/CalendarIcon.jpg");
   transform: scale(2);
@@ -130,7 +164,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
   mix-blend-mode: luminosity;
   filter: contrast(1.25);
   -webkit-filter: contrast(1.25);
-  width: 20px;
+  width: 24px;
   cursor: pointer;
   transition: 0.1s ease-in;
 
@@ -155,13 +189,24 @@ input[type=date]::-webkit-calendar-picker-indicator:active {
   width: 458px;
   height: 92px;
   margin-top: 12px;
-  background-color: #c6dbff;
+  background-color: #486aa3;
   border-radius: 2px;
-  color: #274472;
+  text-rendering: geometricPrecision;
   font-size: 16px;
   resize: none;
   font-family: "Roboto", sans-serif;
   padding: 4px;
+}
+
+.userDetails__AddressInputArea::placeholder {
+  color: #ADC8F2;
+}
+
+.addressInputArea_Active {
+  background-color: #c6dbff;
+  color: #274472;
+  font-weight: 500;
+  letter-spacing: 1px;
 }
 
 .fileUploadIndicator {
@@ -174,6 +219,7 @@ input[type=date]::-webkit-calendar-picker-indicator:active {
   background-color: #eceef1;
   box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.25);
   border-radius: 0px 3px 3px 0px;
+  justify-content: space-between;
 }
 
 .fileUpload__Header {
@@ -182,31 +228,70 @@ input[type=date]::-webkit-calendar-picker-indicator:active {
   font-weight: 700;
   font-size: 24px;
   text-align: center;
-  margin-bottom: 38px;
+  margin-bottom: 16px;
 }
 
-.fileUpload__UploadButton {
-  height: 128px;
-  width: 192px;
+.fileUpload__Icon {
+  height: 120px;
+  width: 120px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.7);
+  border-radius: 100px;
+  margin-bottom: 40px;
+}
+
+.fileUpload__FileInputArea {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.fileInput {
+  width: 472px;
+  height: 42px;
+  margin-bottom: 26px;
+  border: 1px solid #adc8f2;
+  border-radius: 5px;
+  display: flex;
+}
+
+.fileInput__BrowseButton {
+  width: 128px;
+  height: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #adc8f2;
+  color: #274472;
+  font-size: 18px;
+  font-weight: 500;
   cursor: pointer;
-  transition: 0.15s ease-in;
+  transition: 80ms ease-in;
 }
 
-.fileUpload__UploadButton:hover {
+.fileInput__BrowseButton:hover {
   opacity: 0.9;
-  transform: scale(1.05);
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.6);
+  transform: scale(1.08);
+  border-radius: 5px;
 }
 
-.fileUpload__UploadButton:active {
-  transform: scale(0.98);
-  opacity: 0.95;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.8);
+.fileInput__BrowseButton:active {
+  transform: scale(1);
+  border-radius: 0;
+  box-shadow: rgba(50, 50, 93, 0.05) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.1) 0px 18px 36px -18px inset;
 }
 
 .uploadDefButton {
   display: none;
+}
+
+.fileInput__FileDetails {
+  width: auto;
+  padding: 0 24px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #274472;
+  display: flex;
+  align-items: center;
 }
 
 .uploadSection {
@@ -226,6 +311,7 @@ input[type=date]::-webkit-calendar-picker-indicator:active {
   background-color: #adc8f2;
   color: #274472;
   font-size: 18px;
+  font-weight: 500;
   border: none;
   border-radius: 2px;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
