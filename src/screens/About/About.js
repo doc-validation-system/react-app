@@ -101,4 +101,5 @@ function AboutNavigate() {
     </div>
   );
 }
+
 export default AboutNavigate;

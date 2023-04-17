@@ -90,7 +90,7 @@ class TestAPIModal extends React.Component {
           <div className={styles.validationScoreSection__Footer}>
             Powered by
             <br />
-            DocValidation TestAPI Engine
+            © DocValidation TestAPI Engine
           </div>
         </section>
 

@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./TestAPI.module.css";
 import TestAPIModal from "../TestAPI_Modal/TestAPIModal";
 import JSAlert from "js-alert";
+import { useNavigate } from "react-router-dom";
+import url from "../../service/Constant";
 
 class TestAPISection extends React.Component {
   constructor(props) {
@@ -270,17 +272,13 @@ class TestAPISection extends React.Component {
         flagShowLoader: true,
       });
 
-      // let url = "https://api-docvalidation.onrender.com/user/getdata";
-
-      let url = "http://localhost:6001/user/getdata";
-
       let requestOptions = {
         method: "POST",
         body: formdata,
       };
 
       // Fetching DocValidation API
-      let response = await fetch(url, requestOptions);
+      let response = await fetch(`${url}/user/getdata`, requestOptions);
 
       // Parsing received data
       let decodedData = JSON.parse(await response.text());
@@ -382,6 +380,16 @@ class TestAPISection extends React.Component {
           </div>
         )}
         <div className={styles.testApiPage}>
+          {/* Header with Logo */}
+          <header className={styles.header}>
+            <img
+              src="./Images/DocValidateAPI-logo.png"
+              alt="DocValidateLogo"
+              className={styles.logoImage}
+              onClick={() => this.props.navigate("/")}
+            />
+          </header>
+
           {/* Form Sections */}
           <form
             action=""
@@ -670,4 +678,13 @@ class TestAPISection extends React.Component {
   }
 }
 
-export default TestAPISection;
+function TestAPINavigate() {
+  const navigate = useNavigate();
+  return (
+    <div>
+      <TestAPISection navigate={navigate} />
+    </div>
+  );
+}
+
+export default TestAPINavigate;
