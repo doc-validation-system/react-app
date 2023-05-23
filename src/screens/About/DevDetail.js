@@ -22,13 +22,13 @@ class DevDetail extends React.Component {
 
                 {/* Social handles */}
                 <div className={styles.devDetail__Socials}>
-                    <a href={this.devData.facebook}>
+                    <a href={this.devData.facebook} rel="noreferrer" target="_blank">
                         <img src={"./Images/Facebook.jpg"} alt="facebook" className={styles.socials__Icon}/>
                     </a>
-                    <a href={this.devData.linkedin}>
+                    <a href={this.devData.linkedin} rel="noreferrer" target="_blank">
                         <img src="./Images/LinkedIn.jpg" alt="linkedin" className={`${styles.icon__linkedIn} ${styles.socials__Icon}`}/>
                     </a>
-                    <a href={this.devData.github}>
+                    <a href={this.devData.github} rel="noreferrer" target="_blank">
                         <img src="./Images/Github.jpg" alt="github" className={styles.socials__Icon}/>
                     </a>
                 </div>
