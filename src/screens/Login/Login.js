@@ -4,6 +4,7 @@ import FlatButton from "../../service/FlatButton/FlatButton";
 import JSAlert from "js-alert";
 import Loader from "../../service/Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import url from "../../service/Constant";
 
 class Login extends React.Component {
   constructor(props) {
@@ -64,7 +65,7 @@ class Login extends React.Component {
       };
 
       var response = await fetch(
-        "https://api-docvalidation.onrender.com/user/login",
+        `${url}/user/login`,
         requestOptions
       );
 

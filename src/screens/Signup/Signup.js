@@ -4,6 +4,7 @@ import React from "react";
 import JSAlert from "js-alert";
 import Loader from "../../service/Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import url from "../../service/Constant";
 
 class SignupSection extends React.Component {
   constructor(props) {
@@ -96,7 +97,7 @@ class SignupSection extends React.Component {
       };
 
       var response = await fetch(
-        "https://api-docvalidation.onrender.com/user/signup",
+        `${url}/user/signup`,
         requestOptions
       );
 

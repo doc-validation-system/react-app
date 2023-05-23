@@ -6,6 +6,7 @@ import PrivateRoute from "./screens/PrivateRoute/PrivateRoute";
 import TestAPISection from "./screens/TestAPI/TestAPI";
 import DocScreen from "./screens/Docscreen/Docscreen";
 import About from "./screens/About/About";
+import ServerUrl from "./screens/ServerURL/ServerUrl";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route exact path="/docscreen" element={<DocScreen />} />
         <Route exact path="/about" element={<About />} />
         <Route exact path="/testApi" element={<TestAPISection />} />
+        <Route exact path="/serverUrl" element={<ServerUrl />} />
       </Routes>
     </BrowserRouter>
   );

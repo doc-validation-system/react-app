@@ -72,7 +72,7 @@ class AboutSection extends React.Component {
             devData={{
               image: "./Images/Swapnodeep.jpeg",
               name: "Swapnodeep Biswas",
-              text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis",
+              text: "A senior Computer Science and Engineering undergraduate at Bengal Institute of Technology in Kolkata. He enjoys dabbling in various front-end technologies and frameworks, and is quite proficient in ReactJs. In his spare time, he enjoys dabbling in music composition and production.",
               facebook: "https://www.facebook.com/Swapnodeep2017",
               linkedin: "https://www.linkedin.com/in/swapnodeep-biswas/",
               github: "https://github.com/Swapnodeep"
@@ -101,4 +101,5 @@ function AboutNavigate() {
     </div>
   );
 }
+
 export default AboutNavigate;

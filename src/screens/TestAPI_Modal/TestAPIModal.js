@@ -90,7 +90,7 @@ class TestAPIModal extends React.Component {
           <div className={styles.validationScoreSection__Footer}>
             Powered by
             <br />
-            DocValidation TestAPI Engine
+            © DocValidation TestAPI Engine
           </div>
         </section>
 
@@ -125,9 +125,9 @@ class TestAPIModal extends React.Component {
           </div>
 
           {/* Pan Card Details */}
-          <div className={styles.validationDetailsSection__Card}>
+          {/* <div className={styles.validationDetailsSection__Card}> */}
             {/* Card Heading */}
-            <div className={styles.cardDetails__Heading}>
+            {/* <div className={styles.cardDetails__Heading}>
               <span style={{ fontSize: "20px" }}>P</span>AN CARD DETAILS
             </div>
             <ModalDetails
@@ -137,7 +137,7 @@ class TestAPIModal extends React.Component {
               validationFlags={this.formResult.decodedData.data.pan}
               faceDetected="Successful"
             />
-          </div>
+          </div> */}
 
           {/* Voter Card Details */}
           <div className={styles.validationDetailsSection__Card}>

@@ -4,6 +4,7 @@ import Card from "./Card";
 import Loader from "../../service/Loader/Loader";
 import { useNavigate } from "react-router-dom";
 import JSAlert from "js-alert";
+import url from "../../service/Constant";
 
 class DashboardSection extends React.Component {
   constructor(props) {
@@ -41,7 +42,7 @@ class DashboardSection extends React.Component {
       redirect: "follow",
     };
     var profileResponse = await fetch(
-      `https://api-docvalidation.onrender.com/user/profile/${email}`,
+      `${url}/user/profile/${email}`,
       profileRequestOptions
     );
     var profileData = JSON.parse(await profileResponse.text());

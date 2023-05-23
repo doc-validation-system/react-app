@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./TestAPI.module.css";
 import TestAPIModal from "../TestAPI_Modal/TestAPIModal";
 import JSAlert from "js-alert";
+import { useNavigate } from "react-router-dom";
+import url from "../../service/Constant";
 
 class TestAPISection extends React.Component {
   constructor(props) {
@@ -10,14 +12,14 @@ class TestAPISection extends React.Component {
       name: "",
       dob: "",
       uidAadhar: "",
-      uidPan: "",
+      // uidPan: "",
       uidVoter: "",
       address: "",
       uploadedFiles: {},
       flagName: false,
       flagDOB: false,
       flagAadhar: false,
-      flagPan: false,
+      // flagPan: false,
       flagVoter: false,
       flagShowLoader: false,
       flagModalViewer: false,
@@ -31,7 +33,7 @@ class TestAPISection extends React.Component {
   name = "";
   dob = "";
   aadhar = "";
-  pan = "";
+  // pan = "";
   voter = "";
 
   handleNameInput = (element) => {
@@ -88,6 +90,7 @@ class TestAPISection extends React.Component {
   handleDobInput = (element) => {
     this.dob = new Date(element.target.value).toISOString();
     console.log(this.dob);
+
     if (this.dob) {
       this.setState({ flagDOB: true });
     } else {
@@ -107,17 +110,17 @@ class TestAPISection extends React.Component {
     }
   };
 
-  handlePanInput = (element) => {
-    this.pan = element.target.value;
+  // handlePanInput = (element) => {
+  //   this.pan = element.target.value;
 
-    let matchPan = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+  //   let matchPan = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
 
-    if (this.pan.length === 10 && this.pan.match(matchPan)) {
-      this.setState({ flagPan: true });
-    } else {
-      this.setState({ flagPan: false });
-    }
-  };
+  //   if (this.pan.length === 10 && this.pan.match(matchPan)) {
+  //     this.setState({ flagPan: true });
+  //   } else {
+  //     this.setState({ flagPan: false });
+  //   }
+  // };
 
   handleVoterInput = (element) => {
     this.voter = element.target.value;
@@ -198,14 +201,14 @@ class TestAPISection extends React.Component {
       this.state.flagName &&
       this.state.flagDOB &&
       this.state.flagAadhar &&
-      this.state.flagPan &&
+      // this.state.flagPan &&
       this.state.flagVoter &&
-      Object.keys(this.state.uploadedFiles).length >= 1
+      Object.keys(this.state.uploadedFiles).length === 2
     ) {
       this.formDetails.name = this.state.name;
       this.formDetails.dob = this.state.dob;
       this.formDetails.aadharId = this.state.uidAadhar;
-      this.formDetails.panId = this.state.uidPan;
+      // this.formDetails.panId = this.state.uidPan;
       this.formDetails.voterId = this.state.uidVoter;
 
       let formdata = new FormData();
@@ -224,13 +227,13 @@ class TestAPISection extends React.Component {
       );
 
       // Pan Card
-      formdata.append(
-        "image",
-        this.state.uploadedFiles.panFile.file,
-        `${apiKey}_pan.${
-          this.state.uploadedFiles.panFile.file.type.split("/")[1]
-        }`
-      );
+      // formdata.append(
+      //   "image",
+      //   this.state.uploadedFiles.panFile.file,
+      //   `${apiKey}_pan.${
+      //     this.state.uploadedFiles.panFile.file.type.split("/")[1]
+      //   }`
+      // );
 
       // Voter Card
       formdata.append(
@@ -242,10 +245,10 @@ class TestAPISection extends React.Component {
       );
 
       formdata.append("name", this.state.name);
-      formdata.append("dob", this.state.dob);
+      formdata.append("dob", this.dob);
       formdata.append("apiKey", apiKey);
       formdata.append("aadharId", this.state.uidAadhar);
-      formdata.append("panId", this.state.uidPan);
+      // formdata.append("panId", this.state.uidPan);
       formdata.append("voterId", this.state.uidVoter);
 
       for (let key of formdata.keys()) {
@@ -257,22 +260,18 @@ class TestAPISection extends React.Component {
         name: "",
         dob: "",
         uidAadhar: "",
-        uidPan: "",
+        // uidPan: "",
         uidVoter: "",
         address: "",
         uploadedFiles: {},
         flagName: false,
         flagDOB: false,
         flagAadhar: false,
-        flagPan: false,
+        // flagPan: false,
         flagVoter: false,
         flagModalViewer: false,
         flagShowLoader: true,
       });
-
-      // let url = "https://api-docvalidation.onrender.com/user/getdata";
-
-      let url = "http://localhost:6001/user/getdata";
 
       let requestOptions = {
         method: "POST",
@@ -280,14 +279,15 @@ class TestAPISection extends React.Component {
       };
 
       // Fetching DocValidation API
-      let response = await fetch(url, requestOptions);
+      let response = await fetch(`${url}/user/getdata`, requestOptions);
 
       // Parsing received data
       let decodedData = JSON.parse(await response.text());
+      console.log(await decodedData);
       this.formDetails.decodedData = decodedData;
 
       let aadharData = this.formDetails.decodedData.data.aadhar;
-      let panData = this.formDetails.decodedData.data.pan;
+      // let panData = this.formDetails.decodedData.data.pan;
       let voterData = this.formDetails.decodedData.data.voter;
 
       if (!aadharData) {
@@ -298,13 +298,13 @@ class TestAPISection extends React.Component {
         };
       }
 
-      if (!panData) {
-        this.formDetails.decodedData.data.pan = {
-          id: false,
-          name: false,
-          dob: false,
-        };
-      }
+      // if (!panData) {
+      //   this.formDetails.decodedData.data.pan = {
+      //     id: false,
+      //     name: false,
+      //     dob: false,
+      //   };
+      // }
 
       if (!voterData) {
         this.formDetails.decodedData.data.voter = {
@@ -337,21 +337,21 @@ class TestAPISection extends React.Component {
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
-    } else if (!this.state.flagPan) {
-      JSAlert.alert(
-        "Enter a valid Pan ID",
-        null,
-        JSAlert.Icons.Failed
-      ).dismissIn(1000);
+      // } else if (!this.state.flagPan) {
+      //   JSAlert.alert(
+      //     "Enter a valid Pan ID",
+      //     null,
+      //     JSAlert.Icons.Failed
+      //   ).dismissIn(1000);
     } else if (!this.state.flagVoter) {
       JSAlert.alert(
         "Enter a valid Voter ID",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
-    } else if (Object.keys(this.state.uploadedFiles).length < 1) {
+    } else if (Object.keys(this.state.uploadedFiles).length <= 1) {
       JSAlert.alert(
-        "Upload at least one Identification Card",
+        "Upload the two Identification Cards",
         null,
         JSAlert.Icons.Failed
       ).dismissIn(1000);
@@ -382,6 +382,16 @@ class TestAPISection extends React.Component {
           </div>
         )}
         <div className={styles.testApiPage}>
+          {/* Header with Logo */}
+          <header className={styles.header}>
+            <img
+              src="./Images/DocValidateAPI-logo.png"
+              alt="DocValidateLogo"
+              className={styles.logoImage}
+              onClick={() => this.props.navigate("/")}
+            />
+          </header>
+
           {/* Form Sections */}
           <form
             action=""
@@ -417,7 +427,7 @@ class TestAPISection extends React.Component {
                     onBlur={(e) => this.handleNameInput(e)}
                   />
                 </div>
-
+                
                 {/* DOB */}
                 <div id="dobDiv">
                   <label className={styles.userDetails__Label}>
@@ -464,7 +474,7 @@ class TestAPISection extends React.Component {
                 </div>
 
                 {/* Pan Card UID */}
-                <div id="uidPanDiv">
+                {/* <div id="uidPanDiv">
                   <label className={styles.userDetails__Label}>
                     Pan ID{" "}
                     <span className={styles.userDetails__Mandatory}>*</span>
@@ -483,7 +493,7 @@ class TestAPISection extends React.Component {
                     onChange={(e) => this.handleInputStates(e)}
                     onBlur={(e) => this.handlePanInput(e)}
                   />
-                </div>
+                </div> */}
 
                 {/* Voter Card UID */}
                 <div id="uidVoterDiv">
@@ -585,10 +595,10 @@ class TestAPISection extends React.Component {
                 </div>
 
                 {/* Pan Card Input */}
-                <div className={styles.fileInput}>
-                  <label htmlFor="panFile">
-                    {/* Pan Card Upload Button */}
-                    <div className={styles.fileInput__BrowseButton}>Browse</div>
+                {/* <div className={styles.fileInput}>
+                  <label htmlFor="panFile"> */}
+                {/* Pan Card Upload Button */}
+                {/* <div className={styles.fileInput__BrowseButton}>Browse</div>
 
                     <input
                       type="file"
@@ -598,9 +608,9 @@ class TestAPISection extends React.Component {
                       className={styles.uploadDefButton}
                       onChange={(e) => this.handleFileInputStates(e)}
                     />
-                  </label>
-                  {/* Pan Card Details */}
-                  <div className={styles.fileInput__FileDetails}>
+                  </label> */}
+                {/* Pan Card Details */}
+                {/* <div className={styles.fileInput__FileDetails}>
                     {this.state.uploadedFiles.panFile ? (
                       <div>
                         {this.abbrName(this.state.uploadedFiles.panFile.name)}{" "}
@@ -614,7 +624,7 @@ class TestAPISection extends React.Component {
                       "Upload your Pan Card"
                     )}
                   </div>
-                </div>
+                </div> */}
 
                 {/* Voter Card Input */}
                 <div className={styles.fileInput}>
@@ -670,4 +680,13 @@ class TestAPISection extends React.Component {
   }
 }
 
-export default TestAPISection;
+function TestAPINavigate() {
+  const navigate = useNavigate();
+  return (
+    <div>
+      <TestAPISection navigate={navigate} />
+    </div>
+  );
+}
+
+export default TestAPINavigate;

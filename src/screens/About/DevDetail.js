@@ -12,7 +12,7 @@ class DevDetail extends React.Component {
             <div className={styles.devDetail}>
                 {/* Image */}
                 <div className={styles.devDetail__Image}>
-                    <img src={this.devData.image} alt="image" className={styles.image__photo}/>
+                    <img src={this.devData.image} alt="devImage"  className={styles.image__photo}/>
                 </div>
                 {/* Content */}
                 <div className={styles.devDetail__Content}>
@@ -22,14 +22,14 @@ class DevDetail extends React.Component {
 
                 {/* Social handles */}
                 <div className={styles.devDetail__Socials}>
-                    <a href={this.devData.facebook}>
-                        <img src={"./Images/Facebook.jpg"} className={styles.socials__Icon}/>
+                    <a href={this.devData.facebook} rel="noreferrer" target="_blank">
+                        <img src={"./Images/Facebook.jpg"} alt="facebook" className={styles.socials__Icon}/>
                     </a>
-                    <a href={this.devData.linkedin}>
-                        <img src="./Images/LinkedIn.jpg"  className={`${styles.icon__linkedIn} ${styles.socials__Icon}`}/>
+                    <a href={this.devData.linkedin} rel="noreferrer" target="_blank">
+                        <img src="./Images/LinkedIn.jpg" alt="linkedin" className={`${styles.icon__linkedIn} ${styles.socials__Icon}`}/>
                     </a>
-                    <a href={this.devData.github}>
-                        <img src="./Images/Github.jpg" className={styles.socials__Icon}/>
+                    <a href={this.devData.github} rel="noreferrer" target="_blank">
+                        <img src="./Images/Github.jpg" alt="github" className={styles.socials__Icon}/>
                     </a>
                 </div>
                 
